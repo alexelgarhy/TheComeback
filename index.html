@@ -242,7 +242,7 @@ textarea{resize:vertical;min-height:70px;line-height:1.5;}
   <div style="display:flex;gap:.5rem">
     <span class="hbadge" id="week-badge">WEEK 1</span>
     <span class="hbadge hi" id="today-badge"></span>
-    <span class="hbadge" id="sync-badge" onclick="syncToGist()" style="cursor:pointer" title="Tap to sync">☁️</span>
+    <span class="hbadge" id="sync-badge" onclick="syncToGist()" style="cursor:pointer;position:relative" title="Tap to sync">☁️<span id="sync-dot" style="display:none;position:absolute;top:2px;right:2px;width:6px;height:6px;background:#16a34a;border-radius:50%"></span></span>
   </div>
 </header>
 
@@ -674,7 +674,7 @@ textarea{resize:vertical;min-height:70px;line-height:1.5;}
   </div>
   <div class="card">
     <div class="card-title">GitHub Sync</div>
-    <div class="alert al-blue" style="margin-bottom:.875rem">🔄 Syncs all your data to a private GitHub Gist. Works across devices. Set up once, automatic from then on.</div>
+    <div class="alert al-blue" style="margin-bottom:.875rem">🔄 Auto-syncs to your private GitHub Gist on every save. To use on a new device: enter token + Gist ID → Load from Cloud ↓.</div>
     <div class="g2">
       <div>
         <label>GitHub Token (classic, gist scope)</label>
@@ -695,7 +695,7 @@ textarea{resize:vertical;min-height:70px;line-height:1.5;}
     <div class="fg" style="margin-bottom:.875rem">
       <button class="btn btn-primary btn-sm" onclick="exportData()">Export All Data</button>
       <button class="btn btn-sec btn-sm" onclick="showImport()">Import Data</button>
-      <button class="btn btn-danger btn-sm" onclick="clearAllLogs()">Clear All Logs</button>
+      <button class="btn btn-danger btn-sm" onclick="clearAllLogs()">Clear All Data</button>
     </div>
     <div id="import-area-s" style="display:none;margin-bottom:.875rem">
       <textarea id="import-json-s" placeholder="Paste exported JSON here..." style="height:80px;font-family:'JetBrains Mono',monospace;font-size:11px"></textarea>
@@ -718,7 +718,7 @@ function fmtDate(d){if(!d)return'—';return new Date(d+'T12:00:00').toLocaleDat
 let S={};let logs=[];let sessions=[];let mealLog={};let suppChecks={};
 let photoLogs=[];let measurements=[];let mjSettings={};let sleepLogs=[];let hydrationLog={};
 let scores={sleep:0,energy:0,mood:0,libido:0,intensity:0,'sleep-tab':0};
-let ghToken='';let ghGistId='';let syncStatus='idle';
+let ghToken='';let ghGistId='';
 
 // ── WORKOUT DATA — SCIENCE-BASED, V-TAPER OPTIMISED ──
 // Phase 1: DBs first for movement quality + ROM. LISS cardio. Build the base.
@@ -971,7 +971,7 @@ const MEALS = {
 const SUPPS=[
   {
     section:'🌅 Breakfast',
-    why:'Fat-soluble vitamins need dietary fat. Zinc must be away from iron-rich meals (lunch/dinner) and away from high-calcium meals. Effexor must be consistent — morning with food.',
+    why:'Fat-soluble vitamins absorb best with dietary fat. Zinc must be away from iron-rich meals (lunch/dinner). Effexor XR requires consistent morning timing with food — never fasted, never after 2 PM.',
     items:[
       {id:'effexor',name:'Effexor XR 150mg',dose:'150mg',time:'With breakfast — NEVER fasted',warn:null},
       {id:'k2d3',name:'K2 + D3',dose:'120mcg K2 / 1,000 IU D3',time:'With breakfast (fat present)',warn:null},
@@ -981,7 +981,7 @@ const SUPPS=[
   },
   {
     section:'☀️ Mid-Morning (between meals)',
-    why:'Collagen synthesis requires Vitamin C as a direct cofactor — they must be taken together. Mid-morning on an empty or light stomach improves collagen uptake. Separate from calcium-rich meals.',
+    why:'Collagen synthesis requires Vitamin C as a cofactor — always take together. Mid-morning away from large meals improves uptake. Separate from calcium-rich meals to avoid competition.',
     items:[
       {id:'collagen',name:'Collagen Peptides',dose:'15g in water or juice',time:'Mid-morning, away from large meals',warn:null},
       {id:'vitc',name:'Vitamin C',dose:'1,000mg',time:'Same time as collagen — required cofactor',warn:'✅ Also take at iron-rich meals (L3, D1) to boost plant iron absorption by up to 3x.'},
@@ -989,7 +989,7 @@ const SUPPS=[
   },
   {
     section:'🍽️ Lunch (largest meal)',
-    why:'CoQ10 and Omega-3 are fat-soluble — highest absorption with the largest fat-containing meal. D3 weekly dose here on Sundays. Omega-3 timed away from Mounjaro injection day to reduce GI overlap.',
+    why:'CoQ10 and Omega-3 are fat-soluble — absorb best with the largest fat-containing meal. D3 50,000 IU on Sundays only. Move Omega-3 to breakfast on injection Fridays if GI issues occur.',
     items:[
       {id:'coq10',name:'CoQ10',dose:'300mg',time:'With lunch (fat-soluble)',warn:null},
       {id:'omega3',name:'Omega-3 Fish Oil',dose:'2-3 softgels (1.8-2.7g EPA+DHA)',time:'With lunch — avoid injection day if nausea occurs',warn:'⚠️ Mounjaro slows gastric emptying. On injection days (Friday), take omega-3 at breakfast instead if GI issues occur.'},
@@ -998,7 +998,7 @@ const SUPPS=[
   },
   {
     section:'💪 Post-Workout',
-    why:'Creatine uptake is enhanced by insulin — taking it with carbs post-workout is optimal. Whey within 60 min of training maximises muscle protein synthesis. Creatine requires adequate hydration — drink extra water, especially on Mounjaro days when thirst is suppressed.',
+    why:'Whey within 60 min maximises muscle protein synthesis. Creatine uptake enhanced by post-workout insulin spike. On Mounjaro days thirst is suppressed — drink an extra 500ml when taking creatine.',
     items:[
       {id:'whey',name:'Whey Isolate',dose:'1-1.5 scoops',time:'Within 60 min post-workout',warn:null},
       {id:'creatine',name:'Creatine Monohydrate',dose:'5g',time:'Post-workout with shake or carbs',warn:'⚠️ Mounjaro suppresses thirst. On Mounjaro days drink an extra 500ml water when taking creatine or risk cramping.'},
@@ -1006,14 +1006,14 @@ const SUPPS=[
   },
   {
     section:'💊 Medications',
-    why:'Effexor XR at breakfast (listed above). Mounjaro Friday evening — side effects peak Sat/Sun when you can rest.',
+    why:'Mounjaro Friday evening after dinner — side effects peak Sat/Sun when you can rest and are not training.',
     items:[
       {id:'mounjaro',name:'Mounjaro',dose:'As prescribed by obesity clinic',time:'Friday evening after dinner',warn:null},
     ]
   },
   {
     section:'🌙 Before Bed',
-    why:'Magnesium glycinate crosses the blood-brain barrier and promotes deep sleep and GABA activity. Evening timing is where all the sleep and recovery benefit comes from. Taking it in the morning wastes the primary benefit.',
+    why:'Magnesium glycinate promotes deep sleep and GABA activity — the benefit is entirely timing-dependent. Morning dosing wastes it. 30-60 min before bed is the window.',
     items:[
       {id:'mag',name:'Magnesium Bisglycinate',dose:'400mg (2 caps)',time:'30-60 min before bed',warn:null},
     ]
@@ -1130,6 +1130,7 @@ function getTodayWorkout(){
 function autoFillSession(){
   const tw=getTodayWorkout();if(!tw||!tw.dayData)return;
   const typeEl=document.getElementById('t-type');if(typeEl)typeEl.value=tw.sessionType;
+  const dateEl=document.getElementById('t-date');if(dateEl)dateEl.value=new Date().toISOString().split('T')[0];
   const rows=document.getElementById('ex-rows');rows.innerHTML='';
   tw.dayData.exercises.forEach(e=>{
     const row=document.createElement('div');row.className='ex-log-row';
@@ -1461,7 +1462,7 @@ function renderHistory(){
   if(to)filtered=filtered.filter(l=>l.date<=to);
   document.getElementById('hist-count').textContent=filtered.length+' daily · '+sessions.length+' sessions'+(from||to?' (filtered)':'');
   if(!filtered.length){c.innerHTML='<div class="empty"><div class="empty-icon">📋</div>'+(logs.length?'No logs in this range.':'No logs yet.')+'</div>';return;}
-  c.innerHTML=filtered.map((l,i)=>`<div class="log-entry"><div class="log-date">${fmtDate(l.date)}</div><button class="del-btn" onclick="delLog(${logs.indexOf(l)})">✕</button><div class="log-grid">${l.weight?`<div><div class="log-lbl">Weight</div><div class="log-val">${l.weight}kg</div></div>`:''} ${l.sleep?`<div><div class="log-lbl">Sleep</div><div class="log-val">${l.sleep}h/${l.sleepScore||'—'}</div></div>`:''} ${l.energy?`<div><div class="log-lbl">Energy</div><div class="log-val">${l.energy}/10</div></div>`:''} ${l.mood?`<div><div class="log-lbl">Mood</div><div class="log-val">${l.mood}/10</div></div>`:''} ${l.smoke?`<div><div class="log-lbl">Smoke</div><div class="log-val">${l.smoke}</div></div>`:''} ${l.symptoms&&l.symptoms!=='none'?`<div><div class="log-lbl">Symptoms</div><div class="log-val" style="color:var(--orange);font-size:10px">${l.symptoms}</div></div>`:''} ${l.notes?`<div style="grid-column:1/-1"><div class="log-lbl">Notes</div><div class="log-val" style="font-family:'Inter';font-size:12px">${l.notes}</div></div>`:''}</div></div>`).join('');
+  c.innerHTML=filtered.map((l,i)=>`<div class="log-entry"><div class="log-date">${fmtDate(l.date)}</div><button class="del-btn" onclick="delLog(${logs.indexOf(l)})">✕</button><div class="log-grid">${l.weight?`<div><div class="log-lbl">Weight</div><div class="log-val">${l.weight}kg</div></div>`:''} ${l.energy?`<div><div class="log-lbl">Energy</div><div class="log-val">${l.energy}/10</div></div>`:''} ${l.mood?`<div><div class="log-lbl">Mood</div><div class="log-val">${l.mood}/10</div></div>`:''} ${l.smoke?`<div><div class="log-lbl">Smoke</div><div class="log-val">${l.smoke}</div></div>`:''} ${l.symptoms&&l.symptoms!=='none'?`<div><div class="log-lbl">Symptoms</div><div class="log-val" style="color:var(--orange);font-size:10px">${l.symptoms}</div></div>`:''} ${l.notes?`<div style="grid-column:1/-1"><div class="log-lbl">Notes</div><div class="log-val" style="font-family:'Inter';font-size:12px">${l.notes}</div></div>`:''}</div></div>`).join('');
 }
 function clearHistFilter(){const f=document.getElementById('hist-from');const t=document.getElementById('hist-to');if(f)f.value='';if(t)t.value='';renderHistory();}
 
@@ -1521,6 +1522,14 @@ function genCheckin(){
   if(!wl.length){toast('No logs found');return;}
   const avg=k=>{const v=wl.filter(l=>l[k]).map(l=>parseFloat(l[k]));return v.length?(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):'—';};
   const weights=wl.filter(l=>l.weight).map(l=>l.weight);
+  // Meal-based averages for current period
+  const wlDates=wl.map(l=>l.date);
+  const avgMealCals=wlDates.length?Math.round(wlDates.reduce((a,d)=>{const m=mealLog[d]||[];return a+m.reduce((s,x)=>s+(x.cals||0),0);},0)/wlDates.length):0;
+  const avgMealProtein=wlDates.length?Math.round(wlDates.reduce((a,d)=>{const m=mealLog[d]||[];return a+m.reduce((s,x)=>s+(x.protein||0),0);},0)/wlDates.length):0;
+  // Sleep from sleepLogs for current period
+  const wlSleep=sleepLogs.filter(s=>s.date>=start&&s.date<=end);
+  const avgSleepDurRpt=wlSleep.length?(wlSleep.reduce((a,s)=>a+(s.duration||0),0)/wlSleep.length).toFixed(1):'—';
+  const avgSleepQRpt=wlSleep.length?(wlSleep.reduce((a,s)=>a+(s.quality||0),0)/wlSleep.length).toFixed(1):'—';
 
   // Week-over-week comparison
   const prevStart=new Date(start);const prevEnd=new Date(end);
@@ -1528,8 +1537,12 @@ function genCheckin(){
   prevStart.setDate(prevStart.getDate()-span);prevEnd.setDate(prevEnd.getDate()-span);
   const prevS=prevStart.toISOString().split('T')[0];const prevE=prevEnd.toISOString().split('T')[0];
   const prevLogs=logs.filter(l=>l.date>=prevS&&l.date<=prevE);
-  const prevAvgCals=prevLogs.length?Math.round(prevLogs.filter(l=>l.cals).reduce((a,l)=>a+(l.cals||0),0)/prevLogs.filter(l=>l.cals).length):null;
-  const prevAvgSleep=prevLogs.length?(prevLogs.filter(l=>l.sleep).reduce((a,l)=>a+(l.sleep||0),0)/Math.max(1,prevLogs.filter(l=>l.sleep).length)).toFixed(1):null;
+  // Pull cals from mealLog for previous period
+  const prevDates=prevLogs.map(l=>l.date);
+  const prevAvgCals=prevDates.length?Math.round(prevDates.reduce((a,d)=>{const m=mealLog[d]||[];return a+m.reduce((s,x)=>s+(x.cals||0),0);},0)/prevDates.length):null;
+  // Pull sleep from sleepLogs for previous period
+  const prevSleepLogs=sleepLogs.filter(s=>s.date>=prevS&&s.date<=prevE);
+  const prevAvgSleep=prevSleepLogs.length?(prevSleepLogs.reduce((a,s)=>a+(s.duration||0),0)/prevSleepLogs.length).toFixed(1):null;
 
   const latestMs=wms.length?wms[0]:null;
   const vtaper=latestMs?.shoulders&&latestMs?.waist?(latestMs.shoulders/latestMs.waist).toFixed(2):null;
@@ -1546,11 +1559,11 @@ WEIGHT
   Total lost:     ${weights.length?(122.5-(weights[weights.length-1])).toFixed(1):'—'} kg from 122.5
 
 AVERAGES (vs prior period)
-  Sleep:          ${avg('sleep')} hrs ${prevAvgSleep?'(prev: '+prevAvgSleep+')':''}
+  Sleep:          ${avgSleepDurRpt}h avg · Quality ${avgSleepQRpt}/10 ${prevAvgSleep?'(prev: '+prevAvgSleep+'h)':''}
   Energy:         ${avg('energy')}/10
   Mood:           ${avg('mood')}/10
-  Calories:       ${avg('cals')} kcal ${prevAvgCals?'(prev: '+prevAvgCals+')':''}
-  Water:          ${avg('water')} L
+  Calories:       ${avgMealCals} kcal avg ${prevAvgCals?'(prev: '+prevAvgCals+')':''}  (from meal log)
+  Protein:        ${avgMealProtein}g avg  (from meal log)
 
 ADHERENCE
   Protein 240g+:  ${wl.filter(l=>l.protein==='yes').length}/${wl.length} days
@@ -1633,7 +1646,20 @@ function saveMjSettings(){
 
 function updateWeekBadge(){if(!S.startDate)return;const days=Math.floor((new Date()-new Date(S.startDate))/86400000);document.getElementById('week-badge').textContent='WEEK '+(Math.max(1,Math.floor(days/7)+1));}
 function delLog(i){if(!confirm('Delete?'))return;logs.splice(i,1);localStorage.setItem('ggp_l',JSON.stringify(logs));renderHistory();renderDashboard();}
-function clearAllLogs(){if(!confirm('Delete ALL logs?'))return;logs=[];localStorage.setItem('ggp_l',JSON.stringify(logs));renderHistory();renderDashboard();}
+function clearAllLogs(){
+  if(!confirm('This clears ALL data: daily logs, sessions, meals, sleep, hydration, measurements, photos. This cannot be undone. Are you sure?'))return;
+  if(!confirm('Last chance. Delete everything?'))return;
+  logs=[];sessions=[];mealLog={};sleepLogs=[];hydrationLog={};measurements=[];photoLogs=[];suppChecks={};
+  localStorage.setItem('ggp_l',JSON.stringify(logs));
+  localStorage.setItem('ggp_t',JSON.stringify(sessions));
+  localStorage.setItem('ggp_m',JSON.stringify(mealLog));
+  localStorage.setItem('ggp_sl',JSON.stringify(sleepLogs));
+  localStorage.setItem('ggp_hyd',JSON.stringify(hydrationLog));
+  localStorage.setItem('ggp_ms',JSON.stringify(measurements));
+  localStorage.setItem('ggp_ph',JSON.stringify(photoLogs));
+  localStorage.setItem('ggp_supps',JSON.stringify(suppChecks));
+  renderHistory();renderDashboard();toast('All data cleared');
+}
 
 function showImport(){const el=document.getElementById('import-area');if(el){el.style.display=el.style.display==='none'?'block':'none';}const els=document.getElementById('import-area-s');if(els){els.style.display=els.style.display==='none'?'block':'none';}}
 function exportData(){const data={S,logs,sessions,mealLog,suppChecks,photoLogs,measurements,mjSettings,sleepLogs,hydrationLog,exportedAt:new Date().toISOString()};const json=JSON.stringify(data,null,2);['export-json','export-json-s'].forEach(id=>{const el=document.getElementById(id);if(el){el.value=json;el.parentElement.style.display='block';}});toast('Ready to copy');}
@@ -1715,7 +1741,11 @@ async function loadFromGist(){
 
 // Auto-sync after every save — call this at end of each save function
 async function autoSync(){
-  if(ghToken&&ghGistId)await syncToGist();
+  if(!ghToken||!ghGistId)return;
+  const badge=document.getElementById('sync-badge');
+  if(badge)badge.textContent='🔄';
+  await syncToGist();
+  if(badge)badge.innerHTML='☁️<span id="sync-dot" style="display:block;position:absolute;top:2px;right:2px;width:6px;height:6px;background:#16a34a;border-radius:50%"></span>';
 }
 
 // ── NAVIGATION ──
@@ -1832,11 +1862,13 @@ function renderSleepHistory(){
   if(!card||!c)return;
   if(!sleepLogs.length){card.style.display='none';return;}
   card.style.display='block';
+  const showAll=card.getAttribute('data-show-all')==='true';
+  const displayLogs=showAll?sleepLogs:sleepLogs.slice(0,30);
   const feelIcon={great:'😄',good:'🙂',ok:'😐',poor:'😔',terrible:'😩'};
-  c.innerHTML=sleepLogs.map((l,i)=>`
+  c.innerHTML=`<div class="fb" style="margin-bottom:.75rem"><span style="font-size:11px;color:var(--muted)">${sleepLogs.length} nights logged</span><button class="btn btn-sec btn-sm" onclick="toggleSleepAll(this)">${showAll?'Show Last 30':'Show All'}</button></div>`+displayLogs.map((l,i)=>`
     <div class="log-entry">
       <div class="log-date">${fmtDate(l.date)}</div>
-      <button class="del-btn" onclick="delSleepLog(${i})">✕</button>
+      <button class="del-btn" onclick="delSleepLog(sleepLogs.indexOf(sleepLogs.find(x=>x.savedAt==='${l.savedAt}')))">✕</button>
       <div class="log-grid">
         ${l.bed?`<div><div class="log-lbl">Bedtime</div><div class="log-val">${l.bed}</div></div>`:''}
         ${l.wake?`<div><div class="log-lbl">Wake</div><div class="log-val">${l.wake}</div></div>`:''}
@@ -1846,6 +1878,12 @@ function renderSleepHistory(){
         ${l.notes?`<div style="grid-column:1/-1"><div class="log-lbl">Notes</div><div class="log-val" style="font-family:'Inter';font-size:12px">${l.notes}</div></div>`:''}
       </div>
     </div>`).join('');
+}
+function toggleSleepAll(btn){
+  const card=document.getElementById('sleep-history-card');
+  const cur=card.getAttribute('data-show-all')==='true';
+  card.setAttribute('data-show-all',cur?'false':'true');
+  renderSleepHistory();
 }
 function delSleepLog(i){if(!confirm('Delete?'))return;sleepLogs.splice(i,1);localStorage.setItem('ggp_sl',JSON.stringify(sleepLogs));renderSleepHistory();}
 
