@@ -463,7 +463,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5;}
     </div>
     <div class="macro-bar-row"><div class="macro-bar-label"><span>Protein</span><span id="d-protein-txt">0 / 240g</span></div><div class="macro-bar-track"><div class="macro-bar-fill bar-protein" id="d-protein-bar" style="width:0%"></div></div></div>
     <div class="macro-bar-row"><div class="macro-bar-label"><span>Calories</span><span id="d-cal-txt">0 / 2400 kcal</span></div><div class="macro-bar-track"><div class="macro-bar-fill bar-cal" id="d-cal-bar" style="width:0%"></div></div></div>
-    <div class="macro-bar-row"><div class="macro-bar-label"><span>Water</span><span id="d-water-txt">0 / 3.5L</span></div><div class="macro-bar-track"><div class="macro-bar-fill bar-water" id="d-water-bar" style="width:0%"></div></div></div>
+    <div class="macro-bar-row"><div class="macro-bar-label"><span>Water</span><span id="d-water-txt">0 / 4.5L</span></div><div class="macro-bar-track"><div class="macro-bar-fill bar-water" id="d-water-bar" style="width:0%"></div></div></div>
   </div>
   <div class="stat-grid stat-grid-3" style="margin-bottom:1rem">
     <div class="card" style="padding:.875rem">
@@ -562,7 +562,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5;}
           <div style="font-family:'Courier New',monospace;font-size:11px;color:var(--muted)" id="hyd-date-display">—</div>
           <div style="flex:1;margin:0 1rem">
             <div class="macro-bar-row" style="margin:0">
-              <div class="macro-bar-label" style="font-size:10px"><span style="color:var(--blue)">Water</span><span id="hyd-total-txt">0 / 3.5L</span></div>
+              <div class="macro-bar-label" style="font-size:10px"><span style="color:var(--blue)">Water</span><span id="hyd-total-txt">0 / 4.5L</span></div>
               <div class="macro-bar-track"><div class="macro-bar-fill bar-water" id="hyd-bar" style="width:0%"></div></div>
             </div>
           </div>
@@ -607,8 +607,8 @@ textarea{resize:vertical;min-height:80px;line-height:1.5;}
           <tr><th>Signal</th><th>What it means</th></tr>
           <tr><td>Fewer than 4 bathroom trips/day</td><td>Likely dehydrated. Add 500ml immediately.</td></tr>
           <tr><td>6-8 bathroom trips/day</td><td>Well hydrated.</td></tr>
-          <tr><td>No thirst sensation</td><td>Normal on Mounjaro. Drink on schedule anyway.</td></tr>
-          <tr><td>Creatine days</td><td>Extra 500ml when taking creatine.</td></tr>
+          <tr><td>No thirst sensation</td><td>Normal on Mounjaro. Drink on schedule anyway — target 4.5L daily.</td></tr>
+          <tr><td>Creatine days</td><td>Extra 500ml on top of your 4.5L target on creatine days.</td></tr>
         </table>
       </div>
     </div>
@@ -827,7 +827,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5;}
   </div>
 
   <div class="card"><div class="card-title">Sleep Schedule</div><table class="t"><tr><th>Time</th><th>Action</th></tr><tr><td style="font-family:'Courier New',monospace;font-weight:500">9:30 PM</td><td>Screens off</td></tr><tr><td style="font-family:'Courier New',monospace;font-weight:500">9:45 PM</td><td>Magnesium bisglycinate 400mg</td></tr><tr><td style="font-family:'Courier New',monospace;font-weight:500">10:00 PM</td><td>Lights out. Room dark, 18-20°C</td></tr><tr><td style="font-family:'Courier New',monospace;font-weight:500">6:00 AM</td><td>Wake. Natural light 10-15 min</td></tr></table></div>
-  <div class="card"><div class="card-title">Effexor Timing</div><table class="t"><tr><th>Rule</th><th>Detail</th></tr><tr><td>With breakfast</td><td>Morning with food. Never fasted.</td></tr><tr><td>Never after 2 PM</td><td>Stimulant properties disrupt sleep if taken late.</td></tr><tr><td>Same time daily</td><td>Consistent timing maintains stable blood levels.</td></tr></table></div>
+  <div class="card"><div class="card-title">Effexor Timing</div><table class="t"><tr><th>Rule</th><th>Detail</th></tr><tr><td>With breakfast</td><td>Morning with food. Never fasted.</td></tr><tr><td>Never after 2 PM</td><td>Stimulant properties disrupt sleep if taken late.</td></tr><tr><td>Same time daily</td><td>Consistent timing maintains stable blood levels.</td></tr><tr><td>REM suppression</td><td>Effexor XR reduces REM sleep. If you get 8h but wake unrefreshed consistently, raise this with your prescriber — it is a known side effect, not a sleep protocol failure.</td></tr></table></div>
   <div class="card"><div class="card-title">Rules</div><table class="t"><tr><th>Rule</th></tr><tr><td>No caffeine after 1 PM</td></tr><tr><td>No alcohol</td></tr><tr><td>No training within 3h of bed</td></tr><tr><td>Same wake time 7 days/week</td></tr><tr><td>Room 18-20°C, complete darkness</td></tr></table></div>
 </div>
 
@@ -851,8 +851,8 @@ textarea{resize:vertical;min-height:80px;line-height:1.5;}
       <div>
         <label>DEXA Body Fat %</label><input type="number" id="s-bf" step="0.1">
         <label>Daily Protein Target (g)</label><input type="number" id="s-protein" value="240">
-        <label>Daily Calorie Target</label><input type="number" id="s-cals" value="2400">
-        <label>Daily Water Target (L)</label><input type="number" id="s-water" value="3.5" step="0.5">
+        <label>Daily Calorie Target</label><input type="number" id="s-cals" value="2400"><div style="font-size:11px;color:var(--muted);margin-top:4px">Rest days reduce by 200-300 kcal. Reassess every 10kg lost.</div>
+        <label>Daily Water Target (L)</label><input type="number" id="s-water" value="4.5" step="0.5">
       </div>
     </div>
     <div style="margin-top:1rem"><button class="btn btn-primary" onclick="saveSettings()">Save</button></div>
@@ -873,6 +873,16 @@ textarea{resize:vertical;min-height:80px;line-height:1.5;}
     </div>
     <div style="margin-top:1rem"><button class="btn btn-primary" onclick="saveMjSettings()">Save</button></div>
     <div id="mj-saved" class="alert al-green" style="display:none;margin-top:.75rem">✅ Saved.</div>
+  </div>
+  <div class="card" style="border-color:var(--orange-border)">
+    <div class="card-title" style="color:var(--orange)">⚠️ Bloodwork Reminder</div>
+    <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:.75rem">Retest ALT, triglycerides, and testosterone at <strong>8 weeks from May 1, 2026</strong> — approximately <strong>late June 2026.</strong></p>
+    <table class="t"><tr><th>Marker</th><th>May 1 Result</th><th>Target</th></tr>
+    <tr><td>ALT</td><td style="color:var(--red)">115 ❌</td><td>&lt;40-56</td></tr>
+    <tr><td>Triglycerides</td><td style="color:var(--red)">3.28 ❌</td><td>&lt;1.7</td></tr>
+    <tr><td>Testosterone</td><td style="color:var(--orange)">13.5 nmol/L ⚠️</td><td>15-30</td></tr>
+    <tr><td>LDL</td><td style="color:var(--accent)">1.97 ✅</td><td>&lt;3.0</td></tr>
+    </table>
   </div>
   <div class="card">
     <div class="card-title">Mounjaro Escalation</div>
@@ -1040,6 +1050,7 @@ const WORKOUT={
         {n:'Hip Thrust (bodyweight)',rx:'3 × 20',t:'2-2-1',r:'60s',note:'NEW — glute emphasis. Glute-ham tie-in is the athletic silhouette from behind. Drive through heels, squeeze hard at top for 2 full seconds. Progress to barbell in Phase 2.'},
         {n:'Walking Lunges',rx:'3 × 12 each',t:'2-0-1',r:'60s',note:'Glute activation and quad definition. Controlled step, knee stays over ankle.'},
         {n:'Standing Calf Raise',rx:'4 × 20',t:'2-2-1',r:'45s',note:'Full range. Pause at bottom stretch and top peak.'},
+        {n:'Lying or Seated Leg Curl',rx:'3 × 15',t:'3-0-1',r:'60s',note:'Knee-flexion hamstring stimulus that RDL cannot replicate. RDL works the hamstring in the stretched position — leg curl works it in the contracted position. Both are needed for complete hamstring development.'},
         {n:'Ab Rollout (kneeling)',rx:'3 × 10',t:'3-0-1',r:'60s',note:'NEW — highest core EMG and serratus activator. Full extension, abs braced, hips do not drop. Start kneeling. Progress to standing in Phase 2.'},
       ]},
       {day:'Thursday',focus:'Shoulders + Traps + Neck',tag:'push-b',exercises:[
@@ -1051,7 +1062,7 @@ const WORKOUT={
         {n:'Tricep Pushdown (rope)',rx:'3 × 15',t:'2-0-1',r:'45s',note:'Lateral and medial head. Spread rope at bottom for peak contraction.'},
         {n:'Lateral Neck Flexion (plate)',rx:'3 × 15 each',t:'2-1-2',r:'45s',note:'NEW — neck development. At 6 foot 1 a developed neck transforms the entire upper body silhouette. Plate on side of head, slow lateral flexion. Start 2.5-5 kg only.'},
       ]},
-      {day:'Friday',focus:'Lats + Bicep Peak + Brachialis + Tricep',tag:'pull-b',exercises:[
+      {day:'Friday',focus:'Lats + Bicep Peak + Brachialis + Tricep',tag:'pull-b',note:'⚠️ High bicep volume day. If medial elbow soreness develops, drop Cross-Body Hammer or Standard Hammer — keep Incline Curl and Reverse Curl.',exercises:[
         {n:'Pull-Up (close grip) or Assisted',rx:'4 × 6-10',t:'3-1-1',r:'90s',note:'Close grip biases lower lat flare visible from the front. Second pull-up day — lat frequency drives the V-taper width.'},
         {n:'Single-Arm Cable Row',rx:'4 × 12 each',t:'3-1-1',r:'60s',note:'Reach fully forward at bottom for complete lat stretch. Drive elbow past the body. Cable allows full rotation and ROM not possible with barbell.'},
         {n:'Incline DB Curl',rx:'4 × 12',t:'4-0-1',r:'60s',note:'Best bicep peak exercise. Long head fully stretched when arm hangs behind the body on the incline. 4-count eccentric — stretch under load is the hypertrophy driver. Do not swing.'},
@@ -1207,8 +1218,8 @@ const MEALS = {
     {id:'l1',name:'L1 — Chicken Breast Taco Rice Bowl',protein:55,cals:580,carbs:62,fat:10,
      note:'180-200g cooked chicken (Sunday batch) · 150g jasmine rice · black beans · cherry tomatoes · bell pepper · cheddar · chipotle avocado mayo',
      micro:[['Vitamin B6','~1.4mg'],['Niacin B3','~18mg'],['Iron','~4mg'],['Folate','~110mcg'],['Potassium','~680mg'],['Magnesium','~65mg'],['Vitamin C','~80mg'],['Zinc','~3.5mg'],['Selenium','~32mcg'],['Phosphorus','~480mg']]},
-    {id:'l2',name:'L2 — Ground Beef Sweet Potato Bowl',protein:52,cals:600,carbs:55,fat:18,
-     note:'170-190g cooked 93/7 beef (Sunday batch) · 180-200g roasted sweet potato · spinach · cherry tomatoes · cheddar · garlic sriracha',
+    {id:'l2',name:'L2 — Ground Beef Sweet Potato Bowl',protein:59,cals:630,carbs:55,fat:20,
+     note:'210g cooked 93/7 beef (Sunday batch) · 180-200g roasted sweet potato · spinach · cherry tomatoes · cheddar · garlic sriracha',
      micro:[['Beta-Carotene','~9mg'],['Vitamin A','~900mcg'],['Potassium','~820mg'],['Zinc','~6.5mg'],['Vitamin B12','~2.8mcg'],['Iron','~4.5mg'],['Vitamin K','~120mcg'],['Magnesium','~70mg'],['Lycopene','~5mg'],['Vitamin C','~35mg']]},
     {id:'l3',name:'L3 — Ground Turkey Rice Bowl',protein:60,cals:570,carbs:55,fat:14,
      note:'200g ground turkey (Sunday batch, soy+ginger+garlic+sesame) · 150g jasmine rice · spinach · feta · bell pepper · garlic sriracha',
@@ -1226,11 +1237,11 @@ const MEALS = {
      micro:[['Chickpea Fiber','~8g'],['Chickpea Protein','~14g'],['Selenium','~38mcg'],['Lycopene','~12mg'],['Calcium','~250mg'],['Niacin B3','~14mg'],['Potassium','~720mg'],['Iron','~5mg'],['Folate','~90mcg'],['Vitamin C','~25mg']]},
   ]},
   snacks:{label:'🍎 Snacks',target_protein:35,target_cals:240,options:[
-    {id:'sn1',name:'SN1 — Cottage Cheese + Fruit + Chia',protein:28,cals:240,carbs:22,fat:5,
-     note:'250g 2% cottage cheese · berries or banana · honey + cinnamon · 1 tsp chia seeds. Best low-appetite Mounjaro snack.',
+    {id:'sn1',name:'SN1 — Cottage Cheese + Fruit + Chia',protein:40,cals:380,carbs:22,fat:11,
+     note:'250g 2% cottage cheese · 2 hard-boiled eggs (Sunday batch) · berries or banana · honey + cinnamon · 1 tsp chia seeds. Best low-appetite Mounjaro snack. Use SN3 on heavy training days for higher protein.',
      micro:[['Casein Protein','~28g'],['Calcium','~160mg'],['Potassium','~320mg'],['Vitamin C','~15mg'],['Anthocyanins','high'],['Phosphorus','~240mg'],['Selenium','~12mcg'],['Vitamin B12','~0.7mcg'],['Riboflavin B2','~0.3mg'],['Fiber','~3g']]},
-    {id:'sn2',name:'SN2 — Tuna Cucumber Boats',protein:25,cals:180,carbs:6,fat:4,
-     note:'1 can tuna drained · cucumber rounds/boats · chipotle avocado mayo mixed in · everything bagel seasoning. Highest protein per calorie in the plan.',
+    {id:'sn2',name:'SN2 — Tuna Cucumber Boats + Cottage Cheese',protein:43,cals:400,carbs:10,fat:9,
+     note:'1 can tuna drained · cucumber rounds/boats · chipotle avocado mayo mixed in · everything bagel seasoning · 250g 2% cottage cheese on the side.',
      micro:[['Omega-3 EPA+DHA','~0.5g'],['Selenium','~68mcg'],['Vitamin D','~4mcg'],['Niacin B3','~12mg'],['Vitamin B12','~2.5mcg'],['Potassium','~340mg'],['Silica','~4mg'],['Iodine','~40mcg'],['Vitamin K','~18mcg'],['Phosphorus','~280mg']]},
     {id:'sn3',name:'SN3 — Yogurt or Cottage Cheese + Whey + Eggs',protein:52,cals:345,carbs:20,fat:10,
      note:'250g Greek yogurt OR cottage cheese · 1 scoop whey stirred in · 2 hard-boiled eggs on side (Sunday batch). Best post-workout snack.',
@@ -1243,8 +1254,8 @@ const MEALS = {
     {id:'ds2',name:'DS2 — Chocolate Protein Mug Cake',protein:35,cals:320,carbs:18,fat:9,
      note:'1 scoop chocolate whey · 1 tbsp dark cocoa · 1 egg · 2 tbsp Greek yogurt · 1 tsp baking powder. Microwave 60-75 seconds. 5 minutes total.',
      micro:[['Beta-Glucan','~1.5g'],['Theobromine','~200mg'],['Flavanols','high'],['Choline','~140mg'],['Vitamin E','~4mg'],['Magnesium','~70mg'],['Tryptophan','~0.4g'],['Zinc','~2.8mg'],['Iron','~3mg'],['Resveratrol','trace']]},
-    {id:'ds3',name:'DS3 — Chocolate Protein Pudding Cups',protein:18,cals:220,carbs:22,fat:8,
-     note:'250ml unsweetened almond milk · 1 scoop chocolate whey · 3 tbsp chia seeds · 1 tbsp cocoa · 1 tsp honey. Mix in jar, refrigerate overnight. Make 4 Sunday.',
+    {id:'ds3',name:'DS3 — Chocolate Protein Pudding Cups',protein:33,cals:320,carbs:24,fat:9,
+     note:'250ml unsweetened almond milk · 1 scoop chocolate whey · 3 tbsp chia seeds · 1 tbsp cocoa · 1 tsp honey. Mix whey in first until dissolved, then add chia. Refrigerate overnight. Make 4 Sunday. Highest fiber dessert — 12g per cup. On low-protein days choose DS1 or DS2 instead.',
      micro:[['Omega-3 ALA','~5g per cup'],['Fiber','~12g per cup'],['Calcium','~280mg'],['Theobromine','~150mg'],['Flavanols','high'],['Magnesium','~95mg'],['Iron','~3mg'],['Zinc','~2mg'],['Phosphorus','~360mg'],['Vitamin E','~2.5mg']]},
   ]},
 };
@@ -1257,8 +1268,9 @@ const SUPPS=[
     items:[
       {id:'effexor',name:'Effexor XR 150mg',dose:'150mg',time:'With breakfast — NEVER fasted',warn:null},
       {id:'k2d3',name:'K2 + D3',dose:'120mcg K2 / 1,000 IU D3',time:'With breakfast (fat present)',warn:null},
-      {id:'zinc',name:'Zinc Picolinate',dose:'25-30mg',time:'With breakfast — away from iron-rich meals',warn:'⚠️ Zinc competes with iron. Never take at lunch or dinner (beef, turkey, spinach). Breakfast only.'},
+      {id:'zinc',name:'Zinc Picolinate',dose:'15-20mg (dietary zinc covers the rest)',time:'With breakfast — away from iron-rich meals',warn:'⚠️ Zinc competes with iron. Never take at lunch or dinner (beef, turkey, spinach). Breakfast only.'},
       {id:'biotin',name:'Biotin',dose:'5,000mcg',time:'With breakfast',warn:'⚠️ Stop 48-72h before any bloodwork.'},
+      {id:'lmnt',name:'Electrolytes',dose:'1 packet in 500ml water',time:'Every morning before breakfast',warn:'⚠️ On injection Fridays drink before food to help manage nausea. Target 4.5L every day including rest and injection days.'},
     ]
   },
   {
@@ -1307,7 +1319,7 @@ function init(){
   const today=new Date().toISOString().split('T')[0];
   // badges set after data load
 
-  S=JSON.parse(localStorage.getItem('ggp_s')||'{"startWeight":"122.5","goalWeight":"95","height":"186","protein":"240","cals":"2400","water":"3.5"}');
+  S=JSON.parse(localStorage.getItem('ggp_s')||'{"startWeight":"122.5","goalWeight":"95","height":"186","protein":"240","cals":"2400","water":"4.5"}');
   logs=JSON.parse(localStorage.getItem('ggp_l')||'[]');
   sessions=JSON.parse(localStorage.getItem('ggp_t')||'[]');
   mealLog=JSON.parse(localStorage.getItem('ggp_m')||'{}');
@@ -1516,6 +1528,19 @@ function renderDashboard(){
   // Supplement count on dashboard
   const suppEl=document.getElementById('d-supp-count');
   if(suppEl){const total=SUPPS.reduce((a,s)=>a+s.items.length,0);const done=Object.keys(suppChecks).filter(k=>k.startsWith(today)&&suppChecks[k]).length;suppEl.textContent=done+'/'+total;}
+
+  // Low protein warning from meal log
+  const todayMealsProt=mealLog[today]||[];
+  const todayProtein=todayMealsProt.reduce((a,m)=>a+(m.protein||0),0);
+  const proteinTarget=parseFloat(S.protein)||240;
+  const nowH=new Date().getHours();
+  const cfEl2=document.getElementById('d-calfloor-alert');
+  if(nowH>=20&&todayProtein>0&&todayProtein<220&&cfEl2){
+    const existing=cfEl2.innerHTML;
+    if(!existing.includes('protein')){
+      cfEl2.innerHTML+='<div class="alert al-orange" style="margin-bottom:.875rem">⚠️ Protein: '+todayProtein+'g logged today — below 220g minimum. Add SN3 or a whey shake.</div>';
+    }
+  }
 
   // Last session
   const lsEl=document.getElementById('d-last-session');
@@ -1832,6 +1857,23 @@ function renderMilestones(){
   document.getElementById('ms-weight').innerHTML=targets.map(t=>{const done=currentW<=t;const isCur=currentW>t&&currentW<=t+5;
     return `<div class="ms"><div class="ms-dot ${done?'done':isCur?'cur':''}"></div><div class="ms-text"><div style="font-weight:600">${t} kg</div><div style="font-size:11px;color:var(--muted)">${(startW-t).toFixed(0)} kg from start</div></div>${done?'<span class="pill p-green">Done ✓</span>':isCur?'<span class="pill p-blue">Next</span>':`<span class="pill p-gray">${(currentW-t).toFixed(1)} kg away</span>`}</div>`;
   }).join('');
+  // Calorie reassessment milestones
+  const startW2=parseFloat(S.sw)||122.5;
+  const lostKg=startW2-currentW;
+  const nextReassess=Math.ceil(lostKg/10)*10;
+  const kgToNext=nextReassess-lostKg;
+  const mwEl=document.getElementById('ms-weight');
+  if(mwEl&&lostKg>0&&kgToNext<=2){
+    const existingAlert=mwEl.querySelector('.reassess-alert');
+    if(!existingAlert){
+      const alertDiv=document.createElement('div');
+      alertDiv.className='alert al-orange reassess-alert';
+      alertDiv.style.marginBottom='1rem';
+      alertDiv.textContent='📊 You\'ve lost '+lostKg.toFixed(1)+'kg — time to reassess your calorie target. Your TDEE has dropped. Reduce daily calories by ~100 kcal and update in Settings.';
+      mwEl.prepend(alertDiv);
+    }
+  }
+
   // Dynamic roadmap
   const days=S.startDate?Math.max(0,Math.floor((new Date()-new Date(S.startDate))/86400000)):0;
   const week=S.startDate?Math.floor(days/7)+1:0;
