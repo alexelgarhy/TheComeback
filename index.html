@@ -33,10 +33,10 @@
   --bg3:#f0ebe6;
   /* Status colours — muted, used sparingly */
   --red:#c0392b;
-  --red-bg:#fdf3f2;
+  --red-bg:#fef5f4;
   --red-border:#f5c6c2;
   --orange:#c0692b;
-  --orange-bg:#fdf5f0;
+  --orange-bg:#fef9f6;
   --orange-border:#f5d4c0;
   --blue:#2c5f8a;
   --blue-bg:#f0f5fb;
@@ -501,7 +501,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5;}
   <div style="display:flex;gap:.5rem;align-items:center">
     <span class="hbadge" id="week-badge">Week 1</span>
     <span class="hbadge hi" id="today-badge"></span>
-    <span class="hbadge" id="sync-badge" onclick="syncToGist()" style="cursor:pointer;position:relative" title="Tap to sync">☁️<span id="sync-dot" style="display:none;position:absolute;top:2px;right:2px;width:6px;height:6px;background:var(--accent);border-radius:50%"></span></span>
+    <span class="hbadge" id="sync-badge" onclick="syncToGist()" style="cursor:pointer;position:relative;display:flex;align-items:center;gap:3px" title="Tap to sync"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/></svg><span id="sync-dot" style="display:none;position:absolute;top:2px;right:2px;width:6px;height:6px;background:var(--accent);border-radius:50%"></span></span>
     <button class="dark-toggle" onclick="openNotifications()" title="Notifications" style="position:relative">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
       <span id="notif-dot" style="display:none;position:absolute;top:2px;right:2px;width:7px;height:7px;background:var(--red);border-radius:50%;border:1.5px solid var(--surface)"></span>
@@ -556,7 +556,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5;}
 <!-- Onboarding card — shown until start date is set -->
 <div id="onboarding-card" class="onboarding-card" style="display:none">
   <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.5rem">
-    <h2 style="margin:0">Welcome to The Comeback 💪</h2>
+    <h2 style="margin:0">Welcome to The Comeback</h2>
     <button onclick="document.getElementById('onboarding-card').style.display='none'" style="background:rgba(255,255,255,.2);border:none;color:#fff;font-size:16px;cursor:pointer;border-radius:6px;padding:2px 8px;line-height:1">✕</button>
   </div>
   <p>Set your program start date in Settings to activate your dashboard, weight tracking, and phase progression.</p>
@@ -695,7 +695,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5;}
       <div id="meal-sections"></div>
     </div>
 
-    <div id="sp-supps" class="sub-panel">
+    <div id="sp-supplements" class="sub-panel">
       <div class="card">
         <div class="fb">
           <div class="card-title" style="margin:0">Daily Progress</div>
@@ -708,6 +708,40 @@ textarea{resize:vertical;min-height:80px;line-height:1.5;}
     </div>
 
     <div id="sp-eatout" class="sub-panel">
+      <!-- Custom Food Log -->
+      <div class="card">
+        <div class="card-title">Log Food or Drink</div>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:.875rem">Anything outside your meal plan — protein shake, snack, restaurant meal, drink.</p>
+        <div class="g2">
+          <div>
+            <label>Date</label><input type="date" id="cf-date">
+            <label>Item</label><input type="text" id="cf-name" placeholder="e.g. Core Power Elite, Steak, Protein bar">
+            <label>Protein (g)</label><input type="number" id="cf-protein" step="1" placeholder="0">
+            <label>Calories</label><input type="number" id="cf-cals" step="1" placeholder="0">
+          </div>
+          <div>
+            <label>Category</label>
+            <select id="cf-cat">
+              <option value="protein-drink">Protein Drink</option>
+              <option value="snack">Snack</option>
+              <option value="restaurant">Restaurant Meal</option>
+              <option value="extra-meal">Extra Meal</option>
+              <option value="drink">Drink (non-water)</option>
+              <option value="other">Other</option>
+            </select>
+            <label>Notes</label>
+            <textarea id="cf-notes" style="height:70px" placeholder="Brand, portion size, where from..."></textarea>
+          </div>
+        </div>
+        <button class="btn btn-primary" style="margin-top:.75rem" onclick="logCustomFood()">Add to Today</button>
+        <div id="cf-saved" class="alert al-green" style="display:none;margin-top:.75rem">✅ Added.</div>
+      </div>
+      <!-- Today's custom log -->
+      <div class="card">
+        <div class="card-title">Today's Extras</div>
+        <div id="cf-today-list"><div class="empty"><div class="empty-icon" style="font-size:1.5rem">+</div>Nothing logged yet.</div></div>
+      </div>
+      <!-- Eating Out Reference -->
       <div class="card"><div class="card-title">Best Orders by Cuisine</div><table class="t"><tr><th>Cuisine</th><th>Order</th><th>Avoid</th><th>~Protein</th></tr><tr><td>Steakhouse</td><td>Grilled sirloin/chicken + salad + veg</td><td>Creamy sauces, bread</td><td>50-70g</td></tr><tr><td>Lebanese</td><td>Shish tawook, grilled chicken/lamb, rice</td><td>Falafel, hummus as main</td><td>40-60g</td></tr><tr><td>Japanese</td><td>Sashimi, chicken teriyaki, edamame, miso</td><td>Rolls, tempura</td><td>35-55g</td></tr><tr><td>Mexican</td><td>Chicken/steak bowl, extra protein</td><td>Nachos, quesadillas</td><td>40-60g</td></tr><tr><td>Indian</td><td>Tandoori chicken, seekh kebab, dal</td><td>Butter chicken, naan</td><td>35-50g</td></tr><tr><td>Thai</td><td>Grilled protein + rice, Tom Yum</td><td>Pad thai, coconut curries</td><td>30-45g</td></tr><tr><td>Burger</td><td>Double patty, no bun, salad</td><td>Fries, milkshakes</td><td>40-55g</td></tr></table></div>
       <div class="card"><div class="card-title">Protein by Portion</div><table class="t"><tr><th>Portion</th><th>Visual</th><th>~Protein</th></tr><tr><td>Chicken breast 150g</td><td>Palm size</td><td>~45g</td></tr><tr><td>Chicken breast 200g</td><td>Palm + fingers</td><td>~60g</td></tr><tr><td>Steak 200g</td><td>Palm + fingers</td><td>~50g</td></tr><tr><td>Fish fillet 180g</td><td>Palm size</td><td>~40g</td></tr><tr><td>Beef patty 150g</td><td>One patty</td><td>~30g</td></tr></table></div>
     </div>
@@ -1026,8 +1060,6 @@ textarea{resize:vertical;min-height:80px;line-height:1.5;}
           <div>
             <label>Smoked?</label>
             <select id="l-smoke"><option value="">—</option><option value="no">✅ No</option><option value="reduced">⚠️ Reduced</option><option value="yes">❌ Yes</option></select>
-            <label>Mounjaro Today</label>
-            <select id="l-mounjaro"><option value="">—</option><option value="injection">💉 Injection Day</option><option value="low-appetite">🔻 Low Appetite</option><option value="nausea">🤢 Nausea</option><option value="gi">😣 GI Issues</option><option value="normal">✅ Normal Day</option></select>
             <label>Symptoms</label>
             <select id="l-symptoms"><option value="none">None</option><option value="nausea">Nausea</option><option value="gi">GI Issues</option><option value="fatigue">Fatigue</option><option value="headache">Headache</option><option value="joint">Joint Pain</option><option value="soreness">Soreness</option><option value="mood-crash">Mood Crash</option><option value="other">Other</option></select>
             <label>Notes</label><textarea id="l-notes" style="min-height:100px"></textarea>
@@ -1080,7 +1112,10 @@ textarea{resize:vertical;min-height:80px;line-height:1.5;}
             <label>Angles</label>
             <select id="ph-angles"><option value="front-side-back">Front, Side, Back</option><option value="front-back">Front + Back</option><option value="front">Front only</option></select>
             <label>Notes</label><textarea id="ph-notes" style="min-height:60px"></textarea>
-            <div style="margin-top:1rem"><button class="btn btn-primary" onclick="savePhoto()">Save</button></div>
+            <label>Photo(s)</label>
+            <input type="file" id="ph-file" accept="image/*" multiple style="font-size:13px;padding:.375rem 0">
+            <div style="font-size:11px;color:var(--muted);margin-top:2px">Photos are stored locally on your device only.</div>
+            <div style="margin-top:1rem"><button class="btn btn-primary" onclick="savePhoto()">Save Log Entry</button></div>
             <div id="photo-saved" class="alert al-green" style="display:none;margin-top:.75rem">✅ Saved.</div>
           </div>
         </div>
@@ -1130,8 +1165,8 @@ textarea{resize:vertical;min-height:80px;line-height:1.5;}
       </div>
       <div>
         <label>Sleep Quality (1-10)</label>
-        <input type="range" class="quality-slider" id="sr-sleep-tab" min="1" max="10" value="7" oninput="updateSliderVal(this,'sleep-tab-val')">
-        <div class="slider-val" id="sleep-tab-val">7</div>
+        <input type="range" class="quality-slider" id="sr-sleep-tab" min="1" max="10" value="8" oninput="updateSliderVal(this,'sleep-tab-val')">
+        <div class="slider-val" id="sleep-tab-val">8</div>
         <label>How You Feel on Waking</label>
         <select id="sl-feel"><option value="">—</option><option value="great">😄 Great — sharp and rested</option><option value="good">🙂 Good — normal</option><option value="ok">😐 OK — a bit groggy</option><option value="poor">😔 Poor — tired</option><option value="terrible">😩 Terrible — exhausted</option></select>
         <label>Notes</label>
@@ -1191,7 +1226,7 @@ textarea{resize:vertical;min-height:80px;line-height:1.5;}
       </table>
     </div>
     <div class="card" style="border-color:var(--orange-border)">
-      <div class="card-title" style="color:var(--orange)">⚠️ Bloodwork — Late June 2026</div>
+      <div class="card-title" style="color:var(--orange)">Bloodwork — Late June 2026</div>
       <table class="t"><tr><th>Marker</th><th>Baseline</th><th>Target</th></tr>
         <tr><td>ALT</td><td style="color:var(--red)">115 ❌</td><td>&lt;56</td></tr>
         <tr><td>Triglycerides</td><td style="color:var(--red)">3.28 ❌</td><td>&lt;1.7</td></tr>
@@ -1625,7 +1660,7 @@ const MEALS = {
 };
 const SUPPS=[
   {
-    section:'🌅 Breakfast',
+    section:'Breakfast',
     items:[
       {id:'effexor',name:'Effexor XR 150mg',dose:'150mg',time:'With breakfast — never fasted',warn:null},
       {id:'k2d3',name:'K2 + D3',dose:'120mcg K2 / 1,000 IU D3',time:'With breakfast',warn:null},
@@ -1635,14 +1670,14 @@ const SUPPS=[
     ]
   },
   {
-    section:'🏋️ Pre-Training (9:00 AM)',
+    section:'Pre-Training (9:00 AM)',
     items:[
       {id:'collagen',name:'Collagen Peptides',dose:'15g in water or juice',time:'9:00 AM — 60 min before training',warn:null},
       {id:'vitc',name:'Vitamin C',dose:'1,000mg',time:'With collagen — always together',warn:null},
     ]
   },
   {
-    section:'🍽️ Lunch',
+    section:'Lunch',
     items:[
       {id:'coq10',name:'CoQ10',dose:'300mg',time:'With lunch',warn:null},
       {id:'omega3',name:'Omega-3 Fish Oil',dose:'3 softgels (2.7g EPA+DHA)',time:'With lunch',warn:'⚠️ On injection Fridays move to breakfast if nausea occurs.'},
@@ -1652,20 +1687,20 @@ const SUPPS=[
     ]
   },
   {
-    section:'💪 Post-Workout',
+    section:'Post-Workout',
     items:[
       {id:'whey',name:'Whey Isolate',dose:'1-1.5 scoops',time:'Within 60 min post-workout',warn:null},
       {id:'creatine',name:'Creatine Monohydrate',dose:'5g',time:'With post-workout shake',warn:'⚠️ Drink extra 500ml water with creatine.'},
     ]
   },
   {
-    section:'💉 Medications',
+    section:'Medication',
     items:[
       {id:'mounjaro',name:'Mounjaro',dose:'As prescribed',time:'Friday evening after dinner',warn:'⚠️ Eat slowly, avoid carbonation, eat warm food on injection day.'},
     ]
   },
   {
-    section:'🌙 Before Bed',
+    section:'Before Bed',
     items:[
       {id:'mag',name:'Magnesium Bisglycinate',dose:'400mg (2 caps)',time:'30-60 min before bed',warn:null},
     ]
@@ -1729,7 +1764,7 @@ function init(){
   if(!S.startDate)showOnboarding();
   // FAB starts hidden on main
   updateFAB('main');
-  // Sync only after user interaction, not on load
+  startNotifTimer();
 }
 
 function updateSliderVal(slider, valId) {
@@ -1897,112 +1932,217 @@ function renderMounjaro() {
   }
 }
 
-// ── NOTIFICATIONS ────────────────────────────────────────────────────────────
-function buildNotifications() {
+// ── CUSTOM FOOD LOG ───────────────────────────────────────────────────────────
+let customFoodLog = JSON.parse(localStorage.getItem('ggp_cf') || '[]');
+
+function logCustomFood() {
+  const date = document.getElementById('cf-date').value || new Date().toISOString().split('T')[0];
+  const name = document.getElementById('cf-name').value.trim();
+  const protein = parseFloat(document.getElementById('cf-protein').value) || 0;
+  const cals = parseFloat(document.getElementById('cf-cals').value) || 0;
+  const cat = document.getElementById('cf-cat').value;
+  const notes = document.getElementById('cf-notes').value;
+  if (!name) { toast('Add a name'); return; }
+  const entry = { date, name, protein, cals, cat, notes, id: Date.now() };
+  customFoodLog.unshift(entry);
+  customFoodLog.sort((a, b) => b.date.localeCompare(a.date));
+  localStorage.setItem('ggp_cf', JSON.stringify(customFoodLog));
+  // Clear form
+  document.getElementById('cf-name').value = '';
+  document.getElementById('cf-protein').value = '';
+  document.getElementById('cf-cals').value = '';
+  document.getElementById('cf-notes').value = '';
+  const msg = document.getElementById('cf-saved');
+  msg.style.display = 'block'; setTimeout(() => msg.style.display = 'none', 2500);
+  haptic('success'); renderCustomFoodToday(); updateMealBars(); toast('Added ✓');
+}
+
+function renderCustomFoodToday() {
+  const el = document.getElementById('cf-today-list');
+  if (!el) return;
+  const today = new Date().toISOString().split('T')[0];
+  const todayItems = customFoodLog.filter(e => e.date === today);
+  if (!todayItems.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon" style="font-size:1.5rem">+</div>Nothing logged yet.</div>';
+    return;
+  }
+  const catLabel = { 'protein-drink': '🥤', 'snack': '🍎', 'restaurant': '🍽️', 'extra-meal': '🥩', 'drink': '☕', 'other': '📝' };
+  const totalPro = todayItems.reduce((a, e) => a + (e.protein || 0), 0);
+  const totalCal = todayItems.reduce((a, e) => a + (e.cals || 0), 0);
+  el.innerHTML = `<div style="font-size:11px;color:var(--muted);margin-bottom:.5rem">Total extras today: <strong style="color:var(--accent)">${totalPro}g protein</strong> · ${totalCal} kcal</div>` +
+    todayItems.map(e => `
+      <div style="display:flex;align-items:center;gap:.625rem;padding:.5rem 0;border-bottom:1px solid var(--border)">
+        <span style="font-size:1.1rem">${catLabel[e.cat] || '📝'}</span>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:600">${e.name}</div>
+          <div style="font-size:11px;color:var(--muted)">${e.protein ? e.protein + 'g protein' : ''}${e.protein && e.cals ? ' · ' : ''}${e.cals ? e.cals + ' kcal' : ''}${e.notes ? ' · ' + e.notes : ''}</div>
+        </div>
+        <button class="del-btn" onclick="delCustomFood(${e.id})">✕</button>
+      </div>`).join('');
+}
+
+function delCustomFood(id) {
+  customFoodLog = customFoodLog.filter(e => e.id !== id);
+  localStorage.setItem('ggp_cf', JSON.stringify(customFoodLog));
+  renderCustomFoodToday(); updateMealBars();
+}
+// ── DISMISSED NOTIFICATIONS (persisted per day) ───────────────────────────────
+function getDismissed() {
+  const today = new Date().toISOString().split('T')[0];
+  const raw = JSON.parse(localStorage.getItem('ggp_notif_dismissed') || '{}');
+  return raw[today] || [];
+}
+function dismissNotif(id) {
+  const today = new Date().toISOString().split('T')[0];
+  const raw = JSON.parse(localStorage.getItem('ggp_notif_dismissed') || '{}');
+  if (!raw[today]) raw[today] = [];
+  if (!raw[today].includes(id)) raw[today].push(id);
+  // Keep only last 7 days
+  Object.keys(raw).forEach(d => { if (d < new Date(Date.now()-7*86400000).toISOString().split('T')[0]) delete raw[d]; });
+  localStorage.setItem('ggp_notif_dismissed', JSON.stringify(raw));
+  buildNotifications();
+  openNotifications(); // Refresh panel
+}
+function clearAllNotifs() {
+  const today = new Date().toISOString().split('T')[0];
+  const raw = JSON.parse(localStorage.getItem('ggp_notif_dismissed') || '{}');
+  const notifs = buildNotificationsRaw();
+  raw[today] = notifs.map(n => n.id);
+  localStorage.setItem('ggp_notif_dismissed', JSON.stringify(raw));
+  buildNotifications();
+  openNotifications();
+}
+
+function buildNotificationsRaw() {
   const notifs = [];
   const today = new Date(); today.setHours(0,0,0,0);
 
   // Mounjaro dose increases
   const DOSE_DATES = [
-    { date: '2026-07-17', msg: '💉 Mounjaro dose increase to 5mg', sub: 'Friday injection' },
-    { date: '2026-08-14', msg: '💉 Mounjaro dose increase to 7.5mg', sub: 'Friday injection' },
-    { date: '2026-09-11', msg: '💉 Mounjaro dose increase to 10mg', sub: 'Friday injection' },
-    { date: '2026-10-09', msg: '💉 Mounjaro dose increase to 12.5mg', sub: 'Friday injection' },
-    { date: '2026-11-06', msg: '💉 Mounjaro dose increase to 15mg (MAX)', sub: 'Final escalation' },
+    { date: '2026-07-17', msg: 'Mounjaro dose increase to 5mg', sub: 'Friday injection tonight' },
+    { date: '2026-08-14', msg: 'Mounjaro dose increase to 7.5mg', sub: 'Friday injection tonight' },
+    { date: '2026-09-11', msg: 'Mounjaro dose increase to 10mg', sub: 'Friday injection tonight' },
+    { date: '2026-10-09', msg: 'Mounjaro dose increase to 12.5mg', sub: 'Friday injection tonight' },
+    { date: '2026-11-06', msg: 'Mounjaro dose increase to 15mg — MAX', sub: 'Final escalation' },
   ];
   DOSE_DATES.forEach(d => {
     const dDate = new Date(d.date); dDate.setHours(0,0,0,0);
     const days = Math.ceil((dDate - today) / 86400000);
-    if (days >= 0 && days <= 30) {
-      notifs.push({ type: 'urgent', icon: '💉', title: d.msg, sub: days === 0 ? 'Tonight!' : days === 1 ? 'Tomorrow' : `In ${days} days`, date: d.date });
-    } else if (days > 30) {
-      notifs.push({ type: 'upcoming', icon: '💉', title: d.msg, sub: dDate.toLocaleDateString('en-CA', { month: 'short', day: 'numeric' }), date: d.date });
-    }
+    if (days === 0) notifs.push({ id: 'mj-'+d.date, title: d.msg, sub: 'Tonight', priority: 1 });
+    else if (days === 1) notifs.push({ id: 'mj-'+d.date, title: d.msg, sub: 'Tomorrow', priority: 2 });
+    else if (days <= 7) notifs.push({ id: 'mj-'+d.date, title: d.msg, sub: `In ${days} days — ${dDate.toLocaleDateString('en-CA',{month:'short',day:'numeric'})}`, priority: 2 });
+    else if (days <= 30) notifs.push({ id: 'mj-'+d.date, title: d.msg, sub: dDate.toLocaleDateString('en-CA',{month:'short',day:'numeric'}), priority: 3 });
+    else notifs.push({ id: 'mj-'+d.date, title: d.msg, sub: dDate.toLocaleDateString('en-CA',{month:'short',day:'numeric'}), priority: 4 });
   });
 
-  // Bloodwork reminder — late June 2026
+  // Bloodwork
   const bwDate = new Date('2026-06-28'); bwDate.setHours(0,0,0,0);
   const bwDays = Math.ceil((bwDate - today) / 86400000);
   if (bwDays >= 0) {
-    notifs.push({ type: bwDays <= 14 ? 'urgent' : 'upcoming', icon: '🩸', title: 'Bloodwork due — ALT, Triglycerides, Testosterone', sub: bwDays === 0 ? 'Today' : bwDays <= 0 ? 'Overdue' : `In ${bwDays} days (late June 2026)`, date: '2026-06-28' });
+    const p = bwDays <= 7 ? 1 : bwDays <= 14 ? 2 : 3;
+    notifs.push({ id: 'bloodwork-jun26', title: 'Bloodwork due — ALT, Triglycerides, Testosterone', sub: bwDays === 0 ? 'Today' : `In ${bwDays} days`, priority: p });
   }
 
-  // Injection day reminder (Fridays)
-  const dayOfWeek = today.getDay();
-  if (dayOfWeek === 5) {
-    notifs.unshift({ type: 'urgent', icon: '💉', title: 'Injection Day', sub: 'Log your Mounjaro dose in the Mounjaro tab', date: null });
+  // Injection day
+  if (today.getDay() === 5) notifs.unshift({ id: 'inj-day-'+today.toISOString().split('T')[0], title: 'Injection Day', sub: 'Log your Mounjaro dose in the Mounjaro tab', priority: 1 });
+
+  // Missed injection
+  if (mjSettings.last) {
+    const lastInj = new Date(mjSettings.last); lastInj.setHours(0,0,0,0);
+    const daysSince = Math.floor((today - lastInj) / 86400000);
+    if (daysSince > 8) notifs.unshift({ id: 'missed-inj', title: `Last injection ${daysSince} days ago`, sub: 'Have you missed a dose? Log in Mounjaro tab', priority: 1 });
   }
 
   // Deload week
   if (S.startDate) {
     const start = new Date(S.startDate);
-    const days = Math.floor((today - start) / 86400000);
-    const week = Math.floor(days / 7) + 1;
+    const elapsed = Math.floor((today - start) / 86400000);
+    const week = Math.floor(elapsed / 7) + 1;
     const deloadWeeks = [8, 16, 24];
-    if (deloadWeeks.includes(week)) {
-      notifs.unshift({ type: 'urgent', icon: '🔄', title: `Week ${week} — Deload Week`, sub: '40% of normal weight, 3 sets only, full ROM focus', date: null });
-    }
-    // Upcoming deload
+    if (deloadWeeks.includes(week)) notifs.unshift({ id: 'deload-w'+week, title: `Week ${week} — Deload Week`, sub: '40% weight, 3 sets, full range of motion', priority: 1 });
     const nextDeload = deloadWeeks.find(w => w > week);
-    if (nextDeload && nextDeload - week <= 2) {
-      notifs.push({ type: 'info', icon: '🔄', title: `Deload week in ${nextDeload - week} week${nextDeload-week>1?'s':''}`, sub: `Week ${nextDeload} — reduce load, focus on recovery`, date: null });
-    }
+    if (nextDeload && nextDeload - week <= 2) notifs.push({ id: 'deload-upcoming-'+nextDeload, title: `Deload week in ${nextDeload - week} week${nextDeload-week>1?'s':''}`, sub: `Week ${nextDeload} — plan reduced load`, priority: 3 });
   }
 
   // Phase transitions
-  if (S.startDate) {
-    const phaseChanges = [
-      { date: '2026-08-11', title: 'Phase 2 begins — HIIT + Supersets', icon: '💪' },
-      { date: '2026-10-06', title: 'Phase 3 begins — Peak loads + Myo-reps', icon: '🏆' },
-    ];
-    phaseChanges.forEach(p => {
-      const pDate = new Date(p.date); pDate.setHours(0,0,0,0);
-      const days = Math.ceil((pDate - today) / 86400000);
-      if (days >= 0 && days <= 14) {
-        notifs.push({ type: days === 0 ? 'urgent' : 'info', icon: p.icon, title: p.title, sub: days === 0 ? 'Today!' : `In ${days} days`, date: p.date });
-      }
-    });
-  }
-
-  // Last injection check
-  if (mjSettings.last) {
-    const lastInj = new Date(mjSettings.last); lastInj.setHours(0,0,0,0);
-    const daysSince = Math.floor((today - lastInj) / 86400000);
-    if (daysSince > 8) {
-      notifs.unshift({ type: 'urgent', icon: '⚠️', title: `Mounjaro — last injection ${daysSince} days ago`, sub: 'Have you missed a dose? Log in Mounjaro tab', date: null });
-    }
-  }
-
-  // Update bell dot
-  const urgentCount = notifs.filter(n => n.type === 'urgent').length;
-  const dot = document.getElementById('notif-dot');
-  if (dot) dot.style.display = urgentCount > 0 ? 'block' : 'none';
+  const phaseChanges = [
+    { date: '2026-08-11', title: 'Phase 2 starts today — HIIT + Supersets' },
+    { date: '2026-10-06', title: 'Phase 3 starts today — Peak loads + Myo-reps' },
+  ];
+  phaseChanges.forEach(p => {
+    const pDate = new Date(p.date); pDate.setHours(0,0,0,0);
+    const days = Math.ceil((pDate - today) / 86400000);
+    if (days >= 0 && days <= 14) notifs.push({ id: 'phase-'+p.date, title: p.title, sub: days === 0 ? 'Today' : `In ${days} days`, priority: days === 0 ? 1 : 3 });
+  });
 
   return notifs;
 }
 
+function buildNotifications() {
+  const all = buildNotificationsRaw();
+  const dismissed = getDismissed();
+  const active = all.filter(n => !dismissed.includes(n.id));
+  const dot = document.getElementById('notif-dot');
+  if (dot) dot.style.display = active.filter(n => n.priority === 1).length > 0 ? 'block' : 'none';
+  return active;
+}
+
+// Timed in-app alert — fires when app is open at the right moment
+function startNotifTimer() {
+  setInterval(() => {
+    const now = new Date();
+    const h = now.getHours(); const m = now.getMinutes();
+    // Fire at 8:00 AM, 12:00 PM, 8:00 PM — rebuild notifications silently
+    if ((h === 8 || h === 12 || h === 20) && m === 0) {
+      buildNotifications();
+      const urgent = buildNotificationsRaw().filter(n => n.priority === 1 && !getDismissed().includes(n.id));
+      if (urgent.length) {
+        urgent.forEach(n => toast('Reminder: ' + n.title, 5000));
+      }
+    }
+  }, 60000); // Check every minute
+}
+
 function openNotifications() {
   const notifs = buildNotifications();
+  const all = buildNotificationsRaw();
+  const dismissed = getDismissed();
   const list = document.getElementById('notif-list');
   if (!list) return;
 
-  if (!notifs.length) {
-    list.innerHTML = '<div class="empty"><div class="empty-icon">🔔</div><div>No notifications right now.</div></div>';
-  } else {
-    const typeColor = { urgent: 'var(--red)', upcoming: 'var(--orange)', info: 'var(--accent)' };
-    const typeBg = { urgent: 'var(--red-bg)', upcoming: 'var(--orange-bg)', info: 'var(--accent-light)' };
-    list.innerHTML = notifs.map(n => `
-      <div style="background:${typeBg[n.type]||'var(--surface2)'};border-radius:12px;padding:.875rem;margin-bottom:.625rem;border-left:3px solid ${typeColor[n.type]||'var(--border)'}">
-        <div style="display:flex;gap:.625rem;align-items:flex-start">
-          <span style="font-size:1.25rem">${n.icon}</span>
-          <div>
-            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px">${n.title}</div>
-            <div style="font-size:11px;color:var(--muted)">${n.sub}</div>
-          </div>
-        </div>
-      </div>`).join('');
+  let html = '';
+
+  // Clear all button at top if there are active notifs
+  if (notifs.length) {
+    html += `<div style="display:flex;justify-content:flex-end;margin-bottom:.75rem">
+      <button onclick="clearAllNotifs()" style="font-size:11px;color:var(--muted);background:none;border:1px solid var(--border);border-radius:8px;padding:4px 10px;cursor:pointer">Clear all</button>
+    </div>`;
   }
 
+  if (!notifs.length && !dismissed.length) {
+    html = '<div class="empty"><div class="empty-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></div><div>No notifications right now.</div></div>';
+  } else {
+    if (!notifs.length) {
+      html += '<div style="text-align:center;padding:1rem;font-size:13px;color:var(--muted)">All caught up.</div>';
+    } else {
+      html += notifs.map(n => `
+        <div style="background:var(--accent-light);border-radius:12px;padding:.875rem;margin-bottom:.625rem;border-left:3px solid var(--accent)">
+          <div style="display:flex;align-items:flex-start;gap:.625rem">
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px">${n.title}</div>
+              <div style="font-size:11px;color:var(--muted)">${n.sub}</div>
+            </div>
+            <button onclick="dismissNotif('${n.id}')" style="background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer;padding:0 0 0 .5rem;line-height:1;flex-shrink:0">✕</button>
+          </div>
+        </div>`).join('');
+    }
+    // Show dismissed count if any
+    if (dismissed.length) {
+      html += `<div style="text-align:center;margin-top:.5rem;font-size:11px;color:var(--muted)">${dismissed.length} dismissed today</div>`;
+    }
+  }
+
+  list.innerHTML = html;
   const overlay = document.getElementById('notif-overlay');
   const panel = document.getElementById('notif-panel');
   if (overlay) { overlay.style.display = 'block'; requestAnimationFrame(() => overlay.style.opacity = '1'); }
@@ -2274,13 +2414,11 @@ function resetScores(){
     const c=document.getElementById('sr-'+k);
     if(c)c.querySelectorAll('.sc-btn').forEach(b=>b.classList.remove('on'));
   });
-  // Reset sleep quality slider
-  const sliderEl=document.getElementById('sr-sleep-tab');
-  if(sliderEl){sliderEl.value=7;updateSliderVal(sliderEl,'sleep-tab-val');}
+
 }
 
 function saveLog(){
-  const log={date:document.getElementById('l-date').value,weight:parseFloat(document.getElementById('l-weight').value)||null,energy:scores.energy||null,mood:scores.mood||null,libido:scores.libido||null,smoke:document.getElementById('l-smoke').value,mounjaro:document.getElementById('l-mounjaro').value,symptoms:document.getElementById('l-symptoms').value,notes:document.getElementById('l-notes').value,savedAt:new Date().toISOString()};
+  const log={date:document.getElementById('l-date').value,weight:parseFloat(document.getElementById('l-weight').value)||null,energy:scores.energy||null,mood:scores.mood||null,libido:scores.libido||null,smoke:document.getElementById('l-smoke').value,symptoms:document.getElementById('l-symptoms').value,notes:document.getElementById('l-notes').value,savedAt:new Date().toISOString()};
   if(!log.date){toast('Set a date');return;}
   const idx=logs.findIndex(l=>l.date===log.date);if(idx>=0)logs[idx]=log;else logs.push(log);
   logs.sort((a,b)=>b.date.localeCompare(a.date));
@@ -2857,7 +2995,9 @@ function logMeal(mealId,protein,cals,name){
 function updateMealBars(){
   const today=new Date().toISOString().split('T')[0];
   const m=mealLog[today]||[];
-  const tP=m.reduce((a,x)=>a+(x.protein||0),0);const tC=m.reduce((a,x)=>a+(x.cals||0),0);
+  const cf=customFoodLog.filter(e=>e.date===today);
+  const tP=m.reduce((a,x)=>a+(x.protein||0),0)+cf.reduce((a,x)=>a+(x.protein||0),0);
+  const tC=m.reduce((a,x)=>a+(x.cals||0),0)+cf.reduce((a,x)=>a+(x.cals||0),0);
   const ptgt=parseInt(S.protein)||240;const ctgt=parseInt(S.cals)||2400;
   const minPro=180;
   // Nutrition tab bars
@@ -3303,15 +3443,13 @@ const SUB_NAVS = {
     {id:'sp-supplements', label:'Supplements'},
     {id:'sp-hydration', label:'Hydration'},
     {id:'sp-planner', label:'Planner'},
-    {id:'sp-eatout', label:'Eating Out'},
+    {id:'sp-eatout', label:'Extras'},
   ],
   train: [
     {id:'sp-warmup', label:'Warm-Up'},
     {id:'sp-workout', label:'Workout Plan'},
     {id:'sp-cooldown', label:'Cooldown'},
     {id:'sp-log-session', label:'Log Session'},
-    {id:'sp-history', label:'History'},
-    {id:'sp-prs', label:'PRs'},
   ],
   mounjaro: [
     {id:'sp-mj-overview', label:'Overview'},
@@ -3359,7 +3497,7 @@ function navMain(id, btn) {
   if (id === 'mounjaro') { setTimeout(renderMounjaro2, 50); }
   if (id === 'progress') { renderMilestones(); renderHistory(); renderSessions(); renderPRs(); prefillLog(); }
   if (id === 'settings') { loadSettings(); prefillInjectionDate(); }
-  if (id === 'sleep') {const sld=document.getElementById('sl-date');if(sld)sld.value=new Date().toISOString().split('T')[0];renderSleepHistory();}
+  if (id === 'sleep') {const sld=document.getElementById('sl-date');if(sld)sld.value=new Date().toISOString().split('T')[0];renderSleepHistory();prefillSleepSlider();}
   updateFAB(id);
 }
 
@@ -3369,8 +3507,12 @@ function navSub(spId, btn, parentId) {
   const el = document.getElementById(spId);
   if (el) el.classList.add('active');
   btn.classList.add('active');
-  if (spId === 'sp-meals') buildMeals();
-  if (spId === 'sp-supps') buildSupps();
+  if (spId === 'sp-eatout') {
+    const cfDate = document.getElementById('cf-date');
+    if (cfDate && !cfDate.value) cfDate.value = new Date().toISOString().split('T')[0];
+    renderCustomFoodToday();
+  }
+  if (spId === 'sp-supplements') buildSupps();
   if (spId === 'sp-hydration') buildHydration();
   if (spId === 'sp-warmup') { setTimeout(addWarmupYTButtons, 50); }
   if (spId === 'sp-cooldown') { setTimeout(addCooldownYTButtons, 50); }
@@ -3427,6 +3569,16 @@ function calcSleepDuration(){
   const txt=h+'h '+(m?m+'min':'');
   el.textContent=txt;el.style.color=h>=7?'var(--accent)':h>=6?'var(--orange)':'var(--red)';
   return mins/60;
+}
+
+function prefillSleepSlider() {
+  // Pre-fill slider with last logged sleep quality, or 8 if no history
+  const lastQuality = sleepLogs.length ? (sleepLogs[0].quality || 8) : 8;
+  const sliderEl = document.getElementById('sr-sleep-tab');
+  if (sliderEl) {
+    sliderEl.value = lastQuality;
+    updateSliderVal(sliderEl, 'sleep-tab-val');
+  }
 }
 
 function saveSleepLog(){
