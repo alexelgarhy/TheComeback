@@ -2740,33 +2740,171 @@ svg { display: block; flex-shrink: 0; }
 
     <!-- BODY -->
     <div id="panel-body" class="panel" data-panel="body">
-      <div class="panel-inner">
-        <div class="panel-placeholder">
-          <div class="placeholder-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 4-7"/>
-            </svg>
+
+        <!-- Weight -->
+        <div class="body-section-label">Weight</div>
+        <div class="body-card">
+          <div class="body-weight-hero">
+            <div id="body-current-weight">--</div>
+            <div class="body-weight-unit">kg</div>
+            <div id="body-weight-change" class="body-weight-change"></div>
           </div>
-          <div class="t-lg c-secondary mt8">BODY</div>
-          <div class="t-sm c-tertiary mt4">Block 5  -  next session</div>
+          <div class="body-weight-stats">
+            <div class="body-stat"><div class="body-stat-val" id="body-lost">0.0</div><div class="body-stat-lbl">kg lost</div></div>
+            <div class="body-stat"><div class="body-stat-val" id="body-to-go">23.9</div><div class="body-stat-lbl">kg to go</div></div>
+            <div class="body-stat"><div class="body-stat-val" id="body-7avg">--</div><div class="body-stat-lbl">7d avg</div></div>
+            <div class="body-stat"><div class="body-stat-val" id="body-pct">0%</div><div class="body-stat-lbl">complete</div></div>
+          </div>
+          <div id="body-weight-chart"></div>
+          <div id="body-weight-log-list"></div>
         </div>
-      </div>
+
+        <!-- WSR -->
+        <div class="body-section-label">Waist-Shoulder Ratio</div>
+        <div class="body-card">
+          <div class="wsr-hero-row">
+            <div><div class="wsr-current" id="wsr-current">1.375</div><div class="wsr-label">current WSR</div></div>
+            <div class="wsr-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+            <div style="text-align:right"><div class="wsr-target">1.618</div><div class="wsr-label">golden ratio</div></div>
+          </div>
+          <div class="wsr-bar-wrap">
+            <div class="wsr-bar-track"><div class="wsr-bar-fill" id="wsr-bar-fill" style="width:2%"></div></div>
+            <div class="wsr-bar-labels"><span>1.375</span><span style="color:var(--accent)">1.618</span></div>
+          </div>
+          <div class="body-measure-row" style="margin-top:var(--sp-md)">
+            <div class="body-measure-item">
+              <input class="body-measure-input" id="wsr-shoulder" type="number" inputmode="decimal" placeholder="cm" step="0.5">
+              <div class="body-measure-lbl">Shoulder cm</div>
+            </div>
+            <div class="body-measure-item">
+              <input class="body-measure-input" id="wsr-waist" type="number" inputmode="decimal" placeholder="cm" step="0.5">
+              <div class="body-measure-lbl">Waist cm</div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="saveWSR()" style="align-self:flex-end;margin-bottom:4px">Save</button>
+          </div>
+        </div>
+
+        <!-- Sleep -->
+        <div class="body-section-label">Sleep</div>
+        <div class="body-card">
+          <div class="body-sleep-row">
+            <div class="body-sleep-stat"><div class="body-sleep-num" id="sleep-hrs-display">--</div><div class="body-sleep-lbl">hrs last night</div></div>
+            <div class="body-sleep-stat"><div class="body-sleep-num" id="sleep-quality-display">--</div><div class="body-sleep-lbl">quality / 10</div></div>
+            <div class="body-sleep-stat"><div class="body-sleep-num" id="sleep-avg">--</div><div class="body-sleep-lbl">7d avg</div></div>
+          </div>
+          <button class="btn btn-surface btn-full btn-sm mt12" onclick="openSheet('sheet-sleep')">Log sleep</button>
+        </div>
+
+        <!-- DEXA -->
+        <div class="body-section-label">DEXA Scans</div>
+        <div class="body-card">
+          <div id="body-dexa-list"></div>
+          <div class="dexa-schedule-title" style="margin-top:var(--sp-md)">Schedule</div>
+          <div id="body-dexa-schedule"></div>
+        </div>
+
+        <!-- Bloodwork -->
+        <div class="body-section-label">Bloodwork</div>
+        <div class="body-card">
+          <div id="body-bloodwork-list"></div>
+        </div>
+
+        <div style="height:calc(var(--nav-total) + 24px)"></div>
     </div>
 
     <!-- PLAN -->
     <div id="panel-plan" class="panel" data-panel="plan">
-      <div class="panel-inner">
-        <div class="panel-placeholder">
-          <div class="placeholder-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/>
-            </svg>
+
+        <!-- Mounjaro -->
+        <div class="body-section-label">Mounjaro</div>
+        <div class="body-card">
+          <div class="plan-injection-hero">
+            <div>
+              <div class="plan-dose" id="plan-current-dose">2.5mg</div>
+              <div class="plan-dose-lbl">current dose</div>
+            </div>
+            <div id="plan-injection-countdown" class="plan-countdown"></div>
           </div>
-          <div class="t-lg c-secondary mt8">PLAN</div>
-          <div class="t-sm c-tertiary mt4">Block 6  -  next session</div>
+          <div id="plan-site-rotation" class="plan-site-row"></div>
+          <div id="plan-injection-form" class="hidden">
+            <div class="plan-form-title">Log Injection</div>
+            <div class="plan-form-row">
+              <div class="plan-form-item">
+                <div class="plan-form-lbl">Site</div>
+                <select class="plan-select" id="plan-inject-site">
+                  <option>Abdomen</option>
+                  <option>Thigh</option>
+                  <option>Upper arm</option>
+                </select>
+              </div>
+              <div class="plan-form-item">
+                <div class="plan-form-lbl">Time</div>
+                <input class="plan-input" id="plan-inject-time" type="time" value="22:00">
+              </div>
+            </div>
+            <button class="btn btn-primary btn-full mt12" onclick="saveInjection()">Save injection</button>
+          </div>
+          <div class="plan-schedule-title" style="margin-top:var(--sp-md)">Dose schedule</div>
+          <div id="plan-dose-schedule"></div>
         </div>
+
+        <!-- Supplement Reference -->
+        <div class="body-section-label">Supplement Reference</div>
+        <div class="body-card">
+          <div id="plan-supp-reference"></div>
+        </div>
+
+        <!-- Milestones -->
+        <div class="body-section-label">18-Month Roadmap</div>
+        <div class="body-card">
+          <div id="plan-milestones-list"></div>
+        </div>
+
+        <!-- Identity -->
+        <div class="body-section-label">Identity</div>
+        <div class="body-card">
+          <div class="plan-identity-prompt">Who are you becoming?</div>
+          <textarea class="plan-identity-input" id="plan-identity-text"
+            placeholder="I am the man who..." maxlength="280"
+            oninput="saveIdentity()"></textarea>
+          <div class="plan-identity-date" id="plan-identity-date"></div>
+        </div>
+
+        <!-- Settings -->
+        <div class="body-section-label">Settings</div>
+        <div class="body-card">
+          <div class="plan-settings-row" onclick="openBackdate()" style="cursor:pointer">
+            <div class="plan-settings-label">Log yesterday</div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="12" y1="14" x2="12" y2="18"/><line x1="10" y1="16" x2="14" y2="16"/></svg>
+          </div>
+          <div class="plan-settings-row" onclick="exportData()" style="cursor:pointer;border-top:1px solid var(--border)">
+            <div class="plan-settings-label">Export all data</div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </div>
+          <div class="plan-settings-row" style="border-top:1px solid var(--border)">
+            <div class="plan-settings-label">Version</div>
+            <div class="plan-settings-val">v31</div>
+          </div>
+          <div class="plan-settings-row" style="border-top:1px solid var(--border)">
+            <div class="plan-settings-label">Program starts</div>
+            <div class="plan-settings-val">June 15, 2026</div>
+          </div>
+          <div class="plan-settings-row" style="border-top:1px solid var(--border)">
+            <div class="plan-settings-label">Birthday goal</div>
+            <div class="plan-settings-val">Aug 26, 2027</div>
+          </div>
+          <div class="plan-settings-row" style="border-top:1px solid var(--border)">
+            <div class="plan-settings-label">GitHub sync</div>
+            <div class="plan-settings-val" id="plan-sync-status">Active</div>
+          </div>
+          <div class="plan-settings-row" style="border-top:1px solid var(--border)">
+            <div class="plan-settings-label">Data</div>
+            <div class="plan-settings-val">GitHub + local backup</div>
+          </div>
+        </div>
+
+        <div style="height:calc(var(--nav-total) + 24px)"></div>
       </div>
-    </div>
 
   </div><!-- /panels -->
 
@@ -2808,10 +2946,30 @@ svg { display: block; flex-shrink: 0; }
         <span class="nav-label">EAT</span>
       </button>
 
-      <!-- BODY - Block 5 -->
-      
-      <!-- PLAN - Block 6 -->
-      
+      <!-- BODY -->
+      <button class="nav-item" data-target="body" onclick="nav('body',this)">
+        <div class="nav-badge" id="b-body"></div>
+        <div class="nav-icon-wrap">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 4-7"/>
+          </svg>
+        </div>
+        <span class="nav-label">BODY</span>
+      </button>
+
+      <!-- PLAN -->
+      <button class="nav-item" data-target="plan" onclick="nav('plan',this)">
+        <div class="nav-badge" id="b-plan"></div>
+        <div class="nav-icon-wrap">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/>
+          </svg>
+        </div>
+        <span class="nav-label">PLAN</span>
+      </button>
+
+    </div><!-- /nav-inner -->
+  </nav>
 </div><!-- /app -->
 
 <!-- Toast container -->
@@ -2991,6 +3149,9 @@ svg { display: block; flex-shrink: 0; }
       <button class="mood-opt" onclick="selectBdMood('ok')"><span class="mood-dot ok"></span>OK</button>
       <button class="mood-opt" onclick="selectBdMood('low')"><span class="mood-dot low"></span>Low</button>
     </div>
+
+    <div class="sheet-field-label mt12">Supplements</div>
+    <div id="bd-supp-list" style="background:var(--surface-2);border-radius:var(--r-lg);overflow:hidden;margin-bottom:4px;"></div>
 
     <div class="sheet-field-label mt12">Injection</div>
     <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
@@ -6190,36 +6351,61 @@ let bdInject  = false;
 function openBackdate() {
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
-  const ds = yesterday.toISOString().slice(0, 10);
+  const ds  = yesterday.toISOString().slice(0, 10);
+  const dow = yesterday.getDay();
+
   const label = document.getElementById('backdate-date-label');
   if (label) label.textContent = formatDateLocal(ds);
 
-  // Pre-fill with existing data if any
-  const wt = APP.weightLog?.[ds];
-  const wa = APP.waterLog?.[ds];
-  const sl = APP.sleepLog?.[ds];
-  const mo = APP.moodLog?.[ds];
-  const inj= APP.injectionLog?.[ds];
+  // Pre-fill existing data
+  const wt  = APP.weightLog?.[ds];
+  const wa  = APP.waterLog?.[ds];
+  const sl  = APP.sleepLog?.[ds];
+  const mo  = APP.moodLog?.[ds];
+  const inj = APP.injectionLog?.[ds];
 
-  const wEl = document.getElementById('bd-weight');
-  const waEl= document.getElementById('bd-water');
-  const slEl= document.getElementById('bd-sleep');
-  if (wEl && wt)  wEl.value = wt;
-  if (waEl && wa) waEl.value= wa;
-  if (slEl && sl) slEl.value= sl.hrs;
+  const wEl  = document.getElementById('bd-weight');
+  const waEl = document.getElementById('bd-water');
+  const slEl = document.getElementById('bd-sleep');
+  if (wEl && wt)  wEl.value  = wt;
+  if (waEl && wa) waEl.value = wa;
+  if (slEl && sl) slEl.value = sl.hrs;
 
-  if (mo) {
-    bdMood = mo;
-    document.querySelectorAll('.mood-opt').forEach(b => {
-      b.classList.toggle('selected', b.getAttribute('onclick').includes(mo));
+  // Mood
+  bdMood = mo || null;
+  document.querySelectorAll('#bd-mood-grid .mood-opt').forEach(b => {
+    b.classList.toggle('selected', mo && b.getAttribute('onclick').includes(mo));
+  });
+
+  // Supplements - render active ones for yesterday
+  const suppListEl = document.getElementById('bd-supp-list');
+  if (suppListEl) {
+    const stack   = CONFIG.suppStack || [];
+    const groups  = CONFIG.suppGroups;
+    const suppLog = APP.suppLog?.[ds] || {};
+    const active  = stack.filter(s => {
+      const start = s.group === 1 ? groups.group1 : s.group === 2 ? groups.group2 : groups.group3;
+      if (ds < start) return false;
+      if (s.rule === 'sunday' && dow !== 0) return false;
+      return true;
     });
-  } else { bdMood = null; }
+    suppListEl.innerHTML = active.map(supp => {
+      const checked = !!suppLog[supp.key];
+      return '<div class="supp-item' + (checked ? ' logged' : '') + '" onclick="toggleBdSupp(\'' + supp.key + '\',\'' + ds + '\')" style="padding:11px 14px;">' +
+        '<div class="supp-check">' +
+        (checked ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : '') +
+        '</div>' +
+        '<div class="supp-info"><div class="supp-name">' + supp.label + '</div><div class="supp-time">' + supp.time + '</div></div>' +
+        '</div>';
+    }).join('');
+  }
 
+  // Injection
   bdInject = !!inj;
-  const btn = document.getElementById('bd-inject-btn');
-  const flds= document.getElementById('bd-inject-fields');
-  const lbl = document.getElementById('bd-inject-label');
-  if (btn) { btn.classList.toggle('active', bdInject); btn.querySelector('span').textContent = bdInject ? 'Yes' : 'No'; }
+  const btn  = document.getElementById('bd-inject-btn');
+  const flds = document.getElementById('bd-inject-fields');
+  const lbl  = document.getElementById('bd-inject-label');
+  if (btn)  { btn.classList.toggle('active', bdInject); btn.querySelector('span').textContent = bdInject ? 'Yes' : 'No'; }
   if (flds) flds.classList.toggle('hidden', !bdInject);
   if (lbl)  lbl.textContent = bdInject ? 'Injection logged' : 'No injection yesterday';
   if (inj) {
@@ -6230,6 +6416,35 @@ function openBackdate() {
   }
 
   openSheet('sheet-backdate');
+}
+
+function toggleBdSupp(key, ds) {
+  if (!APP.suppLog) APP.suppLog = {};
+  if (!APP.suppLog[ds]) APP.suppLog[ds] = {};
+  APP.suppLog[ds][key] = !APP.suppLog[ds][key];
+  // Re-render the list inline
+  const dow = new Date(ds + 'T12:00:00').getDay();
+  const stack  = CONFIG.suppStack || [];
+  const groups = CONFIG.suppGroups;
+  const suppLog= APP.suppLog[ds];
+  const active = stack.filter(s => {
+    const start = s.group === 1 ? groups.group1 : s.group === 2 ? groups.group2 : groups.group3;
+    if (ds < start) return false;
+    if (s.rule === 'sunday' && dow !== 0) return false;
+    return true;
+  });
+  const suppListEl = document.getElementById('bd-supp-list');
+  if (suppListEl) {
+    suppListEl.innerHTML = active.map(supp => {
+      const checked = !!suppLog[supp.key];
+      return '<div class="supp-item' + (checked ? ' logged' : '') + '" onclick="toggleBdSupp(\'' + supp.key + '\',\'' + ds + '\')" style="padding:11px 14px;">' +
+        '<div class="supp-check">' +
+        (checked ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : '') +
+        '</div>' +
+        '<div class="supp-info"><div class="supp-name">' + supp.label + '</div><div class="supp-time">' + supp.time + '</div></div>' +
+        '</div>';
+    }).join('');
+  }
 }
 
 function selectBdMood(val) {
@@ -6254,36 +6469,23 @@ function saveBackdate() {
   yesterday.setDate(yesterday.getDate() - 1);
   const ds = yesterday.toISOString().slice(0, 10);
 
-  const wt  = parseFloat(document.getElementById('bd-weight')?.value);
-  const wa  = parseFloat(document.getElementById('bd-water')?.value);
-  const sl  = parseFloat(document.getElementById('bd-sleep')?.value);
-  const site= document.getElementById('bd-inject-site')?.value;
-  const time= document.getElementById('bd-inject-time')?.value || '22:00';
+  const wt   = parseFloat(document.getElementById('bd-weight')?.value);
+  const wa   = parseFloat(document.getElementById('bd-water')?.value);
+  const sl   = parseFloat(document.getElementById('bd-sleep')?.value);
+  const site = document.getElementById('bd-inject-site')?.value;
+  const time = document.getElementById('bd-inject-time')?.value || '22:00';
 
-  if (wt && !isNaN(wt)) {
-    if (!APP.weightLog) APP.weightLog = {};
-    APP.weightLog[ds] = wt;
-  }
-  if (wa && !isNaN(wa)) {
-    if (!APP.waterLog) APP.waterLog = {};
-    APP.waterLog[ds] = wa;
-  }
-  if (sl && !isNaN(sl)) {
-    if (!APP.sleepLog) APP.sleepLog = {};
-    APP.sleepLog[ds] = { hrs: sl, quality: APP.sleepLog?.[ds]?.quality || 7 };
-  }
-  if (bdMood) {
-    if (!APP.moodLog) APP.moodLog = {};
-    APP.moodLog[ds] = bdMood;
-  }
-  if (bdInject && site) {
-    if (!APP.injectionLog) APP.injectionLog = {};
-    APP.injectionLog[ds] = { dose: getCurrentDose(), time, site };
-  }
+  if (wt && !isNaN(wt)) { if (!APP.weightLog) APP.weightLog = {}; APP.weightLog[ds] = wt; }
+  if (wa && !isNaN(wa)) { if (!APP.waterLog)  APP.waterLog  = {}; APP.waterLog[ds]  = wa; }
+  if (sl && !isNaN(sl)) { if (!APP.sleepLog)  APP.sleepLog  = {}; APP.sleepLog[ds]  = { hrs: sl, quality: APP.sleepLog?.[ds]?.quality || 7 }; }
+  if (bdMood) { if (!APP.moodLog) APP.moodLog = {}; APP.moodLog[ds] = bdMood; }
+  // Supplements already saved live via toggleBdSupp
+  if (bdInject && site) { if (!APP.injectionLog) APP.injectionLog = {}; APP.injectionLog[ds] = { dose: getCurrentDose(), time, site }; }
 
   saveData();
   closeSheet();
   try { renderToday(); } catch(e) {}
+  try { renderSuppCount(); } catch(e) {}
   toast(IC.check, 'Yesterday logged - ' + formatDateLocal(ds), 'green');
   H.success();
 }
