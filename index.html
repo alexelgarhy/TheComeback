@@ -2212,6 +2212,26 @@ svg { display: block; flex-shrink: 0; }
 </div>
 
 <!-- --------------------------- MAIN APP -------------------- -->
+<!-- GitHub Token Setup (shown only if no token stored) -->
+<div id="gh-setup" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;gap:20px;">
+  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+  <div style="text-align:center">
+    <div style="font-size:22px;font-weight:700;color:var(--text);margin-bottom:8px">GitHub Sync Setup</div>
+    <div style="font-size:14px;color:var(--text-3);line-height:1.5;max-width:300px">Paste your GitHub personal access token to sync data across devices. Stored on this device only.</div>
+  </div>
+  <input id="gh-token-input" type="password"
+    style="width:100%;max-width:340px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:14px 16px;font-size:15px;color:var(--text);font-family:monospace;"
+    placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+    autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+  <button onclick="saveGHToken()" style="width:100%;max-width:340px;background:var(--accent);color:#000;font-size:15px;font-weight:700;padding:15px;border-radius:var(--r-full);border:none;cursor:pointer;">
+    Connect to GitHub
+  </button>
+  <button onclick="skipGHSetup()" style="background:none;border:none;color:var(--text-3);font-size:13px;cursor:pointer;padding:8px;">
+    Skip - save locally only
+  </button>
+  <div id="gh-setup-status" style="font-size:13px;color:var(--text-3);min-height:20px;"></div>
+</div>
+
 <div id="app">
 
   <!-- Panels -->
@@ -2895,7 +2915,7 @@ svg { display: block; flex-shrink: 0; }
           </div>
           <div class="plan-settings-row" style="border-top:1px solid var(--border)">
             <div class="plan-settings-label">GitHub sync</div>
-            <div class="plan-settings-val" id="plan-sync-status">Active</div>
+            <div class="plan-settings-val" id="plan-sync-status">Checking...</div>
           </div>
           <div class="plan-settings-row" style="border-top:1px solid var(--border)">
             <div class="plan-settings-label">Data</div>
@@ -3433,12 +3453,13 @@ const IC = {
 
 /* -- DATA LAYER --------------------------------------------- */
 const DB_KEY      = 'comeback_v31';
-const GH_TOKEN    = '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';
 const GH_GIST_KEY = 'comeback_gist_id';
-const SYNC_DELAY  = 2000; // ms debounce before syncing to GitHub
+const GH_TOKEN_KEY= 'comeback_gh_token';
+const SYNC_DELAY  = 2000;
 let   syncTimer   = null;
-let   gistId      = localStorage.getItem(GH_GIST_KEY) || null;
-let   syncStatus  = 'idle'; // idle / syncing / error
+let   GH_TOKEN    = localStorage.getItem(GH_TOKEN_KEY) || null;
+let   gistId      = localStorage.getItem(GH_GIST_KEY)  || null;
+let   syncStatus  = 'idle';
 
 const defaultData = {
   schema:    1,
@@ -3531,12 +3552,11 @@ async function syncToGitHub() {
   if (!GH_TOKEN) return;
   try { syncStatus = 'syncing'; showSyncIndicator('syncing'); } catch(e) {}
   try {
-    if (typeof fetch === 'undefined') return; // not available in this context
+    if (typeof fetch === 'undefined') return;
     const body = JSON.stringify(APP);
     const filename = 'comeback-v31-data.json';
     let response;
     if (gistId) {
-      // Update existing gist
       response = await fetch('https://api.github.com/gists/' + gistId, {
         method: 'PATCH',
         headers: {
@@ -3547,7 +3567,6 @@ async function syncToGitHub() {
         body: JSON.stringify({ files: { [filename]: { content: body } } })
       });
     } else {
-      // Create new gist
       response = await fetch('https://api.github.com/gists', {
         method: 'POST',
         headers: {
@@ -3571,12 +3590,15 @@ async function syncToGitHub() {
       syncStatus = 'idle';
       showSyncIndicator('saved');
     } else {
-      throw new Error('GitHub sync failed: ' + response.status);
+      const errText = await response.text().catch(() => '');
+      console.warn('GitHub sync HTTP ' + response.status + ':', errText.slice(0, 200));
+      throw new Error('HTTP ' + response.status);
     }
   } catch(e) {
     syncStatus = 'error';
     showSyncIndicator('error');
     console.warn('GitHub sync error:', e.message);
+    // Data is safe in localStorage - no data loss
   }
 }
 
@@ -6490,9 +6512,73 @@ function saveBackdate() {
   H.success();
 }
 
+// -- GITHUB TOKEN SETUP ---------------------------------------
+function checkGHSetup() {
+  GH_TOKEN = localStorage.getItem(GH_TOKEN_KEY) || null;
+  gistId   = localStorage.getItem(GH_GIST_KEY)  || null;
+  if (!GH_TOKEN) {
+    const setup = document.getElementById('gh-setup');
+    if (setup) setup.style.display = 'flex';
+    const splash = document.getElementById('splash');
+    if (splash) splash.style.display = 'none';
+  }
+}
+
+async function saveGHToken() {
+  const input = document.getElementById('gh-token-input');
+  const token = input?.value?.trim();
+  const status= document.getElementById('gh-setup-status');
+  if (!token || !token.startsWith('ghp_')) {
+    if (status) status.textContent = 'Token must start with ghp_';
+    return;
+  }
+  if (status) status.textContent = 'Testing connection...';
+
+  // Test the token
+  try {
+    const r = await fetch('https://api.github.com/gists?per_page=1', {
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'X-GitHub-Api-Version': '2022-11-28'
+      }
+    });
+    if (!r.ok) {
+      if (status) status.textContent = 'Token invalid - check it has gist scope';
+      return;
+    }
+  } catch(e) {
+    if (status) status.textContent = 'Connection failed - check your internet';
+    return;
+  }
+
+  // Save token and continue
+  localStorage.setItem(GH_TOKEN_KEY, token);
+  GH_TOKEN = token;
+  if (status) status.textContent = 'Connected!';
+
+  const setup = document.getElementById('gh-setup');
+  setTimeout(() => {
+    if (setup) setup.style.display = 'none';
+    // Trigger immediate sync to create the Gist
+    try { syncToGitHub(); } catch(e) {}
+    // Update PLAN sync status
+    const planSync = document.getElementById('plan-sync-status');
+    if (planSync) planSync.textContent = 'Active';
+  }, 800);
+}
+
+function skipGHSetup() {
+  const setup = document.getElementById('gh-setup');
+  if (setup) setup.style.display = 'none';
+  const planSync = document.getElementById('plan-sync-status');
+  if (planSync) planSync.textContent = 'Not configured';
+}
+
+
 function init() {
   initTheme();
   handleHash();
+  checkGHSetup();
   registerSW();
   sundayBackup();
   updateBadges();
