@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Comeback">
 <meta name="theme-color" content="#0A0A0B">
-<meta name="description" content="The Comeback — 18-month transformation tracker">
+<meta name="description" content="The Comeback  -  18-month transformation tracker">
 <title>The Comeback</title>
 <script>
 try {
@@ -17,7 +17,7 @@ try {
     start_url: "./", display: "standalone",
     background_color: "#0A0A0B", theme_color: "#0A0A0B",
     orientation: "portrait",
-    icons: [{ src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Crect width='1024' height='1024' fill='%230A0A0B'/%3E%3C/svg%3E", sizes: "512x512", type: "image/svg+xml" }]
+    icons: [{ src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Crect width='1024' height='1024' rx='180' fill='%230A0A0B'/%3E%3Cpath d='M180 680 L320 420 L440 560 L580 300 L780 180' stroke='white' stroke-width='72' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M720 160 L840 160 L840 280' stroke='white' stroke-width='72' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E", sizes: "512x512", type: "image/svg+xml" }]
   };
   const mBlob = new Blob([JSON.stringify(manifestData)], {type:'application/json'});
   const mURL  = URL.createObjectURL(mBlob);
@@ -31,7 +31,7 @@ try {
 
 <style>
 /* ============================================================
-   THE COMEBACK v31 — BLOCK 1 (SVG ICON EDITION)
+   THE COMEBACK v31  -  BLOCK 1 (SVG ICON EDITION)
    Design System + Shell + Nav + All Components
    ============================================================
    SECTIONS:
@@ -59,7 +59,7 @@ try {
    22  Utilities
    ============================================================ */
 
-/* ── 01 RESET ─────────────────────────────────────────────── */
+/* -- 01 RESET ----------------------------------------------- */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -89,7 +89,7 @@ input, textarea, select {
 button { cursor: pointer; border: none; background: none; font-family: inherit; }
 svg { display: block; flex-shrink: 0; }
 
-/* ── 02 DESIGN TOKENS ─────────────────────────────────────── */
+/* -- 02 DESIGN TOKENS --------------------------------------- */
 :root {
   /* Backgrounds */
   --bg:             #0A0A0B;
@@ -108,7 +108,7 @@ svg { display: block; flex-shrink: 0; }
   --text-3:         #55555C;
   --text-4:         #3A3A40;
 
-  /* Accent — appears only when earned */
+  /* Accent  -  appears only when earned */
   --accent:         #34C759;
   --accent-dim:     rgba(52,199,89,0.12);
   --accent-glow:    rgba(52,199,89,0.12);
@@ -156,7 +156,7 @@ svg { display: block; flex-shrink: 0; }
   --icon-lg:  24px;
 }
 
-/* ── 03 TYPOGRAPHY ────────────────────────────────────────── */
+/* -- 03 TYPOGRAPHY ------------------------------------------ */
 .n-hero   { font-size:72px; font-weight:700; line-height:1; letter-spacing:-2px;   font-variant-numeric:tabular-nums; }
 .n-large  { font-size:48px; font-weight:700; line-height:1; letter-spacing:-1.5px; font-variant-numeric:tabular-nums; }
 .n-med    { font-size:32px; font-weight:700; line-height:1; letter-spacing:-1px;   font-variant-numeric:tabular-nums; }
@@ -179,7 +179,7 @@ svg { display: block; flex-shrink: 0; }
 .c-blue      { color: var(--blue); }
 .c-purple    { color: var(--purple); }
 
-/* ── 04 LAYOUT ────────────────────────────────────────────── */
+/* -- 04 LAYOUT ---------------------------------------------- */
 #app {
   position: fixed;
   inset: 0;
@@ -189,6 +189,7 @@ svg { display: block; flex-shrink: 0; }
   max-width: 430px;
   margin: 0 auto;
   overflow: hidden;
+  padding-top: env(safe-area-inset-top);
 }
 
 /* Subtle noise grain over entire app */
@@ -214,7 +215,10 @@ svg { display: block; flex-shrink: 0; }
 
 .panel {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
@@ -237,7 +241,7 @@ svg { display: block; flex-shrink: 0; }
   padding: var(--sp-sm) var(--sp-md) var(--sp-md);
 }
 
-/* ── 05 CARDS ─────────────────────────────────────────────── */
+/* -- 05 CARDS ----------------------------------------------- */
 .card {
   background: var(--surface);
   border-radius: var(--r-lg);
@@ -261,7 +265,7 @@ svg { display: block; flex-shrink: 0; }
 }
 .section-label:first-child { padding-top: var(--sp-md); }
 
-/* ── 06 BUTTONS & TAPPABLES ───────────────────────────────── */
+/* -- 06 BUTTONS & TAPPABLES --------------------------------- */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -295,7 +299,7 @@ svg { display: block; flex-shrink: 0; }
 }
 .tappable:active { transform: scale(0.97); opacity: 0.8; }
 
-/* ── 07 PILLS & DOTS ──────────────────────────────────────── */
+/* -- 07 PILLS & DOTS ---------------------------------------- */
 .pill {
   display: inline-flex;
   align-items: center;
@@ -342,7 +346,7 @@ svg { display: block; flex-shrink: 0; }
   100% { transform: scale(2.4); opacity: 0; }
 }
 
-/* ── 08 ARC RINGS ─────────────────────────────────────────── */
+/* -- 08 ARC RINGS ------------------------------------------- */
 .ring-wrap {
   position: relative;
   display: inline-flex;
@@ -363,7 +367,7 @@ svg { display: block; flex-shrink: 0; }
   pointer-events: none;
 }
 
-/* ── 09 INPUT FIELDS ──────────────────────────────────────── */
+/* -- 09 INPUT FIELDS ---------------------------------------- */
 .input-group {
   display: flex;
   flex-direction: column;
@@ -406,7 +410,7 @@ svg { display: block; flex-shrink: 0; }
   flex-shrink: 0;
 }
 
-/* ── 10 TOGGLE ────────────────────────────────────────────── */
+/* -- 10 TOGGLE ---------------------------------------------- */
 .toggle-row {
   display: flex;
   align-items: center;
@@ -437,7 +441,7 @@ svg { display: block; flex-shrink: 0; }
 }
 .toggle.on .toggle-knob { transform: translateX(20px); }
 
-/* ── 11 BOTTOM SHEET ──────────────────────────────────────── */
+/* -- 11 BOTTOM SHEET ---------------------------------------- */
 .sheet-overlay {
   position: fixed;
   inset: 0;
@@ -492,7 +496,7 @@ svg { display: block; flex-shrink: 0; }
 }
 .sheet-body { padding: 0 var(--sp-md) var(--sp-md); }
 
-/* ── 12 TOAST ─────────────────────────────────────────────── */
+/* -- 12 TOAST ----------------------------------------------- */
 #toast-container {
   position: fixed;
   bottom: calc(var(--nav-total) + 14px);
@@ -534,7 +538,7 @@ svg { display: block; flex-shrink: 0; }
   to   { opacity:0; transform:translateY(-6px) scale(0.96); }
 }
 
-/* ── 13 NAVIGATION ────────────────────────────────────────── */
+/* -- 13 NAVIGATION ------------------------------------------ */
 #nav {
   position: relative;
   z-index: 50;
@@ -576,7 +580,7 @@ svg { display: block; flex-shrink: 0; }
 }
 .nav-item.active .nav-icon-wrap { transform: scale(1.12); }
 
-/* SVG icon color — inactive = muted, active = accent */
+/* SVG icon color  -  inactive = muted, active = accent */
 .nav-icon-wrap svg {
   color: var(--text-3);
   transition: color 0.2s;
@@ -616,7 +620,7 @@ svg { display: block; flex-shrink: 0; }
   animation: pulse-ring 1.6s ease-out infinite;
 }
 
-/* ── 14 PANELS ────────────────────────────────────────────── */
+/* -- 14 PANELS ---------------------------------------------- */
 /* Placeholder style for blocks 2-6 */
 .panel-placeholder {
   display: flex;
@@ -638,7 +642,7 @@ svg { display: block; flex-shrink: 0; }
 }
 .placeholder-icon svg { color: var(--text-3); }
 
-/* ── 15 SPLASH ────────────────────────────────────────────── */
+/* -- 15 SPLASH ---------------------------------------------- */
 #splash {
   position: fixed;
   inset: 0;
@@ -672,7 +676,7 @@ svg { display: block; flex-shrink: 0; }
   to   { opacity:0; transform:scale(1.05); }
 }
 
-/* ── 16 INSTALL BANNER ────────────────────────────────────── */
+/* -- 16 INSTALL BANNER -------------------------------------- */
 #install-banner {
   position: fixed;
   top: calc(var(--safe-t) + 10px);
@@ -703,7 +707,7 @@ svg { display: block; flex-shrink: 0; }
   to   { opacity:1; transform: translateX(-50%) translateY(0); }
 }
 
-/* ── 17 LANDSCAPE WARNING ─────────────────────────────────── */
+/* -- 17 LANDSCAPE WARNING ----------------------------------- */
 #landscape-warn {
   display: none;
   position: fixed;
@@ -722,7 +726,7 @@ svg { display: block; flex-shrink: 0; }
   #landscape-warn { display: flex; }
 }
 
-/* ── 18 MILESTONE FLASH ───────────────────────────────────── */
+/* -- 18 MILESTONE FLASH ------------------------------------- */
 #milestone-flash {
   position: fixed;
   inset: 0;
@@ -749,14 +753,14 @@ svg { display: block; flex-shrink: 0; }
   100% { opacity:0; transform:scale(1.08); }
 }
 
-/* ── 19 SHARED ANIMATIONS ─────────────────────────────────── */
+/* -- 19 SHARED ANIMATIONS ----------------------------------- */
 @keyframes fade-in {
   from { opacity:0; transform:translateY(6px); }
   to   { opacity:1; transform:translateY(0); }
 }
 .fade-in { animation: fade-in 0.3s var(--ease-out) both; }
 
-/* ── 20 LIGHT MODE ────────────────────────────────────────── */
+/* -- 20 LIGHT MODE ------------------------------------------ */
 .light {
   --bg:            #F2F2F7;
   --surface:       #FFFFFF;
@@ -776,7 +780,7 @@ svg { display: block; flex-shrink: 0; }
 }
 .light #splash { background: #F2F2F7; }
 
-/* ── 21 REDUCED MOTION ────────────────────────────────────── */
+/* -- 21 REDUCED MOTION -------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -785,7 +789,7 @@ svg { display: block; flex-shrink: 0; }
   }
 }
 
-/* ── 22 UTILITIES ─────────────────────────────────────────── */
+/* -- 22 UTILITIES ------------------------------------------- */
 .row    { display:flex; align-items:center; gap:var(--sp-sm); }
 .row-b  { display:flex; align-items:center; justify-content:space-between; }
 .col    { display:flex; flex-direction:column; }
@@ -809,13 +813,13 @@ svg { display: block; flex-shrink: 0; }
 .shrink-0 { flex-shrink:0; }
 .hidden { display:none !important; }
 
-/* ══════════════════════════════════════════════════════════
-   BLOCK 2 — TODAY PANEL
-══════════════════════════════════════════════════════════ */
+/* ----------------------------------------------------------
+   BLOCK 2  -  TODAY PANEL
+---------------------------------------------------------- */
 
-/* ── Header bar ── */
+/* -- Header bar -- */
 /* ================================================================
-   MISSION BAR — The heartbeat of the app
+   MISSION BAR  -  The heartbeat of the app
    Three numbers. One bar. The entire comeback in one glance.
 ================================================================ */
 
@@ -828,7 +832,7 @@ svg { display: block; flex-shrink: 0; }
   transition: background 0.6s var(--ease-out);
 }
 
-/* Day type tints — felt not read */
+/* Day type tints  -  felt not read */
 #mission-bar.day-training { background: #131a14; }
 #mission-bar.day-injection { background: #131318; }
 #mission-bar.day-rest      { background: var(--surface); }
@@ -926,7 +930,7 @@ svg { display: block; flex-shrink: 0; }
   font-variant-numeric: tabular-nums;
 }
 
-/* ── SMOKE-FREE COUNTER ── */
+/* -- SMOKE-FREE COUNTER -- */
 #smoke-counter {
   margin: 0 var(--sp-md) var(--sp-sm);
   background: var(--surface);
@@ -988,7 +992,7 @@ svg { display: block; flex-shrink: 0; }
 /* Hidden before quit date */
 #smoke-counter.pre-quit { display: none; }
 
-/* ── SUPPLEMENT ADHERENCE COUNT ── */
+/* -- SUPPLEMENT ADHERENCE COUNT -- */
 #supp-count-bar {
   margin: 0 var(--sp-md) var(--sp-sm);
   background: var(--surface);
@@ -1035,7 +1039,7 @@ svg { display: block; flex-shrink: 0; }
 }
 #today-streak svg { color: var(--gold); }
 
-/* ── Deload banner ── */
+/* -- Deload banner -- */
 #deload-banner {
   margin: 0 var(--sp-md) var(--sp-sm);
   background: var(--purple-dim);
@@ -1051,7 +1055,7 @@ svg { display: block; flex-shrink: 0; }
 }
 #deload-banner svg { color: var(--purple); flex-shrink: 0; }
 
-/* ── Bloodwork alert ── */
+/* -- Bloodwork alert -- */
 #bw-alert {
   margin: 0 var(--sp-md) var(--sp-sm);
   background: var(--red-dim);
@@ -1067,7 +1071,7 @@ svg { display: block; flex-shrink: 0; }
 }
 #bw-alert svg { flex-shrink: 0; }
 
-/* ── Calorie milestone alert ── */
+/* -- Calorie milestone alert -- */
 #cal-milestone-alert {
   margin: 0 var(--sp-md) var(--sp-sm);
   background: var(--gold-dim);
@@ -1088,7 +1092,7 @@ svg { display: block; flex-shrink: 0; }
   display: flex; align-items: center;
 }
 
-/* ── Weight hero card ── */
+/* -- Weight hero card -- */
 #weight-card {
   margin: 0 var(--sp-md) var(--sp-sm);
   background: var(--surface);
@@ -1163,7 +1167,7 @@ svg { display: block; flex-shrink: 0; }
 }
 #goal-pct-unit { font-size: 20px; font-weight: 500; color: var(--text-3); margin-bottom: 10px; }
 
-/* ── Macro rings row ── */
+/* -- Macro rings row -- */
 #macro-section { margin: 0 var(--sp-md) var(--sp-sm); }
 #macro-card {
   background: var(--surface);
@@ -1198,7 +1202,7 @@ svg { display: block; flex-shrink: 0; }
   font-variant-numeric: tabular-nums;
 }
 
-/* ── Quick log bar ── */
+/* -- Quick log bar -- */
 #quicklog-row {
   display: flex;
   gap: var(--sp-sm);
@@ -1234,7 +1238,7 @@ svg { display: block; flex-shrink: 0; }
 }
 .ql-btn.logged span { color: var(--accent); }
 
-/* ── Readiness card ── */
+/* -- Readiness card -- */
 #readiness-card {
   margin: 0 var(--sp-md) var(--sp-sm);
   background: var(--surface);
@@ -1278,7 +1282,7 @@ svg { display: block; flex-shrink: 0; }
   margin-top: 2px;
 }
 
-/* ── Injection card ── */
+/* -- Injection card -- */
 #injection-card {
   margin: 0 var(--sp-md) var(--sp-sm);
   background: var(--surface);
@@ -1318,7 +1322,7 @@ svg { display: block; flex-shrink: 0; }
   border: 1px solid rgba(10,132,255,0.2);
 }
 
-/* ── Training preview card ── */
+/* -- Training preview card -- */
 #train-preview-card {
   margin: 0 var(--sp-md) var(--sp-sm);
   background: var(--surface);
@@ -1369,7 +1373,7 @@ svg { display: block; flex-shrink: 0; }
   border-top: 1px solid var(--border);
 }
 
-/* ── Deload training card ── */
+/* -- Deload training card -- */
 #deload-train-card {
   margin: 0 var(--sp-md) var(--sp-sm);
   background: var(--purple-dim);
@@ -1382,7 +1386,7 @@ svg { display: block; flex-shrink: 0; }
 }
 #deload-train-card svg { color: var(--purple); flex-shrink: 0; }
 
-/* ── Time-aware context card ── */
+/* -- Time-aware context card -- */
 #context-card {
   margin: 0 var(--sp-md) var(--sp-sm);
   background: var(--surface);
@@ -1412,7 +1416,7 @@ svg { display: block; flex-shrink: 0; }
 }
 #context-action:active { transform: scale(0.95); }
 
-/* ── Weekly summary card (Sunday) ── */
+/* -- Weekly summary card (Sunday) -- */
 #weekly-summary-card {
   margin: 0 var(--sp-md) var(--sp-sm);
   background: var(--surface);
@@ -1429,7 +1433,7 @@ svg { display: block; flex-shrink: 0; }
 .weekly-label { font-size: 13px; font-weight: 500; color: var(--text-2); }
 .weekly-val   { font-size: 13px; font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
 
-/* ── Nausea check (Sat/Sun after injection) ── */
+/* -- Nausea check (Sat/Sun after injection) -- */
 #nausea-card {
   margin: 0 var(--sp-md) var(--sp-sm);
   background: var(--surface);
@@ -1457,17 +1461,17 @@ svg { display: block; flex-shrink: 0; }
 .nausea-opt.selected-mild { border-color: var(--gold);   color: var(--gold);   background: var(--gold-dim); }
 .nausea-opt.selected-rough{ border-color: var(--red);    color: var(--red);    background: var(--red-dim); }
 
-/* ── Sheets for today ── */
+/* -- Sheets for today -- */
 #sheet-weight, #sheet-water, #sheet-mood { }
 
 /* Bottom safe area pad for today panel */
 #today-bottom-pad { height: var(--sp-xl); }
 
-/* ══════════════════════════════════════════════════════════
-   BLOCK 3 — TRAIN PANEL
-══════════════════════════════════════════════════════════ */
+/* ----------------------------------------------------------
+   BLOCK 3  -  TRAIN PANEL
+---------------------------------------------------------- */
 
-/* ── Train header ── */
+/* -- Train header -- */
 #train-header {
   display: flex;
   align-items: center;
@@ -1481,7 +1485,7 @@ svg { display: block; flex-shrink: 0; }
 #train-session-title { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; color: var(--text); }
 #train-header-right  { display: flex; align-items: center; gap: var(--sp-sm); }
 
-/* ── Session timer ── */
+/* -- Session timer -- */
 #session-timer-wrap {
   background: var(--surface-2);
   border-radius: var(--r-full);
@@ -1500,13 +1504,13 @@ svg { display: block; flex-shrink: 0; }
   min-width: 44px;
 }
 
-/* ── Meta row ── */
+/* -- Meta row -- */
 #train-meta-row {
   display: flex; align-items: center; gap: var(--sp-sm);
   padding: 0 var(--sp-md) var(--sp-sm);
 }
 
-/* ── Deload state ── */
+/* -- Deload state -- */
 #train-deload-card {
   margin: 0 var(--sp-md) var(--sp-sm);
   background: var(--purple-dim);
@@ -1524,7 +1528,7 @@ svg { display: block; flex-shrink: 0; }
 .deload-ex-name { font-size: 13px; font-weight: 500; color: var(--purple); }
 .deload-ex-sets { font-size: 12px; color: var(--purple); opacity: 0.7; }
 
-/* ── Warm-up block ── */
+/* -- Warm-up block -- */
 #warmup-card {
   margin: 0 var(--sp-md) var(--sp-sm);
   background: var(--surface);
@@ -1549,7 +1553,7 @@ svg { display: block; flex-shrink: 0; }
 .warmup-item-name { font-size: 13px; font-weight: 500; color: var(--text-2); }
 .warmup-item-detail { font-size: 12px; color: var(--text-3); }
 
-/* ── Exercise cards ── */
+/* -- Exercise cards -- */
 .ex-card {
   margin: 0 var(--sp-md) var(--sp-sm);
   background: var(--surface);
@@ -1584,7 +1588,7 @@ svg { display: block; flex-shrink: 0; }
 .ex-prev-val   { font-size: 13px; font-weight: 600; color: var(--text-2); font-variant-numeric: tabular-nums; }
 .ex-prev-label { font-size: 10px; color: var(--text-3); margin-top: 1px; }
 
-/* ── Sets ── */
+/* -- Sets -- */
 .ex-sets-wrap {
   padding: 0 var(--sp-md) var(--sp-md);
   display: flex; flex-direction: column; gap: var(--sp-sm);
@@ -1633,7 +1637,7 @@ svg { display: block; flex-shrink: 0; }
 }
 .set-timer.on { display: block; }
 
-/* ── Session complete ── */
+/* -- Session complete -- */
 #session-complete-card {
   margin: 0 var(--sp-md) var(--sp-sm);
   background: var(--accent-dim);
@@ -1648,7 +1652,7 @@ svg { display: block; flex-shrink: 0; }
 #sc-duration { font-size: 40px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; letter-spacing: -1.5px; }
 #sc-stats    { font-size: 13px; color: var(--text-2); margin-top: 4px; }
 
-/* ── Session feel ── */
+/* -- Session feel -- */
 #session-feel-card {
   margin: 0 var(--sp-md) var(--sp-sm);
   background: var(--surface);
@@ -1671,7 +1675,7 @@ svg { display: block; flex-shrink: 0; }
 .sfeel-btn.f-normal { border-color: var(--blue);   color: var(--blue);   background: var(--blue-dim); }
 .sfeel-btn.f-off    { border-color: var(--gold);   color: var(--gold);   background: var(--gold-dim); }
 
-/* ── Cooldown ── */
+/* -- Cooldown -- */
 #cooldown-card {
   margin: 0 var(--sp-md) var(--sp-sm);
   background: var(--surface);
@@ -1690,7 +1694,7 @@ svg { display: block; flex-shrink: 0; }
 #cooldown-card.open #cooldown-body { max-height: 500px; }
 #cooldown-list { padding: 0 var(--sp-md) var(--sp-md); display: flex; flex-direction: column; gap: 6px; }
 
-/* ── Active session dot on nav ── */
+/* -- Active session dot on nav -- */
 #train-nav-dot {
   position: absolute; top: 3px; right: 50%;
   transform: translateX(12px);
@@ -1700,7 +1704,7 @@ svg { display: block; flex-shrink: 0; }
 }
 #train-nav-dot.on { display: block; animation: pulse-ring 1.6s ease-out infinite; }
 
-/* ── Pre-start ── */
+/* -- Pre-start -- */
 #train-prestart {
   margin: 0 var(--sp-md) var(--sp-sm);
   background: var(--accent-dim);
@@ -2155,11 +2159,17 @@ svg { display: block; flex-shrink: 0; }
 .plan-settings-label { font-size: 14px; color: var(--text); }
 .plan-settings-val   { font-size: 13px; color: var(--text-3); }
 
+
+/* Backdate sheet extras */
+.mt12 { margin-top: 12px; }
+.mt16 { margin-top: 16px; }
+.mb8  { margin-bottom: 8px; }
+
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════ SPLASH ══════════════════ -->
+<!-- ------------------------------- SPLASH ------------------ -->
 <div id="splash">
   <div id="splash-logo">
     <svg width="72" height="72" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2170,7 +2180,7 @@ svg { display: block; flex-shrink: 0; }
   <div id="splash-name">The Comeback</div>
 </div>
 
-<!-- ══════════════════════════ LANDSCAPE ════════════════════ -->
+<!-- -------------------------- LANDSCAPE -------------------- -->
 <div id="landscape-warn">
   <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
     <rect x="2" y="7" width="20" height="14" rx="2"/>
@@ -2180,7 +2190,7 @@ svg { display: block; flex-shrink: 0; }
   <div class="t-sm c-secondary mt4">This app is designed for portrait mode.</div>
 </div>
 
-<!-- ═══════════════════════ INSTALL BANNER ══════════════════ -->
+<!-- ----------------------- INSTALL BANNER ------------------ -->
 <div id="install-banner" class="hidden">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M12 2v13M7 10l5 5 5-5"/><path d="M3 17v3a2 2 0 002 2h14a2 2 0 002-2v-3"/>
@@ -2193,7 +2203,7 @@ svg { display: block; flex-shrink: 0; }
   </button>
 </div>
 
-<!-- ══════════════════════ MILESTONE FLASH ══════════════════ -->
+<!-- ---------------------- MILESTONE FLASH ------------------ -->
 <div id="milestone-flash">
   <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M12 74 L28 44 L43 57 L61 27 L84 13" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2201,7 +2211,7 @@ svg { display: block; flex-shrink: 0; }
   </svg>
 </div>
 
-<!-- ═══════════════════════════ MAIN APP ════════════════════ -->
+<!-- --------------------------- MAIN APP -------------------- -->
 <div id="app">
 
   <!-- Panels -->
@@ -2471,14 +2481,14 @@ svg { display: block; flex-shrink: 0; }
       <div id="today-bottom-pad"></div>
     </div>
 
-    <!-- TRAIN — Block 3 -->
+    <!-- TRAIN  -  Block 3 -->
     <div id="panel-train" class="panel" data-panel="train">
 
       <!-- Sticky header -->
       <div id="train-header">
         <div>
-          <div id="train-session-title">—</div>
-          <div id="train-week-label" class="t-xs c-tertiary mt4">—</div>
+          <div id="train-session-title"> - </div>
+          <div id="train-week-label" class="t-xs c-tertiary mt4"> - </div>
         </div>
         <div id="train-header-right">
           <button class="btn btn-surface btn-sm" id="train-change-btn" onclick="openSheet('sheet-split-select')" style="padding:6px 12px;font-size:12px;min-height:32px;border-radius:var(--r-full);">
@@ -2522,7 +2532,7 @@ svg { display: block; flex-shrink: 0; }
           <div id="warmup-header-left">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6 8 4 13 4 16a8 8 0 0016 0c0-3-2-8-8-14z"/></svg>
             <span class="t-md c-primary" style="font-weight:600;">Warm-Up</span>
-            <span class="t-xs c-tertiary">5–7 min</span>
+            <span class="t-xs c-tertiary">5'7 min</span>
           </div>
           <svg id="warmup-toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
         </div>
@@ -2538,7 +2548,7 @@ svg { display: block; flex-shrink: 0; }
       <div id="session-complete-card">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
         <div id="sc-duration">0:00</div>
-        <div id="sc-stats">—</div>
+        <div id="sc-stats"> - </div>
       </div>
 
       <!-- Session feel -->
@@ -2557,7 +2567,7 @@ svg { display: block; flex-shrink: 0; }
           <div id="cooldown-header-left">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
             <span class="t-md c-primary" style="font-weight:600;">Cooldown</span>
-            <span class="t-xs c-tertiary">5–10 min</span>
+            <span class="t-xs c-tertiary">5'10 min</span>
           </div>
           <svg id="cooldown-toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
         </div>
@@ -2738,7 +2748,7 @@ svg { display: block; flex-shrink: 0; }
             </svg>
           </div>
           <div class="t-lg c-secondary mt8">BODY</div>
-          <div class="t-sm c-tertiary mt4">Block 5 — next session</div>
+          <div class="t-sm c-tertiary mt4">Block 5  -  next session</div>
         </div>
       </div>
     </div>
@@ -2753,7 +2763,7 @@ svg { display: block; flex-shrink: 0; }
             </svg>
           </div>
           <div class="t-lg c-secondary mt8">PLAN</div>
-          <div class="t-sm c-tertiary mt4">Block 6 — next session</div>
+          <div class="t-sm c-tertiary mt4">Block 6  -  next session</div>
         </div>
       </div>
     </div>
@@ -2761,7 +2771,8 @@ svg { display: block; flex-shrink: 0; }
   </div><!-- /panels -->
 
   <!-- Bottom Nav -->
-  <nav id="nav">
+  <div id="sync-indicator" style="position:fixed;top:calc(env(safe-area-inset-top) + 4px);right:12px;font-size:10px;font-weight:600;letter-spacing:0.4px;color:var(--accent);opacity:0;transition:opacity 0.3s;z-index:600;pointer-events:none;"></div>
+<nav id="nav">
     <div id="nav-inner">
 
       <!-- TODAY -->
@@ -2805,7 +2816,7 @@ svg { display: block; flex-shrink: 0; }
 
 <!-- Toast container -->
 
-<!-- ═══════════════════════ SHEETS (outside #app) ═══════════ -->
+<!-- ----------------------- SHEETS (outside #app) ----------- -->
 
 <!-- Weight log sheet -->
 <div class="sheet" id="sheet-weight">
@@ -2911,7 +2922,7 @@ svg { display: block; flex-shrink: 0; }
         </div>
       </div>
       <div class="input-group">
-        <div class="input-label">Quality (1–10)</div>
+        <div class="input-label">Quality (1'10)</div>
         <div class="input-wrap">
           <input class="input-field" id="input-sleep-quality" type="number" inputmode="numeric" step="1" min="1" max="10" placeholder="7">
           <span class="input-unit">/ 10</span>
@@ -2951,12 +2962,58 @@ svg { display: block; flex-shrink: 0; }
   <div class="sheet-body" id="meal-selector-list"></div>
 </div>
 
+
+<!-- BACKDATE SHEET (outside app) -->
+<div class="sheet" id="sheet-backdate">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <div class="t-lg c-primary">Log for yesterday</div>
+    <button class="btn-icon-sm" onclick="closeSheet()">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="sheet-body">
+    <div class="t-xs c-tertiary mb8" id="backdate-date-label">Yesterday</div>
+
+    <div class="sheet-field-label">Weight (kg)</div>
+    <input class="sheet-input" id="bd-weight" type="number" inputmode="decimal" placeholder="119.0" step="0.1">
+
+    <div class="sheet-field-label mt12">Water (L)</div>
+    <input class="sheet-input" id="bd-water" type="number" inputmode="decimal" placeholder="4.5" step="0.5">
+
+    <div class="sheet-field-label mt12">Sleep (hrs)</div>
+    <input class="sheet-input" id="bd-sleep" type="number" inputmode="decimal" placeholder="8.0" step="0.5">
+
+    <div class="sheet-field-label mt12">Mood</div>
+    <div class="mood-grid" id="bd-mood-grid">
+      <button class="mood-opt" onclick="selectBdMood('great')"><span class="mood-dot great"></span>Great</button>
+      <button class="mood-opt" onclick="selectBdMood('good')"><span class="mood-dot good"></span>Good</button>
+      <button class="mood-opt" onclick="selectBdMood('ok')"><span class="mood-dot ok"></span>OK</button>
+      <button class="mood-opt" onclick="selectBdMood('low')"><span class="mood-dot low"></span>Low</button>
+    </div>
+
+    <div class="sheet-field-label mt12">Injection</div>
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+      <button class="eat-toggle-btn" id="bd-inject-btn" onclick="toggleBdInject()" style="min-width:64px"><span>No</span></button>
+      <span class="t-sm c-tertiary" id="bd-inject-label">No injection yesterday</span>
+    </div>
+    <div id="bd-inject-fields" class="hidden">
+      <select class="plan-select" id="bd-inject-site" style="margin-bottom:8px;width:100%">
+        <option>Abdomen</option><option>Thigh</option><option>Upper arm</option>
+      </select>
+      <input class="sheet-input" id="bd-inject-time" type="time" value="22:00">
+    </div>
+
+    <button class="btn btn-primary btn-full mt16" onclick="saveBackdate()">Save yesterday</button>
+  </div>
+</div>
+
 <div id="toast-container"></div>
 
 <!-- Sheet overlay -->
 <div class="sheet-overlay" id="sheet-overlay" onclick="closeSheet()"></div>
 
-<!-- ═══════════════════════════ JAVASCRIPT ═══════════════════ -->
+<!-- --------------------------- JAVASCRIPT ------------------- -->
 <script>
 'use strict';
 
@@ -3214,7 +3271,13 @@ const IC = {
 };
 
 /* -- DATA LAYER --------------------------------------------- */
-const DB_KEY = 'comeback_v31';
+const DB_KEY      = 'comeback_v31';
+const GH_TOKEN    = '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';
+const GH_GIST_KEY = 'comeback_gist_id';
+const SYNC_DELAY  = 2000; // ms debounce before syncing to GitHub
+let   syncTimer   = null;
+let   gistId      = localStorage.getItem(GH_GIST_KEY) || null;
+let   syncStatus  = 'idle'; // idle / syncing / error
 
 const defaultData = {
   schema:    1,
@@ -3259,24 +3322,140 @@ const defaultData = {
 };
 
 function loadData() {
+  // Load from localStorage immediately (fast start)
   try {
     const raw = localStorage.getItem(DB_KEY);
-    if (!raw) return deepClone(defaultData);
-    return deepMerge(deepClone(defaultData), JSON.parse(raw));
+    if (raw) return deepMerge(deepClone(defaultData), JSON.parse(raw));
   } catch(e) {
-    console.warn('Load error, using defaults:', e);
-    return deepClone(defaultData);
+    console.warn('Local load error:', e);
+  }
+  return deepClone(defaultData);
+}
+
+async function syncFromGitHub() {
+  // Called after init - loads from GitHub and merges if newer
+  if (!GH_TOKEN || !gistId) return;
+  const ghData = await loadFromGitHub();
+  if (!ghData) return;
+  // Use GitHub data if it is newer than local
+  const localTime = APP.lastSaved ? new Date(APP.lastSaved).getTime() : 0;
+  const ghTime    = ghData.lastSaved ? new Date(ghData.lastSaved).getTime() : 0;
+  if (ghTime > localTime) {
+    APP = deepMerge(deepClone(defaultData), ghData);
+    localStorage.setItem(DB_KEY, JSON.stringify(APP));
+    try { renderToday(); } catch(e) {}
+    try { renderMissionBar(); } catch(e) {}
+    showSyncIndicator('saved');
   }
 }
 
 function saveData() {
   try {
     APP.lastSaved = new Date().toISOString();
-    localStorage.setItem(DB_KEY, JSON.stringify(APP));
+    localStorage.setItem(DB_KEY, JSON.stringify(APP)); // local backup always
+    try { scheduleSyncToGitHub(); } catch(e) {}
     return true;
   } catch(e) {
-    toast(IC.warn, 'Save failed  -  storage may be full', 'red');
+    toast(IC.warn, 'Save failed', 'red');
     return false;
+  }
+}
+
+function scheduleSyncToGitHub() {
+  if (syncTimer) clearTimeout(syncTimer);
+  syncTimer = setTimeout(syncToGitHub, SYNC_DELAY);
+}
+
+async function syncToGitHub() {
+  if (!GH_TOKEN) return;
+  try { syncStatus = 'syncing'; showSyncIndicator('syncing'); } catch(e) {}
+  try {
+    if (typeof fetch === 'undefined') return; // not available in this context
+    const body = JSON.stringify(APP);
+    const filename = 'comeback-v31-data.json';
+    let response;
+    if (gistId) {
+      // Update existing gist
+      response = await fetch('https://api.github.com/gists/' + gistId, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': 'Bearer ' + GH_TOKEN,
+          'Content-Type': 'application/json',
+          'X-GitHub-Api-Version': '2022-11-28'
+        },
+        body: JSON.stringify({ files: { [filename]: { content: body } } })
+      });
+    } else {
+      // Create new gist
+      response = await fetch('https://api.github.com/gists', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + GH_TOKEN,
+          'Content-Type': 'application/json',
+          'X-GitHub-Api-Version': '2022-11-28'
+        },
+        body: JSON.stringify({
+          description: 'The Comeback - Alex training data',
+          public: false,
+          files: { [filename]: { content: body } }
+        })
+      });
+      if (response.ok) {
+        const data = await response.json();
+        gistId = data.id;
+        localStorage.setItem(GH_GIST_KEY, gistId);
+      }
+    }
+    if (response.ok) {
+      syncStatus = 'idle';
+      showSyncIndicator('saved');
+    } else {
+      throw new Error('GitHub sync failed: ' + response.status);
+    }
+  } catch(e) {
+    syncStatus = 'error';
+    showSyncIndicator('error');
+    console.warn('GitHub sync error:', e.message);
+  }
+}
+
+async function loadFromGitHub() {
+  if (!GH_TOKEN || !gistId) return null;
+  try {
+    const response = await fetch('https://api.github.com/gists/' + gistId, {
+      headers: {
+        'Authorization': 'Bearer ' + GH_TOKEN,
+        'X-GitHub-Api-Version': '2022-11-28'
+      }
+    });
+    if (!response.ok) return null;
+    const data = await response.json();
+    const file = data.files['comeback-v31-data.json'];
+    if (!file) return null;
+    return JSON.parse(file.content);
+  } catch(e) {
+    console.warn('GitHub load error:', e.message);
+    return null;
+  }
+}
+
+function showSyncIndicator(status) {
+  const el = document.getElementById('sync-indicator');
+  if (!el) return;
+  if (status === 'syncing') {
+    el.textContent = 'Syncing...';
+    el.style.color = 'var(--gold)';
+    el.style.opacity = '1';
+  } else if (status === 'saved') {
+    el.textContent = 'Saved to GitHub';
+    el.style.color = 'var(--accent)';
+    el.style.opacity = '1';
+    setTimeout(() => { el.style.opacity = '0'; }, 2000);
+  } else if (status === 'error') {
+    el.textContent = 'Sync error - saved locally';
+    el.style.color = 'var(--red)';
+    el.style.opacity = '1';
+    setTimeout(() => { el.style.opacity = '0'; }, 3000);
   }
 }
 
@@ -3484,190 +3663,65 @@ function animNum(el, from, to, ms=600, dec=0) {
     const e = 1 - Math.pow(1 - t, 3);
     el.textContent = (from + diff * e).toFixed(dec);
     if (t < 1) requestAnimationFrame(step);
-    else el.textContent = to.toFixed(dec);
   }
   requestAnimationFrame(step);
 }
-
-/* -- THEME -------------------------------------------------- */
-function applyTheme(t) {
-  document.body.classList.toggle('light', t === 'light');
-  APP.settings.theme = t;
-}
-function initTheme() { applyTheme(APP.settings.theme || 'dark'); }
-
-/* -- INSTALL BANNER ----------------------------------------- */
-function checkBanner() {
-  const pwa = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
-  if (pwa) { APP.settings.installed = true; saveData(); return; }
-  if (APP.settings.bannerDismissed) return;
-  document.getElementById('install-banner').classList.remove('hidden');
-}
-function dismissBanner() {
-  document.getElementById('install-banner').classList.add('hidden');
-  APP.settings.bannerDismissed = true;
-  saveData();
-}
-
-/* -- NAV BADGES --------------------------------------------- */
-function updateBadges() {
-  const h   = new Date().getHours();
-  const ds  = todayStr();
-  const wl  = APP.workoutLog[ds];
-  const ml  = APP.mealLog[ds]    || {};
-  const wt  = APP.weightLog[ds];
-  const pro = Object.values(ml).reduce((a,m) => a+(m.protein||0), 0);
-
-  setBadge('b-train', h >= 14 && !wl);
-  setBadge('b-eat',   h >= 18 && pro < 120);
-  setBadge('b-body',  !wt);
-
-  const bwSoon = daysToBloodwork().some(bw => bw.daysUntil <= 7);
-  setBadge('b-plan', bwSoon);
-}
-function setBadge(id, on) {
-  const el = document.getElementById(id);
-  if (el) el.classList.toggle('on', on);
-}
-
-/* -- SAVE + TOAST SHORTCUT ---------------------------------- */
-function saveToast(iconKey, message, type='green') {
-  saveData();
-  toast(IC[iconKey] || IC.check, message, type);
-  H.success();
-}
-
-/* -- DATA EXPORT / RESTORE ---------------------------------- */
-function exportData() {
-  const json = JSON.stringify(APP, null, 2);
-  navigator.clipboard.writeText(json)
-    .then(() => toast(IC.copy, 'All data copied to clipboard', 'green'))
-    .catch(() => { console.log(json); toast(IC.info, 'Check browser console', 'gold'); });
-}
-function restoreData(jsonStr) {
-  try {
-    APP = deepMerge(deepClone(defaultData), JSON.parse(jsonStr));
-    saveData();
-    toast(IC.check, 'Data restored', 'green');
-    setTimeout(() => location.reload(), 900);
-  } catch(e) {
-    toast(IC.warn, 'Invalid backup data', 'red');
-  }
-}
-
-/* -- SUNDAY AUTO BACKUP ------------------------------------- */
-function sundayBackup() {
-  if (new Date().getDay() !== 0) return;
-  const last = localStorage.getItem('comeback_v31_bkup_date');
-  if (last === todayStr()) return;
-  try {
-    localStorage.setItem('comeback_v31_bkup', JSON.stringify(APP));
-    localStorage.setItem('comeback_v31_bkup_date', todayStr());
-  } catch(e) {}
-}
-
-/* -- SERVICE WORKER ----------------------------------------- */
-function registerSW() {
-  if (!('serviceWorker' in navigator)) return;
-  const sw = `
-    const C='comeback-v31';
-    self.addEventListener('install', e=>{
-      e.waitUntil(caches.open(C).then(c=>c.addAll(['./'])));
-      self.skipWaiting();
-    });
-    self.addEventListener('activate', e=>{
-      e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k)))));
-      self.clients.claim();
-    });
-    self.addEventListener('fetch', e=>{
-      e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));
-    });
-  `;
-  const url = URL.createObjectURL(new Blob([sw], {type:'application/javascript'}));
-  navigator.serviceWorker.register(url).catch(()=>{});
-}
-
-/* -- ONBOARDING --------------------------------------------- */
-function onboarding() {
-  if (APP.settings.onboardingDone) return;
-  const d = Math.ceil((new Date(CONFIG.startDate) - Date.now()) / 86400000);
-  const msg = d > 0
-    ? `${d} days until The Comeback begins.`
-    : daysSince(CONFIG.startDate) === 0
-      ? 'Day 1. The Comeback starts now.'
-      : `Day ${daysSince(CONFIG.startDate)+1}. Keep going.`;
-  setTimeout(() => toast(IC.logo, msg, 'default', 4000), 1200);
-  APP.settings.onboardingDone = true;
-  saveData();
-}
-
-/* -- SPLASH HIDE -------------------------------------------- */
-function hideSplash() {
-  const s = document.getElementById('splash');
-  if (!s) return;
-  s.classList.add('hide');
-  setTimeout(() => s.style.display = 'none', 500);
-}
-
-/* ==========================================================
-   BLOCK 2  -  TODAY PANEL LOGIC
-========================================================== */
-
-/* -- Training data (seeded  -  full exercise lists added in Block 3) -- */
-const SPLIT_PREVIEW = {
-  'Push A':         [['Incline DB Press','4x8-10'],['Lateral Raise','4x15-20'],['Cable Fly','3x12-15']],
-  'Pull A':         [['Pull-Up','4x6-10'],['DB Row','4x10-12'],['Face Pull','3x15-20']],
-  'Legs':           [['Barbell Squat','4x6-10'],['Romanian Deadlift','3x10-12'],['Leg Curl','3x12-15']],
-  'Push B':         [['OHP','4x8-10'],['DB Lateral Raise','4x15-20'],['Tricep Overhead Ext','3x12-15']],
-  'Pull B':         [['Pulldown','4x10-12'],['Incline Curl','4x12-15'],['Straight-Arm Pulldown','3x15']],
-  'Cardio + Core':  [['LISS Cardio','35 min'],['Ab Rollout','3x10'],['Cable Crunch','3x15-20']],
-  'Active Recovery':[['Light Walk','30 min'],['Mobility Work','20 min'],['Foam Rolling','10 min']],
-};
-
-/* -- TODAY RENDER  -  master function -- */
+// ================================================================
+// RENDER TODAY - coordinates all TODAY panel elements
+// ================================================================
 function renderToday() {
   const ds  = todayStr();
   const now = new Date();
   const h   = now.getHours();
-  const dow = now.getDay();
+  const dow = new Date().getDay();
   const d   = daysSince(CONFIG.startDate);
   const prog = d >= 0;
-  const wk  = weekNum();
 
   // Transition state
   const t = CONFIG.transition || [];
   let tState = 0;
   for (const tr of t) { if (ds >= tr.date) tState = tr.state; }
-
-  // Today's logged values
-  const wt  = APP.weightLog[ds];
+  const wt  = APP.weightLog?.[ds];
   const sch = CONFIG.schedule || {};
 
-  // MISSION BAR -
+  // Core renders
   renderMissionBar();
-
-  // SMOKE-FREE COUNTER -
   renderSmokeCounter();
-
-  // SUPPLEMENT COUNT -
   renderSuppCount();
+  renderWeightCard();
+  renderMacroRings();
+  renderReadiness();
+  renderInjectionCard(dow, ds);
+  renderTrainPreview();
 
-  // ALERTS -
+  // Context card
+  renderContextCard(tState, h, wt, sch, prog, dow, ds);
+
+  // Nausea check (Tue/Wed post Monday injection)
+  const nauseaCard = document.getElementById('nausea-card');
+  if (nauseaCard) {
+    const showNausea = (dow === 2 || dow === 3) && !APP.nausea?.[ds];
+    nauseaCard.classList.toggle('hidden', !showNausea);
+  }
+
+  // Training preview card
+  const trainPreview = document.getElementById('train-preview-card');
+  if (trainPreview) renderTrainPreview();
+
+  // Deload banner
   const deloadBanner = document.getElementById('deload-banner');
   if (deloadBanner) deloadBanner.classList.toggle('hidden', !(prog && isDeload()));
 
-  // Bloodwork alert - 7 days before draw
+  // Bloodwork alert - 7 days before
   const bwAlertEl = document.getElementById('bw-alert');
   if (bwAlertEl) {
-    const nextBW = CONFIG.bloodwork.find(b => b.date > ds);
+    const nextBW = (CONFIG.bloodwork || []).find(b => b.date > ds);
     if (nextBW) {
       const daysTo = Math.ceil((parseLocalDate(nextBW.date) - now) / 86400000);
       bwAlertEl.classList.toggle('hidden', daysTo > 7 || daysTo < 0);
       const bwTxt = document.getElementById('bw-alert-text');
       if (bwTxt && daysTo <= 7 && daysTo >= 0) {
-        bwTxt.textContent = nextBW.biotinStop
-          ? `Bloodwork in ${daysTo}d - stop Biotin now`
-          : `Bloodwork in ${daysTo}d - ${nextBW.label}`;
+        bwTxt.textContent = 'Bloodwork in ' + daysTo + 'd - ' + nextBW.label;
       }
     } else {
       bwAlertEl.classList.add('hidden');
@@ -3675,11 +3729,11 @@ function renderToday() {
   }
 
   // Calorie milestone alert
-  const todayW = wt || CONFIG.startWeight;
-  const calMil = document.getElementById('cal-milestone-alert');
+  const todayW  = wt || CONFIG.startWeight;
+  const calMil  = document.getElementById('cal-milestone-alert');
   const dismissed = APP.dismissedMilestones || 0;
   if (calMil) {
-    const milestone = CONFIG.calorieMilestones.find(m =>
+    const milestone = (CONFIG.calorieMilestones || []).find(m =>
       todayW <= m.atWeight && dismissed < m.atWeight
     );
     calMil.classList.toggle('hidden', !milestone);
@@ -3689,133 +3743,79 @@ function renderToday() {
     }
   }
 
-  // WEIGHT CARD -
-  const goalW  = CONFIG.goalWeightMax || 96;
-  const startW = CONFIG.startWeight;
-  const last7  = [];
-  for (let i = 0; i < 7; i++) {
-    const pd = new Date(now); pd.setDate(pd.getDate() - i);
-    const pds = pd.toISOString().slice(0,10);
-    if (APP.weightLog[pds]) last7.push(APP.weightLog[pds]);
-  }
-  const avg7   = last7.length ? last7.reduce((a,b)=>a+b,0)/last7.length : null;
-  const current = wt || avg7 || CONFIG.startWeight;
-
-  const wEl = document.getElementById('weight-value');
-  if (wEl) {
-    const prev = parseFloat(wEl.textContent) || current;
-    if (prev !== current && wEl.textContent !== '') {
-      animNum(wEl, prev, current, 500, 1);
-    } else {
-      wEl.textContent = fmt1(current);
-    }
-  }
-
-  const toLoseTotal = startW - goalW;
-  const toLoseLeft  = Math.max(0, current - goalW);
-  const lost        = Math.max(0, startW - current);
-  const pctDone     = toLoseTotal > 0 ? Math.min(100, (lost / toLoseTotal) * 100) : 0;
-
-  const toGoEl  = document.getElementById('w-to-go');
-  const lostEl  = document.getElementById('w-lost');
-  const startEl = document.getElementById('w-start');
-  if (toGoEl)  toGoEl.textContent  = fmt1(toLoseLeft);
-  if (lostEl)  lostEl.textContent  = fmt1(lost);
-  if (startEl) startEl.textContent = fmt1(startW);
-
-  // Goal % mode
-  const pctEl = document.getElementById('goal-pct-num');
-  if (pctEl) pctEl.textContent = Math.round(pctDone);
-
-  // Trend indicator
-  const trendEl = document.getElementById('weight-trend-icon');
-  if (trendEl && last7.length >= 2) {
-    const diff = last7[0] - last7[1];
-    trendEl.innerHTML = diff < -0.1
-      ? IC.trendDown
-      : diff > 0.1 ? IC.trendUp : IC.trendFlat;
-    trendEl.style.color = diff < -0.1 ? 'var(--accent)' : diff > 0.1 ? 'var(--red)' : 'var(--text-3)';
-  }
-
-  // Weight card bg gradient by weight
-  const bgEl = document.getElementById('weight-card-bg');
-  if (bgEl) {
-    const intensity = Math.min(1, pctDone / 100);
-    bgEl.style.opacity = 0.06 + intensity * 0.04;
-  }
-
-  // MACRO RINGS - always read from mealLog directly, never nutriLog
-  // This prevents rings resetting to zero when renderToday runs for other reasons
-  const ml    = APP.mealLog?.[ds] || {};
-  const prot  = Object.values(ml).reduce((a,m) => a + (m.protein || 0), 0);
-  const cals  = Object.values(ml).reduce((a,m) => a + (m.cal     || 0), 0);
-  const water = parseFloat(APP.waterLog?.[ds]) || 0;
-
-  const ptgt  = getProteinTarget();
-  const ctgt  = CONFIG.calorieTarget;
-  const wtgt  = isTrainingDay() ? CONFIG.waterTrainingDay : CONFIG.waterTarget;
-
-  const protColor = prot >= ptgt ? 'var(--accent)' : prot >= (CONFIG.proteinMin||180) ? 'var(--gold)' : 'var(--red)';
-  const calColor  = cals >= ctgt ? 'var(--accent)' : cals >= (CONFIG.calorieFloor||2100) ? 'var(--gold)' : 'var(--red)';
-  const watColor  = water >= wtgt ? 'var(--accent)' : 'var(--blue)';
-
-  const rp = document.getElementById('ring-protein');
-  const rc = document.getElementById('ring-calories');
-  const rw = document.getElementById('ring-water');
-  if (rp) rp.innerHTML = ring({ size:72, sw:7, progress: prot/ptgt,  color: protColor, value: Math.round(prot)+'g' });
-  if (rc) rc.innerHTML = ring({ size:72, sw:7, progress: cals/ctgt,  color: calColor,  value: Math.round(cals)+'' });
-  if (rw) rw.innerHTML = ring({ size:72, sw:7, progress: water/wtgt, color: watColor,  value: fmt1(water)+'L' });
-
-  const pValEl = document.getElementById('macro-protein-val');
-  const cValEl = document.getElementById('macro-cal-val');
-  const wValEl = document.getElementById('macro-water-val');
-  if (pValEl) pValEl.textContent = Math.round(prot) + ' / ' + ptgt + 'g';
-  if (cValEl) cValEl.textContent = Math.round(cals) + ' / ' + ctgt + ' kcal';
-  if (wValEl) wValEl.textContent = fmt1(water) + ' / ' + fmt1(wtgt) + 'L';
-
-  // CONTEXT CARD -
-  renderContextCard(tState, h, wt, sch, prog, dow, ds);
-
-  // QUICK LOG STATE -
-  updateQuickLogState();
-
-  // READINESS -
-  renderReadiness();
-
-  // INJECTION CARD -
-  renderInjectionCard(dow, ds);
-
-  // NAUSEA CHECK -
-  const nauseaCard = document.getElementById('nausea-card');
-  if (nauseaCard) {
-    // Injection Monday (1), nausea check Tue(2) + Wed(3)
-    const showNausea = (dow === 2 || dow === 3) && !APP.nausea?.[ds];
-    nauseaCard.classList.toggle('hidden', !showNausea);
-  }
-
-  // TRAINING PREVIEW -
-  const trainPreview = document.getElementById('train-preview-card');
-  if (trainPreview) {
-    // Show only before program or in early weeks
-    const showPreview = !prog || wk <= 52;
-    trainPreview.classList.toggle('hidden', !showPreview);
-    if (showPreview) renderTrainPreview();
-  }
-
-  // DELOAD TRAIN CARD -
-  const deloadTrain = document.getElementById('deload-train-card');
-  if (deloadTrain) deloadTrain.classList.toggle('hidden', !(prog && isDeload()));
-
-  // WEEKLY SUMMARY (Sunday) -
+  // Sunday weekly summary
   const weeklySummary = document.getElementById('weekly-summary-card');
   if (weeklySummary) {
     weeklySummary.classList.toggle('hidden', dow !== 0 || !prog);
     if (dow === 0 && prog) renderWeeklySummary();
   }
 
-  // BADGES -
+  updateQuickLogState();
   updateBadges();
 }
+
+
+// ================================================================
+// CORE SYSTEM FUNCTIONS
+// ================================================================
+
+function initTheme() {
+  const saved = localStorage.getItem('comeback_theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+  const btn = document.getElementById('theme-toggle');
+  if (btn) btn.textContent = saved === 'dark' ? 'Light' : 'Dark';
+}
+
+function registerSW() {
+  if ('serviceWorker' in navigator) {
+    const sw = `self.addEventListener('install', e => self.skipWaiting());
+self.addEventListener('activate', e => e.waitUntil(clients.claim()));
+self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));`;
+    try {
+      const blob = new Blob([sw], { type: 'application/javascript' });
+      const url  = URL.createObjectURL(blob);
+      navigator.serviceWorker.register(url).catch(() => {});
+    } catch(e) {}
+  }
+}
+
+function sundayBackup() {
+  if (new Date().getDay() !== 0) return;
+  const key  = 'comeback_backup_' + todayStr();
+  if (localStorage.getItem(key)) return;
+  try {
+    localStorage.setItem(key, JSON.stringify(APP));
+  } catch(e) {}
+}
+
+function updateBadges() {
+  const ds  = todayStr();
+  const dow = new Date().getDay();
+
+  // Nav dot - EAT (supplements not done)
+  const stack   = CONFIG.suppStack || [];
+  const groups  = CONFIG.suppGroups;
+  const suppLog = APP.suppLog?.[ds] || {};
+  let suppDue   = 0;
+  for (const supp of stack) {
+    const startDate = supp.group === 1 ? groups.group1
+                    : supp.group === 2 ? groups.group2 : groups.group3;
+    if (ds < startDate) continue;
+    if (supp.rule === 'sunday' && dow !== 0) continue;
+    if (!suppLog[supp.key]) suppDue++;
+  }
+
+  const eatDot = document.querySelector('[data-target="eat"] .nav-dot');
+  if (eatDot) eatDot.style.opacity = suppDue > 0 ? '1' : '0';
+
+  // PLAN dot - injection due today
+  const planDot = document.querySelector('[data-target="plan"] .nav-dot');
+  if (planDot) {
+    const injDue = dow === 1 && !APP.injectionLog?.[ds];
+    planDot.style.opacity = injDue ? '1' : '0';
+  }
+}
+
 
 // MISSION BAR -
 function renderMissionBar() {
@@ -4416,7 +4416,7 @@ function checkSuppGroup1Done(ds) {
     s.group === 1 &&
     s.rule === 'every' &&
     ds >= groups.group1 &&
-    ['electrolytes','k2d3','coq10'].includes(s.key)
+    ['electrolytes','k2d3','omega3'].includes(s.key)
   );
   return morning.length > 0 && morning.every(s => log[s.key]);
 }
@@ -4637,6 +4637,19 @@ function openWeightSheet() {
 ========================================================== */
 
 /* -- Full exercise database  -  Phase 1 (DB-only), Phase 2 (barbell intro), Phase 3 (peak) -- */
+// Preview exercise list for TODAY training card (3 shown, rest count)
+// Exact Phase 1 exercises from physical team document
+const SPLIT_PREVIEW = {
+  'Push A':          [['Incline DB Press','4x12-15','3-1-1 tempo'],['Incline DB Fly','3x15-20','3-0-1 tempo'],['Seated DB Shoulder Press','4x12-15','2-1-1 tempo'],['DB Lateral Raise','5x15-20','lead with elbow'],['Serratus Punch','3x15 each','full protraction'],['Face Pull','3x20','external rotation'],['Overhead Tricep Extension','3x15','long head']],
+  'Pull A':          [['Assisted Pull-Up','4x8-12','full hang'],['Wide Grip Lat Pulldown','4x12-15','pull to chest'],['Chest-Supported DB Row','4x12-15','LEFT SIDE FIRST'],['Straight-Arm Pulldown','3x15-20','pure lat'],['Reverse Pec Deck','3x15-20','rear delt'],['Face Pull','3x20','external rotation'],['Side-Lying ER','3x15 each','RIGHT SHOULDER']],
+  'Legs':            [['Goblet Squat','4x15-20','hip crease below knee'],['Romanian Deadlift','4x12-15','hip hinge'],['Leg Press','4x15-20','full range'],['Leg Extension','3x15-20','squeeze at top'],['Leg Curl','3x15-20','dorsiflexed'],['Hip Thrust','3x15','2s hold at top'],['Standing Calf Raise','4x20-25','full extension']],
+  'Push B':          [['Seated DB Overhead Press','4x12-15','neutral grip'],['DB Lateral Raise','5x15-20','5 sets - V-taper'],['DB Shrug','4x15-20','2s hold'],['Arnold Press','3x12-15','rotate to front'],['Tricep Pushdown','3x15-20','elbows pinned'],['Overhead Tricep Rope','3x12-15','long head'],['Lateral Neck Flexion','3x15 each','controlled']],
+  'Pull B':          [['Wide Grip Lat Pulldown','4x12-15','lats not biceps'],['Single-Arm DB Row','4x12-15','LEFT ARM FIRST'],['Straight-Arm Pulldown','3x15-20','arms straight'],['Incline DB Curl','3x12-15','LEFT ARM FIRST'],['Hammer Curl','3x12-15','LEFT ARM FIRST'],['Reverse Pec Deck','3x15-20','rear delt'],['Side-Lying ER','3x15 each','RIGHT SHOULDER']],
+  'Cardio + Core':   [['LISS Cardio','35-40 min','120-130 BPM nasal'],['Ab Rollout','3x10-12','kneeling ok'],['Cable Crunch','3x15-20','feel rectus'],['Pallof Press','3x12 each','anti-rotation'],['Hanging Leg Raise','3x12-15','no swinging']],
+  'Active Recovery': [['Cardiac Output Walk/Bike','35 min','120-130 BPM'],['Full Body Foam Roll','15 min','60-90s per site'],['Full Body Mobility','15 min','thoracic + hip']],
+};
+
+
 const WORKOUTS = {
 
   // ==================================================================
@@ -6170,6 +6183,111 @@ function exportData() {
 }
 
 
+// -- BACKDATE LOGGING -----------------------------------------
+let bdMood    = null;
+let bdInject  = false;
+
+function openBackdate() {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const ds = yesterday.toISOString().slice(0, 10);
+  const label = document.getElementById('backdate-date-label');
+  if (label) label.textContent = formatDateLocal(ds);
+
+  // Pre-fill with existing data if any
+  const wt = APP.weightLog?.[ds];
+  const wa = APP.waterLog?.[ds];
+  const sl = APP.sleepLog?.[ds];
+  const mo = APP.moodLog?.[ds];
+  const inj= APP.injectionLog?.[ds];
+
+  const wEl = document.getElementById('bd-weight');
+  const waEl= document.getElementById('bd-water');
+  const slEl= document.getElementById('bd-sleep');
+  if (wEl && wt)  wEl.value = wt;
+  if (waEl && wa) waEl.value= wa;
+  if (slEl && sl) slEl.value= sl.hrs;
+
+  if (mo) {
+    bdMood = mo;
+    document.querySelectorAll('.mood-opt').forEach(b => {
+      b.classList.toggle('selected', b.getAttribute('onclick').includes(mo));
+    });
+  } else { bdMood = null; }
+
+  bdInject = !!inj;
+  const btn = document.getElementById('bd-inject-btn');
+  const flds= document.getElementById('bd-inject-fields');
+  const lbl = document.getElementById('bd-inject-label');
+  if (btn) { btn.classList.toggle('active', bdInject); btn.querySelector('span').textContent = bdInject ? 'Yes' : 'No'; }
+  if (flds) flds.classList.toggle('hidden', !bdInject);
+  if (lbl)  lbl.textContent = bdInject ? 'Injection logged' : 'No injection yesterday';
+  if (inj) {
+    const site = document.getElementById('bd-inject-site');
+    const time = document.getElementById('bd-inject-time');
+    if (site && inj.site) site.value = inj.site;
+    if (time && inj.time) time.value = inj.time;
+  }
+
+  openSheet('sheet-backdate');
+}
+
+function selectBdMood(val) {
+  bdMood = val;
+  document.querySelectorAll('#bd-mood-grid .mood-opt').forEach(b => {
+    b.classList.toggle('selected', b.getAttribute('onclick').includes(val));
+  });
+}
+
+function toggleBdInject() {
+  bdInject = !bdInject;
+  const btn = document.getElementById('bd-inject-btn');
+  const flds= document.getElementById('bd-inject-fields');
+  const lbl = document.getElementById('bd-inject-label');
+  if (btn) { btn.classList.toggle('active', bdInject); btn.querySelector('span').textContent = bdInject ? 'Yes' : 'No'; }
+  if (flds) flds.classList.toggle('hidden', !bdInject);
+  if (lbl)  lbl.textContent = bdInject ? 'Injection logged' : 'No injection yesterday';
+}
+
+function saveBackdate() {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const ds = yesterday.toISOString().slice(0, 10);
+
+  const wt  = parseFloat(document.getElementById('bd-weight')?.value);
+  const wa  = parseFloat(document.getElementById('bd-water')?.value);
+  const sl  = parseFloat(document.getElementById('bd-sleep')?.value);
+  const site= document.getElementById('bd-inject-site')?.value;
+  const time= document.getElementById('bd-inject-time')?.value || '22:00';
+
+  if (wt && !isNaN(wt)) {
+    if (!APP.weightLog) APP.weightLog = {};
+    APP.weightLog[ds] = wt;
+  }
+  if (wa && !isNaN(wa)) {
+    if (!APP.waterLog) APP.waterLog = {};
+    APP.waterLog[ds] = wa;
+  }
+  if (sl && !isNaN(sl)) {
+    if (!APP.sleepLog) APP.sleepLog = {};
+    APP.sleepLog[ds] = { hrs: sl, quality: APP.sleepLog?.[ds]?.quality || 7 };
+  }
+  if (bdMood) {
+    if (!APP.moodLog) APP.moodLog = {};
+    APP.moodLog[ds] = bdMood;
+  }
+  if (bdInject && site) {
+    if (!APP.injectionLog) APP.injectionLog = {};
+    APP.injectionLog[ds] = { dose: getCurrentDose(), time, site };
+  }
+
+  saveData();
+  closeSheet();
+  try { renderToday(); } catch(e) {}
+  toast(IC.check, 'Yesterday logged - ' + formatDateLocal(ds), 'green');
+  H.success();
+}
+
 function init() {
   initTheme();
   handleHash();
@@ -6177,6 +6295,7 @@ function init() {
   sundayBackup();
   updateBadges();
   setInterval(updateBadges, 60000);
+  setTimeout(async () => { try { await syncFromGitHub(); } catch(e) { console.warn('GH sync init error:', e); } }, 1500);
 
   // Render panels
   try { renderToday(); } catch(e) { console.error('renderToday:', e.message, e.stack); }
@@ -6184,6 +6303,26 @@ function init() {
   try { renderEat();   } catch(e) { console.error('renderEat:',   e.message, e.stack); }
   try { renderBody();  } catch(e) { console.error('renderBody:',  e.message, e.stack); }
   try { renderPlan();  } catch(e) { console.error('renderPlan:',  e.message, e.stack); }
+  // One-time: inject June 1 backdated data if not already logged
+  (function() {
+    var ds = '2026-06-01';
+    if (APP.weightLog && APP.weightLog[ds]) return;
+    if (!APP.weightLog)    APP.weightLog    = {};
+    if (!APP.waterLog)     APP.waterLog     = {};
+    if (!APP.moodLog)      APP.moodLog      = {};
+    if (!APP.sleepLog)     APP.sleepLog     = {};
+    if (!APP.suppLog)      APP.suppLog      = {};
+    if (!APP.injectionLog) APP.injectionLog = {};
+    APP.weightLog[ds]    = 119.0;
+    APP.waterLog[ds]     = 4.5;
+    APP.moodLog[ds]      = 'good';
+    APP.sleepLog[ds]     = { hrs:8, quality:7 };
+    APP.suppLog[ds]      = { effexor:true, electrolytes:true, k2d3:true, omega3:true, magnesium:true };
+    APP.injectionLog[ds] = { dose:'2.5mg', time:'22:00', site:'Abdomen' };
+    try { saveData(); } catch(e) {}
+    console.log('June 1 data injected');
+  })();
+
 
   // Refresh context card when TODAY tab tapped
   document.querySelector('[data-target="today"]')?.addEventListener('click', () => {
@@ -6214,10 +6353,34 @@ function init() {
     }
   };
 
-  setTimeout(hideSplash, 850);
-  setTimeout(checkBanner, 2800);
-  onboarding();
+  setTimeout(() => {
+    const sp = document.getElementById('splash');
+    if (sp) {
+      sp.classList.add('hide');
+      setTimeout(() => { sp.style.display = 'none'; }, 500);
+    }
+  }, 850);
+  // checkBanner and onboarding removed - handled by renderToday
   console.log(`The Comeback ${CONFIG.version}  -  Block 3: TRAIN panel complete.`);
+  // Inject June 1 backdated data if not already present
+  (function() {
+    const ds = '2026-06-01';
+    if (APP.weightLog && APP.weightLog[ds]) return; // already logged
+    if (!APP.weightLog)    APP.weightLog    = {};
+    if (!APP.waterLog)     APP.waterLog     = {};
+    if (!APP.moodLog)      APP.moodLog      = {};
+    if (!APP.sleepLog)     APP.sleepLog     = {};
+    if (!APP.suppLog)      APP.suppLog      = {};
+    if (!APP.injectionLog) APP.injectionLog = {};
+    APP.weightLog[ds]    = 119.0;
+    APP.waterLog[ds]     = 4.5;
+    APP.moodLog[ds]      = 'good';
+    APP.sleepLog[ds]     = { hrs:8, quality:7 };
+    APP.suppLog[ds]      = { effexor:true, electrolytes:true, k2d3:true, omega3:true, magnesium:true };
+    APP.injectionLog[ds] = { dose:'2.5mg', time:'22:00', site:'Abdomen' };
+    saveData();
+  })();
+
 }
 
 document.addEventListener('DOMContentLoaded', init);
