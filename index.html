@@ -2913,7 +2913,7 @@ svg { display: block; flex-shrink: 0; }
             <div class="plan-settings-label">Birthday goal</div>
             <div class="plan-settings-val">Aug 26, 2027</div>
           </div>
-          <div class="plan-settings-row" style="border-top:1px solid var(--border)">
+          <div class="plan-settings-row" onclick="showGHSetup()" style="cursor:pointer;border-top:1px solid var(--border)">
             <div class="plan-settings-label">GitHub sync</div>
             <div class="plan-settings-val" id="plan-sync-status">Checking...</div>
           </div>
@@ -6513,14 +6513,39 @@ function saveBackdate() {
 }
 
 // -- GITHUB TOKEN SETUP ---------------------------------------
+function showGHSetup() {
+  const setup = document.getElementById('gh-setup');
+  if (setup) {
+    setup.style.display = 'flex';
+    const input = document.getElementById('gh-token-input');
+    if (input) input.value = '';
+    const status = document.getElementById('gh-setup-status');
+    if (status) status.textContent = GH_TOKEN ? 'Currently connected. Paste new token to update.' : '';
+  }
+}
+
 function checkGHSetup() {
   GH_TOKEN = localStorage.getItem(GH_TOKEN_KEY) || null;
   gistId   = localStorage.getItem(GH_GIST_KEY)  || null;
+
+  const planSync = document.getElementById('plan-sync-status');
+
   if (!GH_TOKEN) {
-    const setup = document.getElementById('gh-setup');
-    if (setup) setup.style.display = 'flex';
-    const splash = document.getElementById('splash');
-    if (splash) splash.style.display = 'none';
+    // First time ever - show setup screen
+    const hasSeenSetup = localStorage.getItem('comeback_setup_seen');
+    if (!hasSeenSetup) {
+      const setup = document.getElementById('gh-setup');
+      if (setup) setup.style.display = 'flex';
+      const splash = document.getElementById('splash');
+      if (splash) splash.style.display = 'none';
+      localStorage.setItem('comeback_setup_seen', '1');
+    } else {
+      // Has been set up before but token cleared (Safari privacy)
+      // Just run without sync - don't block the app
+      if (planSync) planSync.textContent = 'Token missing - open PLAN to reconnect';
+    }
+  } else {
+    if (planSync) planSync.textContent = 'Active';
   }
 }
 
