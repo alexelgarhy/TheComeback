@@ -152,6 +152,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
   pointer-events: none;
   transition: opacity var(--t-fast) var(--ease-out);
   scroll-behavior: smooth;
+  scroll-padding-bottom: 24px;
 }
 .panel.active {
   opacity: 1;
@@ -171,14 +172,23 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
   max-width: 430px;
   margin: 0 auto;
   height: var(--nav-safe);
-  background: rgba(16,21,29,0.96);
-  backdrop-filter: blur(24px) saturate(200%);
-  -webkit-backdrop-filter: blur(24px) saturate(200%);
-  border-top: 1px solid rgba(255,255,255,0.12);
+  background: var(--bg);
+  border-top: 1px solid var(--border-2);
   display: flex;
   align-items: flex-start;
   padding-top: 0;
+  padding-bottom: env(safe-area-inset-bottom);
   z-index: 100;
+}
+nav::after {
+  content: '';
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: env(safe-area-inset-bottom);
+  background: var(--bg);
+  z-index: 99;
 }
 
 .nav-item {
@@ -188,11 +198,12 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
   align-items: center;
   gap: 4px;
   padding: 10px 0 0;
-  color: rgba(230,237,243,0.65);
+  color: rgba(230,237,243,1);
   transition: color var(--t-base-dur) var(--ease-out);
   position: relative;
 }
 .nav-item.active { color: var(--green); }
+.nav-item.active .nav-label { color: var(--green); opacity: 1; }
 .nav-item svg {
   transition: transform var(--t-fast) var(--ease-out);
   width: 22px;
@@ -200,12 +211,12 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
 }
 .nav-item.active svg { transform: scale(1.08); }
 .nav-label {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: var(--w-bold);
-  letter-spacing: 0.4px;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
   line-height: 1;
-  color: rgba(230,237,243,0.70);
+  color: rgba(230,237,243,1);
 }
 .nav-dot {
   position: absolute;
@@ -2077,7 +2088,29 @@ function updateNavBadges() {
 
 // -- INIT --------------------------------------------------
 
+function handleOAuthRedirect() {
+  var hash = window.location.hash;
+  if (!hash) return;
+  var params = {};
+  hash.slice(1).split('&').forEach(function(pair) {
+    var parts = pair.split('=');
+    params[decodeURIComponent(parts[0])] = decodeURIComponent(parts[1] || '');
+  });
+  if (params.access_token) {
+    _ls.setItem('fitbit_token', params.access_token);
+    if (!APP.fitbit) APP.fitbit = {};
+    APP.fitbit.connected  = true;
+    APP.fitbit.connectedAt = todayStr();
+    saveData();
+    // Clean URL
+    window.history.replaceState(null, '', window.location.pathname);
+    fetchFitbitData();
+    toast('success', 'Fitbit Air connected');
+  }
+}
+
 function init() {
+  handleOAuthRedirect();
   initTheme();
   registerSW();
   updateNavBadges();
@@ -3371,16 +3404,30 @@ function buildPhaseCard(title, duration, items, groupKey, ds) {
 // EVENT HANDLERS
 // ============================================================
 function handleSetInput(exKey, setNum, field, value, restSecs, exName, ds) {
-  console.log('handleSetInput', exKey, setNum, field, value, 'ds:', ds);
-  if (!ds) { console.log('NO DS - preview mode'); return; }
   var val = value ? parseFloat(value) : null;
-  logSetData(exKey, setNum, field, val, ds);
   var row = document.getElementById('sr-' + exKey + '-' + setNum);
-  if (row) {
-    var d = (APP.workoutLog[ds][exKey] || {})['s'+setNum] || {};
-    if (d.kg && d.reps) {
-      row.classList.add('logged');
-      if (restSecs) startRestTimer(restSecs, exName);
+  if (ds) {
+    // Live session - save to log
+    logSetData(exKey, setNum, field, val, ds);
+    if (row) {
+      var ld = (APP.workoutLog[ds] && APP.workoutLog[ds][exKey] ? APP.workoutLog[ds][exKey] : {});
+      var sd = (ld['s'+setNum]) || {};
+      if (sd.kg && sd.reps) {
+        row.classList.add('logged');
+        if (restSecs) startRestTimer(restSecs, exName);
+      }
+    }
+  } else {
+    // Preview mode - timer works, no save
+    if (row) {
+      var kgIn   = row.querySelectorAll('input')[0];
+      var repsIn = row.querySelectorAll('input')[1];
+      var kv = kgIn   ? parseFloat(kgIn.value)   : 0;
+      var rv = repsIn ? parseFloat(repsIn.value)  : 0;
+      if (kv && rv) {
+        row.classList.add('logged');
+        if (restSecs) startRestTimer(restSecs, exName);
+      }
     }
   }
 }
@@ -3405,21 +3452,19 @@ function logSetData(exKey, setNum, field, val, ds) {
 }
 
 function togglePhaseLog(key, groupKey, circleEl, statusEl, ds) {
-  console.log('togglePhaseLog called', key, groupKey, ds);
-  if (!ds) { console.log('NO DS - preview mode, not saving'); return; }
-  if (!APP.sessionFeel)      APP.sessionFeel = {};
-  if (!APP.sessionFeel[ds])  APP.sessionFeel[ds] = {};
-  APP.sessionFeel[ds][key] = !APP.sessionFeel[ds][key];
+  var logDs = ds || todayStr();
+  if (!APP.sessionFeel)            APP.sessionFeel = {};
+  if (!APP.sessionFeel[logDs])     APP.sessionFeel[logDs] = {};
+  APP.sessionFeel[logDs][key] = !APP.sessionFeel[logDs][key];
   saveData();
-  var done = !!APP.sessionFeel[ds][key];
+  var done = !!APP.sessionFeel[logDs][key];
   var chk  = checkIcon();
   circleEl.style.cssText = 'width:20px;height:20px;border-radius:50%;flex-shrink:0;margin-top:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;' + (done ? 'background:var(--green);color:#000;' : 'border:1.5px solid var(--border-2);');
   circleEl.innerHTML = done ? chk : '';
-  // Update group header
   var card    = circleEl.closest('.train-phase-card');
   var circles = card ? card.querySelectorAll('.train-phase-items > div > div:first-child') : [];
   var total = circles.length, doneCount = 0;
-  circles.forEach(function(c) { if (c.style.background.indexOf('green') > -1 || c.style.background === 'var(--green)') doneCount++; });
+  circles.forEach(function(ci) { if (ci.style.background.indexOf('green') > -1 || ci.style.background === 'var(--green)') doneCount++; });
   statusEl.innerHTML = '';
   if (doneCount === total && total > 0) {
     var cc = document.createElement('div');
@@ -3810,22 +3855,20 @@ function buildWeeklySummary() {
 // ============================================================
 // FITBIT INTEGRATION
 // ============================================================
-var FITBIT_CLIENT_ID  = '23Q4XW'; // registered app ID -- update after dev.fitbit.com registration
-var FITBIT_REDIRECT   = 'https://alexelgarhy.github.io/comeback/callback.html'; // update to your GitHub Pages URL
-var FITBIT_SCOPE      = 'activity heartrate sleep profile';
+var FITBIT_CLIENT_ID  = '218682143421-4ab1uisekcbhkacp37i3a23944rt7fap.apps.googleusercontent.com';
+var FITBIT_REDIRECT   = 'https://alexelgarhy.github.io/TheComeback/';
+var FITBIT_SCOPE      = 'https://www.googleapis.com/auth/googlehealth.activity_and_fitness.readonly https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.readonly https://www.googleapis.com/auth/googlehealth.sleep.readonly https://www.googleapis.com/auth/googlehealth.profile.readonly';
 
 function fitbitConnect() {
-  var state   = Math.random().toString(36).slice(2);
-  _ls.setItem('fitbit_state', state);
-  var url = 'https://www.fitbit.com/oauth2/authorize' +
+  var state = Math.random().toString(36).slice(2);
+  _ls.setItem('gh_oauth_state', state);
+  var url = 'https://accounts.google.com/o/oauth2/v2/auth' +
     '?response_type=token' +
     '&client_id=' + FITBIT_CLIENT_ID +
     '&redirect_uri=' + encodeURIComponent(FITBIT_REDIRECT) +
     '&scope=' + encodeURIComponent(FITBIT_SCOPE) +
-    '&expires_in=604800' +
     '&state=' + state;
-  window.open(url, '_blank');
-  toast('info', 'Approve Fitbit access then paste your token below');
+  window.location.href = url;
 }
 
 function fitbitSaveToken(token) {
@@ -3854,60 +3897,88 @@ async function fetchFitbitData() {
   if (!token) return;
   if (!APP.fitbit) APP.fitbit = {};
 
-  var today = todayStr();
+  var today   = todayStr();
   var headers = { 'Authorization': 'Bearer ' + token };
+  var base    = 'https://health.googleapis.com/v4/users/-/dataTypes/';
 
   try {
-    // Heart rate + RHR
-    var hrRes = await fetch('https://api.fitbit.com/1/user/-/activities/heart/date/' + today + '/1d.json', { headers: headers });
-    if (hrRes.ok) {
-      var hrData = await hrRes.json();
-      var rhr = (hrData['activities-heart'] && hrData['activities-heart'][0] && hrData['activities-heart'][0].value ? hrData['activities-heart'][0].value.restingHeartRate : null);
-      if (rhr) {
-        if (!APP.fitbit.rhr) APP.fitbit.rhr = {};
-        APP.fitbit.rhr[today] = rhr;
-      }
-    }
-
-    // Sleep
-    var sleepRes = await fetch('https://api.fitbit.com/1.2/user/-/sleep/date/' + today + '.json', { headers: headers });
-    if (sleepRes.ok) {
-      var sleepData = await sleepRes.json();
-      var summary   = sleepData.summary;
-      if (summary) {
-        var hrs = summary.totalMinutesAsleep / 60;
-        var score = (sleepData.sleep && sleepData.sleep[0] ? sleepData.sleep[0].efficiency : null) || null;
-        if (!APP.sleepLog) APP.sleepLog = {};
-        if (!APP.sleepLog[today]) APP.sleepLog[today] = {};
-        APP.sleepLog[today].hrs   = Math.round(hrs * 10) / 10;
-        APP.sleepLog[today].score = score;
-        APP.sleepLog[today].source = 'fitbit';
+    // Resting Heart Rate
+    var rhrRes = await fetch(base + 'daily-resting-heart-rate/dataPoints?filter=start_time>"' + today + 'T00:00:00Z"', { headers: headers });
+    if (rhrRes.ok) {
+      var rhrJson = await rhrRes.json();
+      var rpts = rhrJson.dataPoints;
+      if (rpts && rpts.length) {
+        var rhr = rpts[rpts.length-1].value && rpts[rpts.length-1].value.fpVal;
+        if (rhr) {
+          if (!APP.fitbit.rhr) APP.fitbit.rhr = {};
+          APP.fitbit.rhr[today] = Math.round(rhr);
+        }
       }
     }
 
     // HRV
-    var hrvRes = await fetch('https://api.fitbit.com/1/user/-/hrv/date/' + today + '.json', { headers: headers });
+    var hrvRes = await fetch(base + 'daily-heart-rate-variability/dataPoints?filter=start_time>"' + today + 'T00:00:00Z"', { headers: headers });
     if (hrvRes.ok) {
-      var hrvData = await hrvRes.json();
-      var hrv = (hrvData.hrv && hrvData.hrv[0] && hrvData.hrv[0].value ? hrvData.hrv[0].value.dailyRmssd : null);
-      if (hrv) {
-        if (!APP.fitbit.hrv) APP.fitbit.hrv = {};
-        APP.fitbit.hrv[today] = Math.round(hrv);
+      var hrvJson = await hrvRes.json();
+      var hpts = hrvJson.dataPoints;
+      if (hpts && hpts.length) {
+        var hrv = hpts[hpts.length-1].value && hpts[hpts.length-1].value.fpVal;
+        if (hrv) {
+          if (!APP.fitbit.hrv) APP.fitbit.hrv = {};
+          APP.fitbit.hrv[today] = Math.round(hrv);
+        }
       }
     }
 
     // Steps
-    var stepsRes = await fetch('https://api.fitbit.com/1/user/-/activities/steps/date/' + today + '/1d.json', { headers: headers });
+    var stepsRes = await fetch(base + 'steps/dailyRollup?filter=start_time>"' + today + 'T00:00:00Z"', { headers: headers });
     if (stepsRes.ok) {
-      var stepsData = await stepsRes.json();
-      var steps = (stepsData['activities-steps'] && stepsData['activities-steps'][0] ? stepsData['activities-steps'][0].value : null);
-      if (steps) {
-        if (!APP.fitbit.steps) APP.fitbit.steps = {};
-        APP.fitbit.steps[today] = parseInt(steps);
+      var stepsJson = await stepsRes.json();
+      var spts = stepsJson.dataPoints;
+      if (spts && spts.length) {
+        var steps = spts[spts.length-1].value && spts[spts.length-1].value.intVal;
+        if (steps) {
+          if (!APP.fitbit.steps) APP.fitbit.steps = {};
+          APP.fitbit.steps[today] = steps;
+        }
       }
     }
 
-    // Calc 7-day RHR average
+    // Sleep
+    var sleepRes = await fetch(base + 'sleep/dataPoints?filter=start_time>"' + today + 'T00:00:00Z"', { headers: headers });
+    if (sleepRes.ok) {
+      var sleepJson = await sleepRes.json();
+      var slpts = sleepJson.dataPoints;
+      if (slpts && slpts.length) {
+        var sl = slpts[slpts.length-1];
+        var totalMins = sl.value && sl.value.sleepSummary && sl.value.sleepSummary.totalMinutesAsleep;
+        var efficiency = sl.value && sl.value.sleepSummary && sl.value.sleepSummary.efficiency;
+        if (totalMins) {
+          if (!APP.sleepLog) APP.sleepLog = {};
+          if (!APP.sleepLog[today]) APP.sleepLog[today] = {};
+          APP.sleepLog[today].hrs    = Math.round(totalMins / 60 * 10) / 10;
+          APP.sleepLog[today].score  = efficiency || null;
+          APP.sleepLog[today].source = 'fitbit';
+        }
+      }
+    }
+
+    // VO2 Max - fetch from program start
+    var vo2Res = await fetch(base + 'daily-vo2-max/dataPoints?filter=start_time>"2026-06-01T00:00:00Z"', { headers: headers });
+    if (vo2Res.ok) {
+      var vo2Json = await vo2Res.json();
+      var vpts = vo2Json.dataPoints;
+      if (vpts && vpts.length) {
+        if (!APP.fitbit.vo2max) APP.fitbit.vo2max = {};
+        vpts.forEach(function(pt) {
+          var ds  = pt.startTime && pt.startTime.slice(0,10);
+          var val = pt.value && pt.value.fpVal;
+          if (ds && val) APP.fitbit.vo2max[ds] = val;
+        });
+      }
+    }
+
+    // 7-day RHR average
     if (APP.fitbit.rhr) {
       var rhrKeys = Object.keys(APP.fitbit.rhr).sort().slice(-7);
       var rhrVals = rhrKeys.map(function(k) { return APP.fitbit.rhr[k]; }).filter(Boolean);
@@ -3917,15 +3988,14 @@ async function fetchFitbitData() {
     APP.fitbit.lastSync = new Date().toISOString();
     saveData();
     renderCurrentPanel();
-    toast('success', 'Fitbit synced');
+    toast('success', 'Fitbit Air synced');
 
   } catch(err) {
-    console.error('Fitbit sync error:', err.message);
     if (err.message && err.message.indexOf('401') > -1) {
-      toast('warn', 'Fitbit token expired - reconnect in PLAN');
+      toast('warn', 'Session expired - reconnect in PLAN');
       _ls.removeItem('fitbit_token');
     } else {
-      toast('warn', 'Fitbit sync failed - check connection');
+      toast('warn', 'Sync failed');
     }
   }
 }
@@ -4095,6 +4165,82 @@ function buildTrajectoryCard() {
   return card;
 }
 
+
+function buildVO2Card() {
+  var fitbit  = APP.fitbit || {};
+  var vo2Log  = fitbit.vo2max || {};
+  var keys    = Object.keys(vo2Log).sort();
+  var latest  = keys.length ? vo2Log[keys[keys.length-1]] : null;
+  var first   = keys.length ? vo2Log[keys[0]] : null;
+  var delta   = (latest && first && keys.length > 1) ? (latest - first).toFixed(1) : null;
+
+  // VO2 Max fitness categories for men 30-39
+  // Poor <35, Fair 35-38, Good 39-43, Excellent 44-48, Superior >48
+  function vo2Category(v) {
+    if (!v) return null;
+    if (v >= 49) return { label: 'Superior',  color: 'var(--green)' };
+    if (v >= 44) return { label: 'Excellent', color: 'var(--green)' };
+    if (v >= 39) return { label: 'Good',      color: 'var(--gold)'  };
+    if (v >= 35) return { label: 'Fair',      color: 'var(--gold)'  };
+    return               { label: 'Poor',     color: 'var(--red)'   };
+  }
+
+  var cat = vo2Category(latest);
+
+  var card = document.createElement('div');
+  card.style.cssText = 'background:var(--surface);border-radius:var(--r-xl);margin:0 var(--sp-lg) var(--sp-sm);box-shadow:var(--shadow-card);padding:var(--sp-lg);';
+
+  // Header row
+  var hdr = document.createElement('div');
+  hdr.style.cssText = 'display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:' + (latest ? 'var(--sp-md)' : '0') + ';';
+  hdr.innerHTML =
+    '<div>' +
+      '<div style="font-size:var(--t-sm);font-weight:var(--w-bold);color:var(--text);">VO2 Max</div>' +
+      '<div style="font-size:var(--t-xs);color:var(--text-3);margin-top:2px;">Cardiovascular fitness  -  via Fitbit Air</div>' +
+    '</div>' +
+    (latest
+      ? '<div style="text-align:right;">' +
+          '<div style="font-size:40px;font-weight:var(--w-bold);letter-spacing:-1px;color:' + (cat ? cat.color : 'var(--text)') + ';line-height:1;font-variant-numeric:tabular-nums;">' + latest.toFixed(1) + '</div>' +
+          '<div style="font-size:var(--t-xs);color:var(--text-3);">mL/kg/min</div>' +
+        '</div>'
+      : '<div style="font-size:var(--t-sm);color:var(--text-3);">-- awaiting data</div>'
+    );
+  card.appendChild(hdr);
+
+  if (!latest) return card;
+
+  // Stats row
+  var stats = document.createElement('div');
+  stats.style.cssText = 'display:flex;gap:var(--sp-sm);';
+
+  var statItems = [
+    { label: 'Category',  value: cat ? cat.label : '--', color: cat ? cat.color : 'var(--text-3)' },
+    { label: 'Baseline',  value: first ? first.toFixed(1) : '--', color: 'var(--text-2)' },
+    { label: 'Change',    value: delta ? (parseFloat(delta) > 0 ? '+' : '') + delta : '--',
+      color: delta ? (parseFloat(delta) > 0 ? 'var(--green)' : 'var(--red)') : 'var(--text-3)' },
+  ];
+
+  statItems.forEach(function(s) {
+    var cell = document.createElement('div');
+    cell.style.cssText = 'flex:1;background:var(--surface-2);border-radius:var(--r-md);padding:10px var(--sp-sm);text-align:center;';
+    cell.innerHTML =
+      '<div style="font-size:var(--t-xs);color:var(--text-3);margin-bottom:3px;">' + s.label + '</div>' +
+      '<div style="font-size:var(--t-sm);font-weight:var(--w-bold);color:' + s.color + ';font-variant-numeric:tabular-nums;">' + s.value + '</div>';
+    stats.appendChild(cell);
+  });
+  card.appendChild(stats);
+
+  // Last updated
+  if (keys.length) {
+    var upd = document.createElement('div');
+    upd.style.cssText = 'font-size:var(--t-xs);color:var(--text-3);text-align:right;margin-top:var(--sp-sm);';
+    upd.textContent = 'Last updated ' + keys[keys.length-1];
+    card.appendChild(upd);
+  }
+
+  return card;
+}
+
 function renderBody() {
   var el = document.getElementById('body-inner');
   if (!el) return;
@@ -4110,6 +4256,9 @@ function renderBody() {
 
   // 14-day weight chart
   el.appendChild(buildWeightChart());
+
+  // VO2 Max - fitness metric, leads before body composition
+  el.appendChild(buildVO2Card());
 
   // Trajectory model
   el.appendChild(buildTrajectoryCard());
