@@ -2224,12 +2224,10 @@ function buildStatusStrip(ds) {
   var readiness = null;
   var rColor = 'var(--text-3)';
   if (hrv) {
-    readiness = hrv;
+    readiness = Math.min(100, hrv);
     rColor = hrv >= 70 ? 'var(--green)' : hrv >= 50 ? 'var(--gold)' : 'var(--red)';
-  } else if (sleepLog && sleepLog.quality) {
-    readiness = Math.round(sleepLog.quality * 10);
-    rColor = readiness >= 70 ? 'var(--green)' : readiness >= 50 ? 'var(--gold)' : 'var(--red)';
   }
+  // Readiness requires Fitbit HRV - no manual fallback
 
   var rStr = readiness !== null ? readiness + '%' : '--';
   var sStr = steps     !== null ? steps.toLocaleString() : '--';
