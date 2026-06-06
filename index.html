@@ -1547,26 +1547,20 @@ nav::after {
   </div>
 </div>
 
-<!-- Fitbit Sheet -->
+<!-- Fitbit Air Sheet -->
 <div class="sheet" id="sheet-fitbit">
   <div class="sheet-handle"></div>
   <div class="sheet-header">
-    <div class="sheet-title">Connect Fitbit</div>
+    <div class="sheet-title">Connect Fitbit Air</div>
     <button class="sheet-close" onclick="closeSheet()">
       <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
   </div>
   <div class="sheet-body">
-    <div style="font-size:var(--t-sm);color:var(--text-2);margin-bottom:var(--sp-lg);line-height:1.6;">
-      Fitbit uses OAuth — you will be redirected to approve access, then paste the token back here.
+    <div style="font-size:var(--t-sm);color:var(--text-2);margin-bottom:var(--sp-xl);line-height:1.6;">
+      Connects via Google Health. You will be redirected to approve access — no copy-pasting required.
     </div>
-    <button class="btn btn-primary" onclick="fitbitConnect()" style="width:100%;margin-bottom:var(--sp-md);">Open Fitbit auth page</button>
-    <div class="field-label">Paste access token here after approving</div>
-    <input class="input-field" id="fitbit-token-input" type="text" placeholder="access_token from URL">
-    <button class="btn btn-surface" onclick="fitbitSaveToken(document.getElementById('fitbit-token-input').value)" style="width:100%;margin-top:var(--sp-sm);">Save token</button>
-    <div style="font-size:var(--t-xs);color:var(--text-3);margin-top:var(--sp-md);line-height:1.5;">
-      After approving, copy the access_token= value from the redirect URL and paste above.
-    </div>
+    <button class="btn btn-primary" onclick="fitbitConnect();closeSheet();" style="width:100%;">Connect with Google Health</button>
   </div>
 </div>
 
@@ -4729,7 +4723,7 @@ function buildGitHubCard() {
 
   var left = document.createElement('div');
   left.innerHTML =
-    '<div style="font-size:var(--t-sm);font-weight:var(--w-semi);color:var(--text);">GitHub Gist Sync</div>' +
+    '<div style="font-size:var(--t-sm);font-weight:var(--w-semi);color:var(--text);">GitHub Sync</div>' +
     '<div style="font-size:var(--t-xs);color:var(--text-3);margin-top:2px;">' +
       (connected ? 'Auto-sync on every save' + (lastSync ? '  -  last ' + lastSync : '') : 'Not connected') +
     '</div>';
