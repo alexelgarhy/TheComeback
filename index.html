@@ -1816,7 +1816,11 @@ var defaultData = {
 
 var APP        = loadData();
 var syncTimer  = null;
-var activeSheet= null;
+var activeSheet    = null;
+var restInterval   = null;
+var _restInterval  = null;
+var _restSeconds   = 0;
+var _restTotal     = 0;
 var currentPanel = 'today';
 var scrollPositions = {};
 
@@ -1971,7 +1975,7 @@ function nav(id, el) {
   currentPanel = id;
   renderCurrentPanel();
   // Show rest timer when returning to TRAIN
-  if (id === 'train' && _restTimer) { var _rtb2 = document.getElementById('rest-timer-bar'); if (_rtb2) _rtb2.classList.add('visible'); }
+  if (id === 'train' && _restInterval) { var _rtb2 = document.getElementById('rest-timer-bar'); if (_rtb2) _rtb2.classList.add('visible'); }
 }
 
 function renderCurrentPanel() {
