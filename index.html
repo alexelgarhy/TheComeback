@@ -1688,6 +1688,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
 </div>
 
 <script>
+
 // Safe localStorage wrapper - handles sandbox environments
 var _ls = (function() {
   var mem = {};
@@ -1821,14 +1822,14 @@ var scrollPositions = {};
 
 // -- UTILITY FUNCTIONS --------------------------------------
 
-var todayStr = () => {
+var todayStr = function() {
   var d = new Date();
   return d.getFullYear() + '-' +
     String(d.getMonth()+1).padStart(2,'0') + '-' +
     String(d.getDate()).padStart(2,'0');
 };
 
-var fmt1 = n => typeof n === 'number' ? n.toFixed(1) : '--';
+function fmt1(n) { return typeof n === 'number' ? n.toFixed(1) : '--'; }
 
 function formatDateLocal(ds) {
   if (!ds) return '';
@@ -1953,13 +1954,13 @@ function nav(id, el) {
   if (currentPanel === 'train') { var _rtb = document.getElementById('rest-timer-bar'); if (_rtb) _rtb.classList.remove('visible'); }
   var old = document.getElementById('panel-' + currentPanel);
   if (old) scrollPositions[currentPanel] = old.scrollTop;
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
   var panel = document.getElementById('panel-' + id);
   if (panel) {
     panel.classList.add('active');
     if (scrollPositions[id]) {
-      requestAnimationFrame(() => { panel.scrollTop = scrollPositions[id]; });
+      requestAnimationFrame(function() { panel.scrollTop = scrollPositions[id]; });
     }
   }
   if (el) el.classList.add('active');
@@ -1997,7 +1998,7 @@ function openSheet(id) {
   overlay.classList.add('active');
   activeSheet = id;
   // Focus first input
-  requestAnimationFrame(() => {
+  requestAnimationFrame(function() {
     var input = sheet.querySelector('input, textarea, select');
     if (input && input.type !== 'time') input.focus();
   });
@@ -2014,9 +2015,9 @@ function closeSheet(silent) {
 
 // -- HAPTICS -----------------------------------------------
 var H = {
-  success: () => { try { (navigator.vibrate && navigator.vibrate(10)); } catch(e) {} },
-  error:   () => { try { (navigator.vibrate && navigator.vibrate([10,50,10])); } catch(e) {} },
-  tap:     () => { try { (navigator.vibrate && navigator.vibrate(5)); } catch(e) {} },
+  success: function() { try { (navigator.vibrate && navigator.vibrate(10)); } catch(e) {} },
+  error:   function() { try { (navigator.vibrate && navigator.vibrate([10,50,10])); } catch(e) {} },
+  tap:     function() { try { (navigator.vibrate && navigator.vibrate(5)); } catch(e) {} },
 };
 
 // -- TOASTS -----------------------------------------------
@@ -2035,9 +2036,9 @@ function toast(type, message) {
   el.style.borderLeft = '3px solid ' + (colors[type] || colors.info);
   el.innerHTML = '<span style="color:' + (colors[type]||colors.info) + '">' + (icons[type]||icons.info) + '</span>' + message;
   wrap.appendChild(el);
-  setTimeout(() => {
+  setTimeout(function() {
     el.classList.add('out');
-    setTimeout(() => el.remove(), 300);
+    setTimeout(function() { el.remove(); }, 300);
   }, 2500);
 }
 
@@ -2050,13 +2051,13 @@ function initTheme() {
 function registerSW() {
   if (!('serviceWorker' in navigator)) return;
   var sw = `
-self.addEventListener('install',  () => self.skipWaiting());
-self.addEventListener('activate', e => e.waitUntil(clients.claim()));
-self.addEventListener('fetch',    e => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));
+self.addEventListener('install',  function() { return self.skipWaiting(; }));
+self.addEventListener('activate', function(e) { return e.waitUntil(clients.claim()));
+self.addEventListener('fetch',    function(e) { return e.respondWith(fetch(e.request).catch(function() { return  caches.match(e.request))));
   `.trim();
   try {
     var blob = new Blob([sw], { type: 'application/javascript' });
-    navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
+    navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(function() {});
   } catch(e) {}
 }
 
@@ -2087,8 +2088,8 @@ function init() {
       btn.dataset.q = i;
       btn.textContent = i;
       btn.style.cssText = 'flex:1;min-width:32px;padding:8px 4px;border-radius:var(--r-sm);';
-      btn.onclick = () => {
-        sqBtns.querySelectorAll('button').forEach(b => {
+      btn.onclick = function() {
+        sqBtns.querySelectorAll('button').forEach(function(b) {
           b.style.background = 'var(--surface-2)';
           b.style.color      = 'var(--text-2)';
         });
@@ -2103,13 +2104,13 @@ function init() {
   // Build injection site buttons
   var siteBtns = document.getElementById('inject-site-btns');
   if (siteBtns) {
-    CONFIG.injectionSites.forEach(site => {
+    CONFIG.injectionSites.forEach(function(site) {
       var btn = document.createElement('button');
       btn.className = 'btn btn-surface btn-sm';
       btn.dataset.site = site;
       btn.textContent  = site;
-      btn.onclick = () => {
-        siteBtns.querySelectorAll('button').forEach(b => {
+      btn.onclick = function() {
+        siteBtns.querySelectorAll('button').forEach(function(b) {
           b.style.background = 'var(--surface-2)';
           b.style.color      = 'var(--text-2)';
         });
@@ -2125,9 +2126,9 @@ function init() {
   renderToday();
 
   // WSR live preview
-  ['input-shoulder','input-waist'].forEach(id => {
+  ['input-shoulder','input-waist'].forEach(function(id) {
     var el = document.getElementById(id);
-    if (el) el.addEventListener('input', () => {
+    if (el) el.addEventListener('input', function() {
       var s = parseFloat((document.getElementById('input-shoulder') && document.getElementById('input-shoulder').value));
       var w = parseFloat((document.getElementById('input-waist') && document.getElementById('input-waist').value));
       var prev = document.getElementById('wsr-preview');
@@ -2151,11 +2152,11 @@ function init() {
   }
 
   // Splash hide
-  setTimeout(() => {
+  setTimeout(function() {
     var splash = document.getElementById('splash');
     if (splash) {
       splash.classList.add('hide');
-      setTimeout(() => { splash.style.display = 'none'; }, 500);
+      setTimeout(function() { splash.style.display = 'none'; }, 500);
     }
   }, 1800);
 
@@ -2274,10 +2275,10 @@ function buildSleepRow() {
 function buildRings(ds) {
   var ml     = (APP.mealLog && APP.mealLog[ds])  || {};
   var shakes = (APP.shakeLog && APP.shakeLog[ds]) || [];
-  var mealP  = Object.values(ml).reduce((a,m) => a + (m.protein || 0), 0);
-  var shakeP = shakes.reduce((a,s) => a + (s.protein || 0), 0);
-  var mealC  = Object.values(ml).reduce((a,m) => a + (m.cal || 0), 0);
-  var shakeC = shakes.reduce((a,s) => a + (s.calories || (s.protein * 4) || 0), 0);
+  var mealP  = Object.values(ml).reduce(function(a,m) { return a + (m.protein || 0); }, 0);
+  var shakeP = shakes.reduce(function(a,s) { return a + (s.protein || 0); }, 0);
+  var mealC  = Object.values(ml).reduce(function(a,m) { return a + (m.cal || 0); }, 0);
+  var shakeC = shakes.reduce(function(a,s) { return a + (s.calories || (s.protein * 4 + 25) || 0); }, 0);
   var water  = parseFloat((APP.waterLog && APP.waterLog[ds])) || 0;
 
   var protein  = mealP + shakeP;
@@ -2536,7 +2537,7 @@ function getSuppCount(ds, dow) {
 function buildSuppChecklist(ds, dow) {
   var groups = CONFIG.suppGroups;
   var log    = (APP.suppLog && APP.suppLog[ds]) || {};
-  var active = CONFIG.suppStack.filter(s => {
+  var active = CONFIG.suppStack.filter(function(s) {
     var start = s.group === 1 ? groups.group1 : s.group === 2 ? groups.group2 : groups.group3;
     if (ds < start) return false;
     if (s.rule === 'sunday' && dow !== 0) return false;
@@ -2544,7 +2545,7 @@ function buildSuppChecklist(ds, dow) {
   });
   if (!active.length) return '<div style="padding:var(--sp-md) var(--sp-lg);font-size:var(--t-sm);color:var(--text-3);">Supplements start June 1</div>';
 
-  return active.map((s, i) => {
+  return active.map(function(s, i) {
     var done    = !!log[s.key];
     var blocked = s.rule === 'sunday' && dow !== 0;
     return `<div class="supp-row${done ? ' done' : ''}${blocked ? ' blocked' : ''}"
@@ -2636,16 +2637,16 @@ function buildSmokeFree() {
 }
 
 // -- Icons (defined once, used everywhere)
-var weightIcon = () => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="12" width="20" height="8" rx="3"/><path d="M12 12a6 6 0 0 0-6-6h12a6 6 0 0 0-6 6"/><line x1="12" y1="7" x2="14" y2="10"/></svg>';
-var waterIcon  = () => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg>';
-var sleepIcon  = () => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>';
-var moodIcon   = () => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>';
-var suppIcon   = () => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 20l-7-7a5 5 0 017.07-7.07l7 7a5 5 0 01-7.07 7.07z"/><line x1="8.5" y1="8.5" x2="15.5" y2="15.5"/></svg>';
-var nutriIcon  = () => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>';
-var injIcon    = () => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2l4 4-8 8-4-4 8-8z"/><path d="M14 6l-9.5 9.5M3 21l3-3"/></svg>';
-var nauseaIcon = () => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 15s1.5-2 4-2 4 2 4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>';
-var checkIcon  = () => '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-var chevronIcon = () => '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>';
+var weightIcon = function() { return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="12" width="20" height="8" rx="3"/><path d="M12 12a6 6 0 0 0-6-6h12a6 6 0 0 0-6 6"/><line x1="12" y1="7" x2="14" y2="10"/></svg>'; };
+var waterIcon  = function() { return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg>'; };
+var sleepIcon  = function() { return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>'; };
+var moodIcon   = function() { return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>'; };
+var suppIcon   = function() { return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 20l-7-7a5 5 0 017.07-7.07l7 7a5 5 0 01-7.07 7.07z"/><line x1="8.5" y1="8.5" x2="15.5" y2="15.5"/></svg>'; };
+var nutriIcon  = function() { return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>'; };
+var injIcon    = function() { return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2l4 4-8 8-4-4 8-8z"/><path d="M14 6l-9.5 9.5M3 21l3-3"/></svg>'; };
+var nauseaIcon = function() { return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 15s1.5-2 4-2 4 2 4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>'; };
+var checkIcon  = function() { return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'; };
+var chevronIcon = function() { return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>'; };
 
 // MEALS DATABASE
 var MEALS = {
@@ -4644,37 +4645,114 @@ function renderPlan() {
 // ============================================================
 // MOUNJARO CARD
 // ============================================================
+function buildMounjaroCard(ds, dow) {
+  var schedule = [
+    { dose: '2.5mg', start: '2026-06-01' },
+    { dose: '5mg',   start: '2026-06-29' },
+    { dose: '7.5mg', start: '2026-07-27' },
+    { dose: '10mg',  start: '2026-08-24' },
+    { dose: '12.5mg',start: '2026-09-21' },
+    { dose: '15mg',  start: '2026-10-19' },
+  ];
+
+  var currentDose = schedule[0].dose;
+  for (var i = schedule.length - 1; i >= 0; i--) {
+    if (ds >= schedule[i].start) { currentDose = schedule[i].dose; break; }
+  }
+
+  var nextDose = null, nextDate = null;
+  for (var j = 0; j < schedule.length; j++) {
+    if (schedule[j].start > ds) { nextDose = schedule[j].dose; nextDate = schedule[j].start; break; }
+  }
+  var daysToNext = nextDate ? Math.round((parseLocalDate(nextDate) - parseLocalDate(ds)) / 86400000) : null;
+
+  var sites  = ['Abdomen', 'Thigh', 'Upper arm'];
+  var weekNo = Math.floor(Math.max(0, daysSince('2026-06-01')) / 7);
+  var site   = sites[weekNo % 3];
+  var isMondayNow = dow === 1;
+  var injLog = (APP.injectionLog && APP.injectionLog[ds]) || null;
+  var todayInj = isMondayNow && injLog;
+
+  var card = document.createElement('div');
+  card.style.cssText = 'background:var(--surface);border-radius:var(--r-xl);margin:var(--sp-md) var(--sp-lg) var(--sp-sm);box-shadow:var(--shadow-card);padding:var(--sp-lg);';
+
+  var hdr = document.createElement('div');
+  hdr.style.cssText = 'display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:var(--sp-lg);';
+  hdr.innerHTML =
+    '<div>' +
+      '<div style="font-size:var(--t-xs);font-weight:var(--w-bold);letter-spacing:0.5px;text-transform:uppercase;color:var(--text-3);margin-bottom:4px;">MOUNJARO</div>' +
+      '<div style="font-size:56px;font-weight:var(--w-bold);letter-spacing:-2px;color:var(--blue);line-height:1;font-variant-numeric:tabular-nums;">' + currentDose + '</div>' +
+      '<div style="font-size:var(--t-xs);color:var(--text-3);margin-top:4px;">current dose  -  Mondays 22:00</div>' +
+    '</div>' +
+    (isMondayNow ? '<div style="background:' + (todayInj ? 'var(--green-dim)' : 'var(--blue-dim)') + ';color:' + (todayInj ? 'var(--green)' : 'var(--blue)') + ';border-radius:var(--r-full);padding:6px 14px;font-size:var(--t-xs);font-weight:var(--w-bold);cursor:pointer;flex-shrink:0;" id="inj-log-btn">' + (todayInj ? 'Logged' : 'Log injection') + '</div>' : '');
+  card.appendChild(hdr);
+
+  var siteLabel = document.createElement('div');
+  siteLabel.style.cssText = 'font-size:var(--t-xs);color:var(--text-3);margin-bottom:var(--sp-sm);';
+  siteLabel.textContent = 'This week: ' + site;
+  card.appendChild(siteLabel);
+
+  var siteRow = document.createElement('div');
+  siteRow.style.cssText = 'display:flex;gap:var(--sp-sm);margin-bottom:var(--sp-md);';
+  sites.forEach(function(sv) {
+    var pill = document.createElement('div');
+    var active = sv === site;
+    pill.style.cssText = 'flex:1;text-align:center;padding:8px 4px;border-radius:var(--r-md);font-size:var(--t-xs);font-weight:var(--w-semi);' +
+      'background:' + (active ? 'var(--blue-dim)' : 'var(--surface-2)') + ';' +
+      'color:' + (active ? 'var(--blue)' : 'var(--text-3)') + ';';
+    pill.textContent = sv;
+    siteRow.appendChild(pill);
+  });
+  card.appendChild(siteRow);
+
+  if (nextDose && daysToNext !== null) {
+    var nextRow = document.createElement('div');
+    nextRow.style.cssText = 'display:flex;align-items:center;justify-content:space-between;background:var(--surface-2);border-radius:var(--r-lg);padding:10px var(--sp-md);';
+    nextRow.innerHTML =
+      '<div>' +
+        '<div style="font-size:var(--t-xs);color:var(--text-3);">Next escalation</div>' +
+        '<div style="font-size:var(--t-sm);font-weight:var(--w-semi);color:var(--text);">' + nextDose + '  -  ' + nextDate + '</div>' +
+      '</div>' +
+      '<div style="font-size:var(--t-base);font-weight:var(--w-bold);color:var(--text-3);font-variant-numeric:tabular-nums;">' + daysToNext + 'd</div>';
+    card.appendChild(nextRow);
+  }
+
+  if (isMondayNow && !todayInj) {
+    var logBtn = card.querySelector('#inj-log-btn');
+    if (logBtn) logBtn.addEventListener('click', function() { openSheet('sheet-injection'); });
+  }
 
   // Nausea check - Tue/Wed after injection
   if (dow === 2 || dow === 3) {
-    var nauseaCard = document.createElement('div');
-    nauseaCard.style.cssText = 'margin-top:var(--sp-md);border-top:1px solid var(--border);padding-top:var(--sp-md);';
+    var nauseaWrap = document.createElement('div');
+    nauseaWrap.style.cssText = 'margin-top:var(--sp-md);border-top:1px solid var(--border);padding-top:var(--sp-md);';
+    var nauseaLbl = document.createElement('div');
+    nauseaLbl.style.cssText = 'font-size:var(--t-xs);font-weight:var(--w-semi);color:var(--text-2);margin-bottom:var(--sp-sm);';
+    nauseaLbl.textContent = 'Nausea check';
+    nauseaWrap.appendChild(nauseaLbl);
     var nauseaLog = APP.nauseaLog && APP.nauseaLog[ds];
-    nauseaCard.innerHTML =
-      '<div style="font-size:var(--t-xs);font-weight:var(--w-semi);color:var(--text-2);margin-bottom:var(--sp-sm);">Nausea check</div>';
-    var levels = ['None','Mild','Moderate','Significant'];
-    var btnsRow = document.createElement('div');
-    btnsRow.style.cssText = 'display:flex;gap:var(--sp-sm);';
-    levels.forEach(function(level) {
+    var nauseaBtns = document.createElement('div');
+    nauseaBtns.style.cssText = 'display:flex;gap:var(--sp-sm);';
+    ['None','Mild','Moderate','Significant'].forEach(function(level) {
       var btn = document.createElement('button');
+      btn.type = 'button';
       btn.textContent = level;
-      var active = nauseaLog === level;
-      btn.style.cssText = 'flex:1;padding:8px 4px;border-radius:var(--r-md);font-size:var(--t-xs);font-weight:var(--w-semi);cursor:pointer;border:none;' +
-        'background:' + (active ? 'var(--blue)' : 'var(--surface-2)') + ';' +
-        'color:' + (active ? '#fff' : 'var(--text-3)') + ';';
-      btn.addEventListener('click', function() {
+      var isActive = nauseaLog === level;
+      btn.style.cssText = 'flex:1;padding:8px 2px;border-radius:var(--r-md);font-size:10px;font-weight:700;cursor:pointer;border:none;background:' + (isActive ? 'var(--blue)' : 'var(--surface-2)') + ';color:' + (isActive ? '#fff' : 'var(--text-3)') + ';';
+      btn.addEventListener('click', (function(lv) { return function() {
         if (!APP.nauseaLog) APP.nauseaLog = {};
-        APP.nauseaLog[ds] = level;
+        APP.nauseaLog[ds] = lv;
         saveData();
         renderPlan();
-      });
-      btnsRow.appendChild(btn);
+      }; })(level));
+      nauseaBtns.appendChild(btn);
     });
-    nauseaCard.appendChild(btnsRow);
-    card.appendChild(nauseaCard);
+    nauseaWrap.appendChild(nauseaBtns);
+    card.appendChild(nauseaWrap);
   }
 
   return card;
+}
 
 
 // ============================================================
@@ -4932,19 +5010,19 @@ function renderSuppSheet() {
   var groups = CONFIG.suppGroups;
   var log    = (APP.suppLog && APP.suppLog[ds]) || {};
 
-  var active = CONFIG.suppStack.filter(s => {
+  var active = CONFIG.suppStack.filter(function(s) {
     var start = s.group === 1 ? groups.group1 : s.group === 2 ? groups.group2 : groups.group3;
     if (ds < start) return false;
     if (s.rule === 'sunday' && dow !== 0) return false;
     return true;
   });
 
-  var upcoming = CONFIG.suppStack.filter(s => {
+  var upcoming = CONFIG.suppStack.filter(function(s) {
     var start = s.group === 1 ? groups.group1 : s.group === 2 ? groups.group2 : groups.group3;
     return ds < start;
   });
 
-  var taken = active.filter(s => log[s.key]).length;
+  var taken = active.filter(function(s) { return log[s.key]; }).length;
 
   // Update count
   var countEl = document.getElementById('supp-sheet-count');
@@ -4957,7 +5035,7 @@ function renderSuppSheet() {
       listEl.innerHTML = '<div style="padding:var(--sp-lg);text-align:center;color:var(--text-3);font-size:var(--t-sm);">Supplements start June 1</div>';
     } else {
       listEl.innerHTML = '';
-      active.forEach((s, i) => {
+      active.forEach(function(s, i) {
         var done    = !!log[s.key];
         var blocked = s.rule === 'sunday' && dow !== 0;
         var row     = document.createElement('div');
@@ -4969,7 +5047,7 @@ function renderSuppSheet() {
           'pointer-events:' + (blocked ? 'none' : 'auto'),
           i > 0 ? 'border-top:1px solid var(--border)' : '',
         ].filter(Boolean).join(';');
-        row.onclick = () => toggleSuppFromSheet(s.key);
+        row.onclick = function() { toggleSuppFromSheet(s.key); };
         var checkDiv = '<div style="width:22px;height:22px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;' + (done ? 'background:var(--green);color:#000;' : 'border:1.5px solid var(--border-2);color:var(--text-3);') + '">' + (done ? checkIcon() : '') + '</div>';
         var infoDiv  = '<div style="flex:1;"><div style="font-size:var(--t-sm);font-weight:var(--w-semi);color:' + (done ? 'var(--text-3)' : 'var(--text)') + ';' + (done ? '' : '') + '">' + s.label + '</div><div style="font-size:var(--t-micro);color:var(--text-3);margin-top:2px;">' + s.time + (s.rule === 'sunday' ? '  -  Sunday only' : '') + '</div></div>';
         row.innerHTML  = checkDiv + infoDiv;
@@ -4982,7 +5060,7 @@ function renderSuppSheet() {
   // Upcoming groups
   var upcomingEl = document.getElementById('supp-sheet-upcoming');
   if (upcomingEl && upcoming.length) {
-    var nextGroup = Math.min(...upcoming.map(s => s.group));
+    var nextGroup = Math.min.apply(null, upcoming.map(function(s) { return s.group; }));
     var nextDate  = nextGroup === 2 ? groups.group2 : groups.group3;
     upcomingEl.innerHTML = '<div style="padding:var(--sp-sm) var(--sp-md);font-size:var(--t-xs);color:var(--text-3);text-align:center;">' +
       'Group ' + nextGroup + ' unlocks ' + formatDateLocal(nextDate) + '</div>';
@@ -5004,10 +5082,10 @@ function toggleSuppFromSheet(key) {
   APP.suppLog[ds][key] = !APP.suppLog[ds][key];
 
   if (key === 'psyllium' && APP.suppLog[ds][key]) {
-    setTimeout(() => toast('info', 'Follow with 250ml water'), 400);
+    setTimeout(function() { toast('info', 'Follow with 250ml water'); }, 400);
   }
   if (key === 'creatine' && APP.suppLog[ds][key]) {
-    setTimeout(() => toast('info', 'Extra 500ml water today'), 400);
+    setTimeout(function() { toast('info', 'Extra 500ml water today'); }, 400);
   }
 
   saveData();
@@ -5130,7 +5208,7 @@ function openInjectionSheet() {
   var next   = sites[(lastIdx + 1) % sites.length];
   var siteBtns = document.getElementById('inject-site-btns');
   if (siteBtns) {
-    siteBtns.querySelectorAll('button').forEach(b => {
+    siteBtns.querySelectorAll('button').forEach(function(b) {
       var isNext = b.dataset.site === next;
       b.style.background = isNext ? 'var(--blue)' : 'var(--surface-2)';
       b.style.color      = isNext ? '#000'        : 'var(--text-2)';
@@ -5181,24 +5259,27 @@ function importData() {
   var input = document.createElement('input');
   input.type  = 'file';
   input.accept= '.json';
-  input.onchange = async (e) => {
+  input.onchange = function(e) {
     var file = e.target.files[0];
     if (!file) return;
-    try {
-      var text   = await file.text();
-      var parsed = JSON.parse(text);
-      var data   = parsed.data || parsed;
-      var fields = ['weightLog','waterLog','moodLog','sleepLog','suppLog',
-                      'injectionLog','mealLog','shakeLog','workoutLog',
-                      'sessionFeel','nausea','wsrLog'];
-      fields.forEach(f => {
-        if (data[f]) APP[f] = Object.assign({}, APP[f], data[f]);
-      });
-      saveData();
-      renderCurrentPanel();
-      toast('success', 'Backup restored');
-      H.success();
-    } catch(err) {
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      try {
+        var parsed = JSON.parse(ev.target.result);
+        var data   = parsed.data || parsed;
+        var fields = ['weightLog','waterLog','moodLog','sleepLog','suppLog',
+                        'injectionLog','mealLog','shakeLog','workoutLog',
+                        'sessionFeel','nausea','wsrLog'];
+        fields.forEach(function(f) {
+          if (data[f]) APP[f] = Object.assign({}, APP[f], data[f]);
+        });
+        saveData();
+        renderCurrentPanel();
+        toast('success', 'Backup restored');
+        H.success();
+      } catch(err) {
+    };
+    reader.readAsText(file);
       toast('error', 'Could not read file');
     }
   };
@@ -5207,14 +5288,15 @@ function importData() {
 
 // Swipe-to-close sheets
 var sheetTouchY = 0;
-document.addEventListener('touchstart', e => {
+document.addEventListener('touchstart', function(e) {
   if (activeSheet) sheetTouchY = e.touches[0].clientY;
 }, { passive: true });
-document.addEventListener('touchend', e => {
+document.addEventListener('touchend', function(e) {
   if (!activeSheet) return;
   var delta = e.changedTouches[0].clientY - sheetTouchY;
   if (delta > 80) closeSheet();
 }, { passive: true });
+
 
 </script>
 </body>
