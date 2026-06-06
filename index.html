@@ -3371,7 +3371,8 @@ function buildPhaseCard(title, duration, items, groupKey, ds) {
 // EVENT HANDLERS
 // ============================================================
 function handleSetInput(exKey, setNum, field, value, restSecs, exName, ds) {
-  if (!ds) return; // preview mode - no saving
+  console.log('handleSetInput', exKey, setNum, field, value, 'ds:', ds);
+  if (!ds) { console.log('NO DS - preview mode'); return; }
   var val = value ? parseFloat(value) : null;
   logSetData(exKey, setNum, field, val, ds);
   var row = document.getElementById('sr-' + exKey + '-' + setNum);
@@ -3404,7 +3405,8 @@ function logSetData(exKey, setNum, field, val, ds) {
 }
 
 function togglePhaseLog(key, groupKey, circleEl, statusEl, ds) {
-  if (!ds) return; // preview - no saving
+  console.log('togglePhaseLog called', key, groupKey, ds);
+  if (!ds) { console.log('NO DS - preview mode, not saving'); return; }
   if (!APP.sessionFeel)      APP.sessionFeel = {};
   if (!APP.sessionFeel[ds])  APP.sessionFeel[ds] = {};
   APP.sessionFeel[ds][key] = !APP.sessionFeel[ds][key];
