@@ -2083,21 +2083,23 @@ function init() {
   var sqBtns = document.getElementById('sleep-quality-btns');
   if (sqBtns) {
     for (var i = 1; i <= 10; i++) {
-      var btn = document.createElement('button');
-      btn.className = 'btn btn-surface btn-sm';
-      btn.dataset.q = i;
-      btn.textContent = i;
-      btn.style.cssText = 'flex:1;min-width:32px;padding:8px 4px;border-radius:var(--r-sm);';
-      btn.onclick = function() {
-        sqBtns.querySelectorAll('button').forEach(function(b) {
-          b.style.background = 'var(--surface-2)';
-          b.style.color      = 'var(--text-2)';
-        });
-        btn.style.background = 'var(--green)';
-        btn.style.color      = '#000';
-        sqBtns.dataset.selected = i;
-      };
-      sqBtns.appendChild(btn);
+      (function(val) {
+        var btn = document.createElement('button');
+        btn.className = 'btn btn-surface btn-sm';
+        btn.dataset.q = val;
+        btn.textContent = val;
+        btn.style.cssText = 'flex:1;min-width:32px;padding:8px 4px;border-radius:var(--r-sm);';
+        btn.onclick = function() {
+          sqBtns.querySelectorAll('button').forEach(function(b) {
+            b.style.background = 'var(--surface-2)';
+            b.style.color      = 'var(--text-2)';
+          });
+          btn.style.background = 'var(--green)';
+          btn.style.color      = '#000';
+          sqBtns.dataset.selected = val;
+        };
+        sqBtns.appendChild(btn);
+      })(i);
     }
   }
 
@@ -3335,21 +3337,7 @@ function buildPhaseCard(title, duration, items, groupKey, ds) {
   var body = document.createElement('div');
   body.className = 'train-phase-items hidden';
 
-  var showAdvanced = !!_ls.getItem('show_advanced');
-
-  // Toggle advanced
-  var advToggle = document.createElement('div');
-  advToggle.style.cssText = 'padding:10px var(--sp-lg);font-size:var(--t-xs);color:var(--text-3);cursor:pointer;text-align:right;';
-  advToggle.textContent = showAdvanced ? 'Hide advanced' : 'Advanced';
-  advToggle.addEventListener('click', function() {
-    if (_ls.getItem('show_advanced')) _ls.removeItem('show_advanced');
-    else _ls.setItem('show_advanced', '1');
-    renderPlan();
-  });
-
-  var allItems = showAdvanced ? items.concat(dangerItems) : items;
-
-  allItems.forEach(function(item, i) {
+  items.forEach(function(item, i) {
     var k    = groupKey + '_' + i;
     var done = !!sf[k];
     var row  = document.createElement('div');
@@ -5186,7 +5174,7 @@ function saveSleep() {
   var quality = parseInt((document.getElementById('sleep-quality-btns') && document.getElementById('sleep-quality-btns').dataset).selected) || 7;
   if (!hrs || hrs < 0 || hrs > 24) { toast('warn', 'Enter valid hours'); return; }
   if (!APP.sleepLog) APP.sleepLog = {};
-  APP.sleepLog[todayStr()] = { hrs, quality };
+  APP.sleepLog[todayStr()] = { hrs: hrs, quality: quality };
   saveData();
   closeSheet();
   renderCurrentPanel();
