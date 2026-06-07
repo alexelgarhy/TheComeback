@@ -2105,6 +2105,17 @@ function handleOAuthRedirect() {
 
 function init() {
   handleOAuthRedirect();
+  // Auto-restore from GitHub on load if token + gistId exist
+  var _initToken  = ghToken();
+  var _initGistId = ghGistId();
+  var _initData   = _ls.getItem(DB_KEY);
+  if (_initToken && _initGistId && !_initData) {
+    // No local data - restore from GitHub
+    setTimeout(syncFromGitHub, 1500);
+  } else if (_initToken && _initGistId && _initData) {
+    // Has local data - silent background sync after 3s
+    setTimeout(syncToGitHub, 3000);
+  }
   initTheme();
   registerSW();
   updateNavBadges();
